@@ -19,10 +19,14 @@
                             <h:form>
                                 <h:panelGrid columns="1" >
                                     <p:outputLabel value="List Items" ></p:outputLabel>
-                                    <p:selectOneListbox value="#{itemController.selected}">
-                                        <f:selectItems value="#{itemController.itemItems}" var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                        <p:ajax event="change" process="@this" update=":#{p:component('details')}" ></p:ajax>
-                                    </p:selectOneListbox>
+                                    <p:autoComplete completeMethod="#{itemController.completeItemItems}"
+                                                    value="#{itemController.selected}"
+                                                    var="i" forceSelection="true"
+                                                    itemLabel="#{i.name}"
+                                                    itemValue="#{i}"
+                                                    >
+                                        <p:ajax event="itemSelect" process="@this" update=":#{p:component('details')}" ></p:ajax>
+                                    </p:autoComplete>
                                 </h:panelGrid>
                                 <h:panelGrid columns="2" >
                                     <p:commandButton value="Add New" ajax="false"
@@ -49,7 +53,7 @@
                                             <p:outputLabel value="Name:" for="name" />
                                         </p:column>
                                         <p:column >
-                                            <p:inputText id="name" value="#{itemController.selected.name}" title="Name" />
+                                            <p:inputText id="name" value="#{itemController.selected.name}" title="Name" style="width: 300px;"/>
                                         </p:column>
                                     </p:row>
                                     <p:row >

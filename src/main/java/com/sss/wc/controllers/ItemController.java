@@ -5,6 +5,7 @@ package com.sss.wc.controllers;
 import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
 import com.sss.wc.entity.Item;
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.ItemType;
 import com.sss.wc.facades.ItemFacade;
 import java.io.Serializable;
@@ -32,11 +33,14 @@ public class ItemController implements Serializable {
     private List<Item> items = null;
     private Item selected;
     List<Item> itemItems;
-    
+    Agency agency;
 
     public ItemController() {
     }
 
+    
+    
+    
     public List<Item> getItemItems() {
         if(itemItems==null){
             itemItems=getList(ItemType.Item);
@@ -44,13 +48,14 @@ public class ItemController implements Serializable {
         return itemItems;
     }
 
+    
     public void setItemItems(List<Item> itemItems) {
         this.itemItems = itemItems;
     }
 
     
     
-    public List<Item> completeItems(String qry){
+    public List<Item> completeItemItems(String qry){
         return getList(ItemType.Item, qry);
     }
     
@@ -77,6 +82,7 @@ public class ItemController implements Serializable {
         return getFacade().findBySQL(j, m);
     }
     
+    
     public String toItems(){
         selected=null;
         return "/admin/items";
@@ -84,6 +90,7 @@ public class ItemController implements Serializable {
     
     public void addNewItem(){
         selected=new Item();
+        selected.setAgency(agency);
         selected.setItemType(ItemType.Item);
     }
     
@@ -101,6 +108,8 @@ public class ItemController implements Serializable {
             JsfUtil.addSuccessMessage("Updated");
         }
         items = null;
+        itemItems=null;
+        agency=selected.getAgency();
         getItems();
     }
 
@@ -213,6 +222,16 @@ public class ItemController implements Serializable {
         return getItems();
     }
 
+    public void temConvertAgencyOfAllItemsToKeells(){
+        items =null;
+        List<Item> its = getItems();
+        for(Item i:its){
+            i.setAgency(Agency.Keells);
+            getFacade().edit(i);
+        }
+    }
+    
+    
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {
 
