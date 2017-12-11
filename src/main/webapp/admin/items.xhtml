@@ -21,7 +21,7 @@
                                     <p:outputLabel value="List Items" ></p:outputLabel>
                                     <p:selectOneListbox value="#{itemController.selected}">
                                         <f:selectItems value="#{itemController.itemItems}" var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                         <p:ajax event="change" process="@this" update=":#{p:component('details')}" ></p:ajax>
+                                        <p:ajax event="change" process="@this" update=":#{p:component('details')}" ></p:ajax>
                                     </p:selectOneListbox>
                                 </h:panelGrid>
                                 <h:panelGrid columns="2" >
@@ -63,6 +63,17 @@
 
                                     <p:row >
                                         <p:column colspan="2">
+                                            <p:outputLabel value="Agency:" for="agency" />
+                                        </p:column>
+                                        <p:column >
+                                            <p:selectOneMenu id="agency" value="#{itemController.selected.agency}" >
+                                                <f:selectItems value="#{enumController.agencies}" ></f:selectItems>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row >
+                                        <p:column colspan="2">
                                             <p:outputLabel value="Description:" for="description" />
                                         </p:column>
                                         <p:column >
@@ -72,118 +83,7 @@
                                         </p:column>
                                     </p:row>
 
-                                    <p:row >
-                                        <p:column colspan="2">
-                                            <p:outputLabel value="Retail Rate:" for="retailRate" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="retailRate" value="#{itemController.selected.retailRate}" title="RetailRate" />
 
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column rowspan="3">
-                                            <p:outputLabel value="For Retailers" ></p:outputLabel>
-                                        </p:column>
-                                        <p:column >
-                                            <p:outputLabel value="Usual:" for="retailerRate" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="retailerRate" value="#{itemController.selected.retailerRate}" title="Retailer Rate" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Minimum:" for="retailerRateMin" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="retailerRateMin" value="#{itemController.selected.retailerRateMin}" title="Retailer Rate Min" />
-                                        </p:column>
-                                    </p:row> 
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Maximum:" for="retailerRateMax" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="retailerRateMax" value="#{itemController.selected.retailerRateMax}" title="Retailer Rate Max" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column rowspan="3">
-                                            <p:outputLabel value="For Wholesalers" ></p:outputLabel>
-                                        </p:column>
-                                        <p:column >
-                                            <p:outputLabel value="Usual:" for="wholesaleRate" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="wholesaleRate" value="#{itemController.selected.wholesaleRate}" title="WholesaleRate" />
-                                        </p:column>
-                                    </p:row>
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Minimum:" for="wholesaleRateMin" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="wholesaleRateMin" value="#{itemController.selected.wholesaleRateMin}" title="WholesaleRateMin" />
-                                        </p:column>
-                                    </p:row> 
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Maximum:" for="wholesaleRateMax" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="wholesaleRateMax" value="#{itemController.selected.wholesaleRateMax}" title="WholesaleRateMax" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column rowspan="3">
-                                            <p:outputLabel value="For Dealers" ></p:outputLabel>
-                                        </p:column>
-                                        <p:column >
-                                            <p:outputLabel value="Usual:" for="dealerRate" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="dealerRate" value="#{itemController.selected.dealerRate}" title="DealerRate" />
-                                        </p:column>
-                                    </p:row>
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Minimum:" for="dealerRateMin" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="dealerRateMin" value="#{itemController.selected.dealerRateMin}" title="DealerRateMin" />
-                                        </p:column>
-                                    </p:row> 
-                                    <p:row >
-                                        <p:column >
-                                            <p:outputLabel value="Maximum:" for="dealerRateMax" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="dealerRateMax" value="#{itemController.selected.dealerRateMax}" title="DealerRateMax" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column colspan="2" >
-                                            <p:outputLabel value="MaxQtySaleForCustomer:" for="maxQtySaleForCustomer" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="maxQtySaleForCustomer" value="#{itemController.selected.maxQtySaleForCustomer}" title="MaxQtySaleForCustomer" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row >
-                                        <p:column colspan="2" >
-                                            <p:outputLabel value="MaxQtySaleForDealer:" for="maxQtySaleForDealer" />
-                                        </p:column>
-                                        <p:column >
-                                            <p:inputText id="maxQtySaleForDealer" value="#{itemController.selected.maxQtySaleForDealer}" title="MaxQtySaleForDealer" />
-                                        </p:column>
-                                    </p:row>
 
                                 </p:panelGrid>
 

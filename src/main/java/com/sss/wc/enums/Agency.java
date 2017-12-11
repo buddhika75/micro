@@ -9,16 +9,9 @@ package com.sss.wc.enums;
  *
  * @author nilukagun
  */
-public enum InstituteType {
+public enum Agency {
     Crysbro,
     Keells,
-    Elephant_House,
-    Customer,
-    Wholesaler,
-    Dealer,
-    Route,
-    Vehicle,
-    Stores,
-    Bank,
+    EH,
     Other,
 }

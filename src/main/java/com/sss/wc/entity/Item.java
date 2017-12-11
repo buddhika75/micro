@@ -5,6 +5,7 @@
  */
 package com.sss.wc.entity;
 
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.ItemType;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -33,6 +34,8 @@ public class Item implements Serializable {
     String description;
     @Enumerated(EnumType.STRING)
     ItemType itemType;
+    @Enumerated(EnumType.STRING)
+    Agency agency;
     Double retailRate;
     Double retailerRate;
     Double retailerRateMin;
@@ -46,6 +49,17 @@ public class Item implements Serializable {
     double maxQtySaleForCustomer;
     double maxQtySaleForDealer;
 
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+    
+    
+    
     public Double getRetailerRate() {
         return retailerRate;
     }

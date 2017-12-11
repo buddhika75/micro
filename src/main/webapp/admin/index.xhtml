@@ -20,21 +20,23 @@
                         <h:form >
                             <h:panelGrid columns="1" >
                                 <p:commandButton ajax="false" value="Add Users" action="#{webUserController.toAddNewUser()}" styleClass="mediumButton" ></p:commandButton>
-                                <p:commandButton ajax="false" value="View Users" action="#{webUserController.toViewUsers()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Add Sales Representatives" 
+                                                 action="#{webUserController.toAddNewRep()}" styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="View Users/Reps" action="#{webUserController.toViewUsers()}"  styleClass="mediumButton" ></p:commandButton>
                                 <hr/>
                                 <p:commandButton ajax="false" value="Manage Items" action="#{itemController.toItems()}"  styleClass="mediumButton" ></p:commandButton>
                                 <hr/>
                                 <p:button value="Customer Bill Print Settings" outcome="customer_bill_print_settings"  styleClass="mediumButton" ></p:button>
                                 <p:button value="Customer Payment Receive Print Settings" outcome="customer_bill_print_settings"  styleClass="mediumButton" ></p:button>
                                 <hr style="border-color: red;background-color: red;"/>
-                                
+
                                 <hr style="border-color: red;background-color: red;"/>
                                 <p:button disabled="#{!webUserController.canSystemAdministration}" value="System Administration" outcome="/admin/system_admin"  styleClass="mediumButton" ></p:button>
 
                                 <hr style="border-color: red;background-color: red;"/>
-                                
+
                                 <hr style="border-color: red;background-color: red;"/>
-                               
+
                             </h:panelGrid>  
                         </h:form>
 

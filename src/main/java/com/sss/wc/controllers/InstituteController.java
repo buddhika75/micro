@@ -34,6 +34,7 @@ public class InstituteController implements Serializable {
     private List<Institute> vehicles = null;
     private List<Institute> stores = null;
     private List<Institute> banks = null;
+    private List<Institute> dealers = null;
     private Institute selected;
 
     public List<Institute> getVehicles() {
@@ -68,6 +69,17 @@ public class InstituteController implements Serializable {
     public void setBanks(List<Institute> banks) {
         this.banks = banks;
     }
+    
+     public List<Institute> getDealers() {
+        if (dealers == null) {
+            dealers = getList(InstituteType.Dealer);
+        }
+        return dealers;
+    }
+
+    public void setDealers(List<Institute> dealers) {
+        this.dealers = dealers;
+    }
 
     public InstituteController() {
     }
@@ -78,6 +90,7 @@ public class InstituteController implements Serializable {
     }
 
     public String toDealers() {
+        dealers=null;
         selected = null;
         return "/maintenance/dealers";
     }
@@ -230,6 +243,10 @@ public class InstituteController implements Serializable {
             JsfUtil.addSuccessMessage("Updated");
         }
         items = null;
+        dealers=null;
+        banks=null;
+        stores=null;
+        vehicles=null;
         getItems();
     }
 
@@ -246,6 +263,10 @@ public class InstituteController implements Serializable {
         }
         selected = null;
         items = null;
+        dealers=null;
+        banks=null;
+        stores=null;
+        vehicles=null;
         getItems();
     }
 

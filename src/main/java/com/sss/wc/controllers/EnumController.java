@@ -5,6 +5,7 @@
  */
 package com.sss.wc.controllers;
 
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.BillCategory;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Named;
@@ -42,4 +43,10 @@ public class EnumController {
         return BillCategory.values();
     }
 
+     public Agency[] getAgencies() {
+        return Agency.values();
+    }
+
+    
+    
 }

@@ -11,7 +11,7 @@
         <ui:composition template="./index.xhtml">
 
             <ui:define name="contents">
-                <p:panel header="Manage Dealers" >
+                <p:panel header="Manage Agencies" >
 
 
                     <h:panelGrid columns="2" >
@@ -19,13 +19,13 @@
                             <h:form>
                                 <h:panelGrid columns="1" >
                                     <p:outputLabel value="List Dealers" ></p:outputLabel>
-                                    <p:autoComplete completeMethod="#{instituteController.completeDealers}"
-                                                    value="#{instituteController.selected}"
-                                                    var="c"
+                                    <p:selectOneListbox value="#{instituteController.selected}">
+                                        <f:selectItems value="#{instituteController.dealers}" var="c"
                                                     itemLabel="#{c.name}"
                                                     itemValue="#{c}">
-                                        <p:ajax event="itemSelect" process="@this" update=":#{p:component('details')}" ></p:ajax>
-                                    </p:autoComplete>
+                                        </f:selectItems>
+                                        <p:ajax process="@this" update=":#{p:component('details')}" ></p:ajax>
+                                    </p:selectOneListbox>
                                 </h:panelGrid>
                                 <h:panelGrid columns="2" >
                                     <p:commandButton value="Add New" ajax="false"
@@ -44,20 +44,21 @@
                                 <p:panelGrid columns="2" rendered="#{instituteController.selected ne null}">
                                     <p:outputLabel value="Name:" for="name" />
                                     <p:inputText id="name" value="#{instituteController.selected.name}" title="Name" required="true" />
+                                    <p:outputLabel value="Code:" for="code" />
+                                    <p:inputText id="code" value="#{instituteController.selected.code}" title="Code" required="false" />
+                                    
                                     <p:outputLabel value="Address:" for="address" />
                                     <p:inputTextarea id="address" value="#{instituteController.selected.address}" title="Address" />
                                     <p:outputLabel value="Phone:" for="phone" />
                                     <p:inputText id="phone" value="#{instituteController.selected.phone}" title="Phone" />
                                     <p:outputLabel value="Email:" for="email" />
                                     <p:inputText id="email" value="#{instituteController.selected.email}" title="Email" />
-                                    <p:outputLabel value="Reute:" for="route" />
-                                    <p:autoComplete id="route" forceSelection="true"
-                                                    completeMethod="#{instituteController.completeRoutes}"
-                                                    value="#{instituteController.selected.parentInstitute}"
-                                                    var="r"
-                                                    itemLabel="#{r.name}"
-                                                    itemValue="#{r}">
-                                    </p:autoComplete>
+                                    <p:outputLabel value="Agency:" for="agency" />
+                                    <p:selectOneMenu id="agency" 
+                                                     value="#{instituteController.selected.agency}"
+                                                    >
+                                        <f:selectItems value="#{enumController.agencies}" ></f:selectItems>
+                                    </p:selectOneMenu>
                                 </p:panelGrid>
                                 <p:commandButton value="Save"
                                                  ajax="false" rendered="#{instituteController.selected ne null}"

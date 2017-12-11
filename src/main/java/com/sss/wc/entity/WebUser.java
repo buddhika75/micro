@@ -5,9 +5,12 @@
  */
 package com.sss.wc.entity;
 
+import com.sss.wc.enums.UserType;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +43,8 @@ public class WebUser implements Serializable {
     Institute institute;
     @ManyToOne
     Location location;
+    @Enumerated(EnumType.STRING)
+    UserType userType;
     @Transient
     String repeatPassword;
 
@@ -50,6 +55,15 @@ public class WebUser implements Serializable {
     public void setRepeatPassword(String repeatPassword) {
         this.repeatPassword = repeatPassword;
     }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+    
     
     
 

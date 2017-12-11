@@ -7,6 +7,7 @@ import com.sss.wc.entity.Location;
 import com.sss.wc.entity.Institute;
 import com.sss.wc.entity.UserPrivilege;
 import com.sss.wc.enums.Privilege;
+import com.sss.wc.enums.UserType;
 import com.sss.wc.facades.WebUserFacade;
 
 import java.io.Serializable;
@@ -77,9 +78,17 @@ public class WebUserController implements Serializable {
     public String toAddNewUser() {
         selected = new WebUser();
         selected.setActive(true);
+        selected.setUserType(UserType.System_User);
         return "/admin/add_new_user";
     }
 
+    public String toAddNewRep() {
+        selected = new WebUser();
+        selected.setActive(true);
+        selected.setUserType(UserType.Sales_Representative);
+        return "/admin/add_new_rep";
+    }
+    
     public String toManagePrivilege() {
         userPrivilegeController.setWebUser(selected);
         return "/admin/manage_privileges";
