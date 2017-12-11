@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="contents">
+                <p:panel header="Manage Vechicles" >
+
+
+                    <h:panelGrid columns="2" >
+                        <p:panel header="Select" >
+                            <h:form>
+                                <h:panelGrid columns="1" >
+                                    <p:outputLabel value="List Vehicles" ></p:outputLabel>
+                                    <p:autoComplete completeMethod="#{instituteController.completeVehicles}"
+                                                    value="#{instituteController.selected}"
+                                                    var="c"
+                                                    itemLabel="#{c.name}"
+                                                    itemValue="#{c}">
+                                        <p:ajax event="itemSelect" process="@this" update=":#{p:component('details')}" ></p:ajax>
+                                    </p:autoComplete>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton value="Add New" ajax="false"
+                                                     action="#{instituteController.addNewVehicle()}" ></p:commandButton>
+                                    <p:commandButton value="Delete Selected" ajax="false" disabled="#{webUserController.canSystemAdministration}"
+                                                     action="#{instituteController.deleteInstitute()}" ></p:commandButton>
+                                </h:panelGrid>
+                                <p:graphicImage library="image" name="lorry.png" styleClass="largeIconBox" ></p:graphicImage>
+                            </h:form>
+                        </p:panel>
+                        <p:panel header="Details" id="details">
+                            <h:panelGroup rendered="#{instituteController.selected eq null}">
+                                <p:outputLabel value="Please search or click New button" ></p:outputLabel>
+                            </h:panelGroup>
+                            <h:form>
+                                <p:panelGrid columns="2" rendered="#{instituteController.selected ne null}">
+                                    <p:outputLabel value="Number:" for="name" />
+                                    <p:inputText id="name" value="#{instituteController.selected.name}" title="Name" />
+                                    <p:outputLabel value="Comments" for="comments" />
+                                    <p:inputTextarea id="comments" value="#{instituteController.selected.comments}" title="Address" />
+                                </p:panelGrid>
+                                <p:commandButton value="Save"
+                                                 ajax="false" rendered="#{instituteController.selected ne null}"
+                                                 action="#{instituteController.saveInstitute()}" ></p:commandButton>
+
+                            </h:form>
+                        </p:panel>
+                    </h:panelGrid>
+
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

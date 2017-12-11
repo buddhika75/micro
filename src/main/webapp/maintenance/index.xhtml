@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Maintenance
+            </ui:define>
+
+            <ui:define name="body">
+                <h:panelGrid columns="2" class="alignTop" >
+                    <p:panel header="maintenance" >
+                        <h:form >
+                            <h:panelGrid columns="1" >
+                                <p:commandButton ajax="false" value="Routes" action="#{instituteController.toRoutes()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Dealers" action="#{instituteController.toDealers()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Wholesale Customers" action="#{instituteController.toWholesalers()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Retail Customers" action="#{instituteController.toCustomers()}" styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Vehicles" action="#{instituteController.toVehicles()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Stores" action="#{instituteController.toStores()}"  styleClass="mediumButton" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Banks" action="#{instituteController.toBanks()}"  styleClass="mediumButton" ></p:commandButton>
+
+
+                            </h:panelGrid>  
+                        </h:form>
+
+                    </p:panel>
+                    <ui:insert name="contents">
+
+                    </ui:insert>
+                </h:panelGrid>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

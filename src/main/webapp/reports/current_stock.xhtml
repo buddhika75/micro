@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./stock_reports.xhtml">
+
+            <ui:define name="contents">
+                <h:form >
+                    <p:panel header="Current Stock" >
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Store/Vehicle" ></p:outputLabel>
+                            <p:autoComplete completeMethod="#{instituteController.completeVehiclesOrStores}"
+                                            value="#{itemStockController.institute}"
+                                            var="r" forceSelection="true"
+                                            itemLabel="#{r.name}"
+                                            itemValue="#{r}">
+                                <p:ajax process="@this"  event="itemSelect" ></p:ajax>
+                            </p:autoComplete>
+                            <p:commandButton ajax="false" value="Fill" action="#{itemStockController.fillCurrentStocks()}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Excel" >
+                                <p:dataExporter target="tbl" type="xls" fileName="current stock" ></p:dataExporter>
+                            </p:commandButton>
+                        </h:panelGrid>
+                        <p:dataTable value="#{itemStockController.items}" var="is" id="tbl" >
+                            <p:column headerText="Item" >
+                                <p:outputLabel value="#{is.item.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Stock" >
+                                <p:outputLabel value="#{is.stock}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" >
+                                <p:commandButton ajax="false" action="#{itemStockController.deleteStock}" disabled="#{!webUserController.canSystemAdministration}"
+                                                 value="Delete" >
+                                    <f:setPropertyActionListener value="#{is}" target="#{itemStockController.selected}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

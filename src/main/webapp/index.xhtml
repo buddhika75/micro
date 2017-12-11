@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+
+            <ui:define name="body">
+
+                <h:form>
+
+
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <div class="ui-g-12">
+                                <p:commandButton value="Good Receive" action="#{billController.toNewGoodReceiveBill()}"  class="mediumButton"/>
+
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="Vehicle Loading" action="#{billController.toNewLoadingBill()}"  class="mediumButton"/>
+
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="Customer(Retail) Billing" action="#{billController.toNewCustomerBill()}"  class="mediumButton"/>
+
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton disabled="true" value="Customer(Wholesale) Billing" action="#{billController.toNewCustomerBill()}"  class="mediumButton"/>
+
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton disabled="true" value="Dealer Billing" action="#{billController.toNewCustomerBill()}"  class="mediumButton"/>
+
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="Vehicle Unloading" action="#{billController.toNewUnloadingBill()}"  class="mediumButton"/>
+
+                            </div>
+
+                        </div>
+                        <div class="ui-g-4">
+                            <div class="ui-g-12">
+                                <p:commandButton value="Stock Reports" action="/reports/stock_reports"  class="mediumButton"/>
+                                
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="Bill Reports" action="/reports/bill_reports"  class="mediumButton"/>
+                          
+                            </div>
+                           
+                        </div>
+                        <div class="ui-g-4">
+
+                            <div class="ui-g-12">
+                                 <p:commandButton value="#{bundle.Maintenance}" action="#{commonController.toMaintenance()}"  class="mediumButton"/>
+                               
+                            </div>
+                            <div class="ui-g-12">
+                               <p:commandButton value="#{bundle.Administration}" action="#{commonController.toAdministration()}"  class="mediumButton"/>
+                           
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+
+
+    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
