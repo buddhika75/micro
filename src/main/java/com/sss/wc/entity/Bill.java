@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -72,18 +73,18 @@ public class Bill implements Serializable {
     @OneToOne
     Bill cancelledBill;
     Boolean returned;
-    @OneToMany(mappedBy = "billedBillForReturnedBills")
+    @OneToMany(mappedBy = "billedBillForReturnedBills",cascade = CascadeType.ALL)
     List<Bill> returnedBills;
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
     List<Payment> payments;
 
-    @OneToOne(mappedBy = "cancelledBill")
+    @OneToOne(mappedBy = "cancelledBill",cascade = CascadeType.ALL)
     private Bill billedBillForCancelledBill;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Bill billedBillForReturnedBills;
 
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
     private List<BillItem> billItems;
 
     @OneToOne

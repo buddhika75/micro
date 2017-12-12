@@ -37,6 +37,12 @@ public class BillItem implements Serializable {
     Double quentity;
     Double expectedQuentity;
     Double freeQuentity;
+    Double returnQuentity;
+    Double soldQuentity;
+    Double loadingQuentity;
+    Double unloadingQuentity;
+    Double damagedQuentity;
+    Double differanceQuentity;
     Double rate;
     Double netValue;
     @OneToOne
@@ -52,6 +58,54 @@ public class BillItem implements Serializable {
 
     public void setExpectedQuentity(Double expectedQuentity) {
         this.expectedQuentity = expectedQuentity;
+    }
+
+    public Double getReturnQuentity() {
+        return returnQuentity;
+    }
+
+    public void setReturnQuentity(Double returnQuentity) {
+        this.returnQuentity = returnQuentity;
+    }
+
+    public Double getSoldQuentity() {
+        return soldQuentity;
+    }
+
+    public void setSoldQuentity(Double soldQuentity) {
+        this.soldQuentity = soldQuentity;
+    }
+
+    public Double getLoadingQuentity() {
+        return loadingQuentity;
+    }
+
+    public void setLoadingQuentity(Double loadingQuentity) {
+        this.loadingQuentity = loadingQuentity;
+    }
+
+    public Double getUnloadingQuentity() {
+        return unloadingQuentity;
+    }
+
+    public void setUnloadingQuentity(Double unloadingQuentity) {
+        this.unloadingQuentity = unloadingQuentity;
+    }
+
+    public Double getDamagedQuentity() {
+        return damagedQuentity;
+    }
+
+    public void setDamagedQuentity(Double damagedQuentity) {
+        this.damagedQuentity = damagedQuentity;
+    }
+
+    public Double getDifferanceQuentity() {
+        return differanceQuentity;
+    }
+
+    public void setDifferanceQuentity(Double differanceQuentity) {
+        this.differanceQuentity = differanceQuentity;
     }
 
     

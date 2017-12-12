@@ -19,7 +19,6 @@
                     <p:panel header="Good Receive Bill" >
                         <h:panelGrid columns="7">
                             <p:commandButton ajax="false"  action="#{billController.settleGoodReceiveBill}" value="Settle &amp; Print" ></p:commandButton>
-                            <p:commandButton ajax="false" action="#{billController.prepareForNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
                         </h:panelGrid>
                         <h:panelGrid columns="2" >
                             <p:outputLabel value="Store" ></p:outputLabel>
@@ -49,6 +48,31 @@
                             </p:column>
                             <p:column headerText="Quentity"  >
                                 <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Free"  >
+                                <p:inputNumber id="freeqty" value="#{bi.freeQuentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Return"  >
+                                <p:inputNumber id="returnqty" value="#{bi.returnQuentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Rate"  >
+                                <p:inputNumber id="rate" value="#{bi.rate}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Value"  >
+                                <p:inputNumber id="value" value="#{bi.netValue}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </p:column>
+                              <p:column headerText="Retail Rate"  >
+                                <p:inputNumber id="retail" value="#{bi.rate}" styleClass="shortNumber" style="width: 80px!important;"  >
                                     <p:ajax process="@this"  />
                                 </p:inputNumber>
                             </p:column>

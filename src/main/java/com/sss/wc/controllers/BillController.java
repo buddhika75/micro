@@ -8,6 +8,7 @@ import com.sss.wc.entity.Institute;
 import com.sss.wc.entity.Item;
 import com.sss.wc.entity.ItemStock;
 import com.sss.wc.entity.Payment;
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.BillCategory;
 import com.sss.wc.enums.BillType;
 import com.sss.wc.enums.PaymentMethod;
@@ -123,8 +124,18 @@ public class BillController implements Serializable {
         return "/bill/customer_bill";
     }
 
-    public String toNewGoodReceiveBill() {
-        prepareForNewGoodReceiveBill();
+    public String toNewGoodReceiveBillCrysbro() {
+        prepareForNewGoodReceiveBill(Agency.Crysbro);
+        return "/bill/good_receive_bill";
+    }
+
+    public String toNewGoodReceiveBillKeells() {
+        prepareForNewGoodReceiveBill(Agency.Keells);
+        return "/bill/good_receive_bill";
+    }
+
+    public String toNewGoodReceiveBillEh() {
+        prepareForNewGoodReceiveBill(Agency.EH);
         return "/bill/good_receive_bill";
     }
 
@@ -311,18 +322,18 @@ public class BillController implements Serializable {
         }
     }
 
-    public void prepareForNewGoodReceiveBill() {
+    public void prepareForNewGoodReceiveBill(Agency agency) {
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
         selected.setBilledUser(getWebUserController().getLoggedUser());
-        List<Item> tis = getItemController().getItems();
+        List<Item> tis = getItemController().getAgencyItems(agency);
         int count = 1;
         for (Item i : tis) {
             BillItem bi = new BillItem();
             bi.setBill(selected);
             bi.setItem(i);
-            bi.setRate(i.getWholesaleRate());
+            bi.setRate(i.getDealerRate());
             bi.setRetailRate(i.getRetailRate());
             bi.setSerial(count);
             selected.getBillItems().add(bi);
@@ -469,7 +480,7 @@ public class BillController implements Serializable {
             switch (selected.getPaymentMethod()) {
                 case Cash:
                 case Credit_Card:
-                    case Bank_Transfer:
+                case Bank_Transfer:
                     selected.setSettled(Boolean.TRUE);
                     selected.setSettledValue(selected.getBillNetTotal());
                     selected.setToSettleValue(0.0);
@@ -484,7 +495,7 @@ public class BillController implements Serializable {
             }
         }
         selected.setBillType(BillType.Billed_Bill);
-        for(Payment p:selected.getPayments()){
+        for (Payment p : selected.getPayments()) {
             p.setCompleted(true);
             getPaymentFacade().edit(p);
         }
@@ -517,7 +528,7 @@ public class BillController implements Serializable {
             if (selected.getToInstitute() == null) {
                 continue;
             }
-            ItemStock is = getApplicationController().findItemStock(bi.getItem(), bi.getItem().getRetailRate(),
+            ItemStock is = getApplicationController().findItemStock(bi.getItem(), bi.getRetailRate(),
                     selected.getToInstitute());
             System.out.println("is = " + is);
 

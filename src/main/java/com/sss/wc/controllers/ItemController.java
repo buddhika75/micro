@@ -181,6 +181,15 @@ public class ItemController implements Serializable {
         }
         return items;
     }
+    
+    public List<Item> getAgencyItems(Agency agency) {
+            Map m = new HashMap();
+            m.put("a", agency);
+            String j;
+            j="select i from Item i where i.agency=:a order by i.name desc";
+            return getFacade().findBySQL(j,m);
+       
+    }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
