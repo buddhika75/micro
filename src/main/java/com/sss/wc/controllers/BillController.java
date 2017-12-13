@@ -14,6 +14,7 @@ import com.sss.wc.enums.BillType;
 import com.sss.wc.enums.PaymentMethod;
 import com.sss.wc.facades.BillFacade;
 import com.sss.wc.facades.BillItemFacade;
+import com.sss.wc.facades.ItemFacade;
 import com.sss.wc.facades.PaymentFacade;
 
 import java.io.Serializable;
@@ -54,6 +55,8 @@ public class BillController implements Serializable {
     BillItemFacade billItemFacade;
     @EJB
     PaymentFacade paymentFacade;
+    @EJB
+    ItemFacade itemFacade;
     private List<Bill> items = null;
     List<Bill> listOfLoadedVehicles = null;
     private Bill selected;
@@ -63,6 +66,8 @@ public class BillController implements Serializable {
     private Date toDate;
     private BillType billType;
     private BillCategory billCategory;
+
+    Agency agency;
 
     public BillController() {
     }
@@ -125,17 +130,25 @@ public class BillController implements Serializable {
     }
 
     public String toNewGoodReceiveBillCrysbro() {
-        prepareForNewGoodReceiveBill(Agency.Crysbro);
+        agency = Agency.Crysbro;
+        prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
 
     public String toNewGoodReceiveBillKeells() {
-        prepareForNewGoodReceiveBill(Agency.Keells);
+        agency = Agency.Keells;
+        prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
 
     public String toNewGoodReceiveBillEh() {
-        prepareForNewGoodReceiveBill(Agency.EH);
+        agency = Agency.EH;
+        prepareForNewGoodReceiveBill(agency);
+        return "/bill/good_receive_bill";
+    }
+
+    public String toNewGoodReceiveBill() {
+        prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
 
@@ -333,8 +346,12 @@ public class BillController implements Serializable {
             BillItem bi = new BillItem();
             bi.setBill(selected);
             bi.setItem(i);
-            bi.setRate(i.getDealerRate());
-            bi.setRetailRate(i.getRetailRate());
+            if (i.getDealerRate() != null && i.getDealerRate() != 0.0) {
+                bi.setRate(i.getDealerRate());
+            }
+            if (i.getRetailRate() != null && i.getRetailRate() != 0.0) {
+                bi.setRetailRate(i.getRetailRate());
+            }
             bi.setSerial(count);
             selected.getBillItems().add(bi);
             count++;
@@ -470,7 +487,7 @@ public class BillController implements Serializable {
         selected.setBillAt(new Date());
         selected.setBillDate(new Date());
         selected.setBillTime(new Date());
-        selected.calculateTotalForCustomerBills();
+        selected.calculateTotalsForCustomerBills();
 
         if (null == selected.getPaymentMethod()) {
             selected.setSettled(Boolean.FALSE);
@@ -520,15 +537,41 @@ public class BillController implements Serializable {
             if (bi.getItem() == null) {
                 continue;
             }
-            System.out.println("bi.getItem().getRetailRate() = " + bi.getItem().getRetailRate());
-            if (bi.getItem().getRetailRate() == null) {
+            System.out.println("bi.getItem().getRetailRate() = " + bi.getRetailRate());
+            if (bi.getRetailRate() == null) {
                 continue;
+            } else {
+                if (bi.getItem().getRetailRate() != null) {
+                    if (!bi.getItem().getRetailRate().equals(bi.getRetailRate())) {
+                        bi.getItem().setRetailRate(bi.getRetailRate());
+                        getItemFacade().edit(bi.getItem());
+                    }
+                } else {
+                    bi.getItem().setRetailRate(bi.getRetailRate());
+                    getItemFacade().edit(bi.getItem());
+                }
+            }
+            if (bi.getRate() == null) {
+                continue;
+            } else {
+                if (bi.getItem().getDealerRate() != null) {
+                    if (!bi.getItem().getDealerRate().equals(bi.getRate())) {
+                        bi.getItem().setDealerRate(bi.getRate());
+                        getItemFacade().edit(bi.getItem());
+                    }
+                } else {
+                    bi.getItem().setDealerRate(bi.getRate());
+                    getItemFacade().edit(bi.getItem());
+                }
             }
             System.out.println("selected.getToInstitute() = " + selected.getToInstitute());
             if (selected.getToInstitute() == null) {
                 continue;
             }
-            ItemStock is = getApplicationController().findItemStock(bi.getItem(), bi.getRetailRate(),
+            ItemStock is = getApplicationController().findItemStock(
+                    bi.getItem(),
+                    bi.getRetailRate(),
+                    bi.getRate(),
                     selected.getToInstitute());
             System.out.println("is = " + is);
 
@@ -536,18 +579,31 @@ public class BillController implements Serializable {
                 continue;
             }
 
+            System.out.println("is.getStock() = " + is.getStock());
+            
+            double addingQty=0.0;
+            
             if (bi.getQuentity() == null) {
                 System.out.println("Bill QUentity is null");
+            } else {
+                addingQty=bi.getQuentity();
+                if (bi.getFreeQuentity() != null) {
+                    addingQty+=bi.getFreeQuentity();
+                }
+                if(bi.getReturnQuentity()!=null){
+                    addingQty-=bi.getReturnQuentity();
+                }
+                applicationController.addToStock(is, addingQty);
             }
-
-            applicationController.addToStock(is, (bi.getQuentity()));
+            
+            System.out.println("is.getStock() = " + is.getStock());
 
         }
 
         selected.setBillAt(new Date());
         selected.setBillDate(new Date());
         selected.setBillTime(new Date());
-        selected.calculateTotalForCustomerBills();
+        selected.calculateTotalsForCustomerBills();
 
         selected.setBillType(BillType.Billed_Bill);
         getFacade().edit(selected);
@@ -757,6 +813,18 @@ public class BillController implements Serializable {
 
     public void setPaymentFacade(PaymentFacade paymentFacade) {
         this.paymentFacade = paymentFacade;
+    }
+
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+    public ItemFacade getItemFacade() {
+        return itemFacade;
     }
 
     @FacesConverter(forClass = Bill.class)

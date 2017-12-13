@@ -73,18 +73,18 @@ public class Bill implements Serializable {
     @OneToOne
     Bill cancelledBill;
     Boolean returned;
-    @OneToMany(mappedBy = "billedBillForReturnedBills",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "billedBillForReturnedBills", cascade = CascadeType.ALL)
     List<Bill> returnedBills;
-    @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     List<Payment> payments;
 
-    @OneToOne(mappedBy = "cancelledBill",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "cancelledBill", cascade = CascadeType.ALL)
     private Bill billedBillForCancelledBill;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Bill billedBillForReturnedBills;
 
-    @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<BillItem> billItems;
 
     @OneToOne
@@ -152,7 +152,20 @@ public class Bill implements Serializable {
         this.salesRep = salesRep;
     }
 
-    public void calculateTotalForCustomerBills() {
+    public void calculateTotals() {
+        switch (billCategory) {
+            case Customer_Sale:
+                calculateTotalsForCustomerBills();
+                break;
+            case Good_Receive:
+                calculateTotalsForGoodReceiveBills();
+                break;
+            default:
+                calculateTotalsForOtherBills();
+        }
+    }
+
+    public void calculateTotalsForOtherBills() {
         System.out.println("calculateTotalForCustomerBills");
         double tot = 0.0;
         long c = 0;
@@ -165,7 +178,7 @@ public class Bill implements Serializable {
         setBillDiscount(0.0);
         setBillTotalQuantity(c);
         double paidTotal = 0;
-        double maxPaymentValue =0.0;
+        double maxPaymentValue = 0.0;
         System.out.println("getPayments() = " + getPayments());
         for (Payment p : getPayments()) {
             switch (p.paymentMethod) {
@@ -174,7 +187,7 @@ public class Bill implements Serializable {
                     paidTotal += p.getPaymentValue();
                     break;
             }
-            if(p.paymentValue > maxPaymentValue){
+            if (p.paymentValue > maxPaymentValue) {
                 setPaymentMethod(p.getPaymentMethod());
             }
         }
@@ -182,13 +195,107 @@ public class Bill implements Serializable {
         System.out.println("paidTotal = " + paidTotal);
         for (Payment p : getPayments()) {
             System.out.println("paymentMethod = " + p.getPaymentMethod());
-            if(p.getPaymentMethod().equals(PaymentMethod.Credit)){
+            if (p.getPaymentMethod().equals(PaymentMethod.Credit)) {
                 System.out.println("p = " + p);
-                p.setPaymentValue(tot-paidTotal);
+                p.setPaymentValue(tot - paidTotal);
                 System.out.println("p.getPaymentValue() = " + p.getPaymentValue());
             }
         }
+
+    }
+
+    public void calculateTotalsForGoodReceiveBills() {
+        System.out.println("calculateTotalForGoodReceiveBills");
+        double tot = 0.0;
+        long c = 0;
+        for (BillItem bi : getBillItems()) {
+            if (bi.getNetValue() != null) {
+                tot += bi.getNetValue();
+            }
+            if (bi.getQuentity() != null) {
+                c += bi.getQuentity();
+            }
+            if (bi.getFreeQuentity() != null) {
+                c += bi.getFreeQuentity();
+            }
+            if (bi.getReturnQuentity() != null) {
+                c += bi.getReturnQuentity();
+            }
+        }
+
+        setBillTotal(tot);
+        if (getBillDiscount() != null) {
+            setBillNetTotal(tot - getBillDiscount());
+        } else {
+            setBillNetTotal(tot);
+        }
+
+        setBillTotalQuantity(c);
         
+        double paidTotal = 0;
+        double maxPaymentValue = 0.0;
+        System.out.println("getPayments() = " + getPayments());
+        for (Payment p : getPayments()) {
+            switch (p.paymentMethod) {
+                case Cash:
+                case Credit_Card:
+                    paidTotal += p.getPaymentValue();
+                    break;
+            }
+            if (p.paymentValue > maxPaymentValue) {
+                setPaymentMethod(p.getPaymentMethod());
+            }
+        }
+        System.out.println("tot = " + tot);
+        System.out.println("paidTotal = " + paidTotal);
+        for (Payment p : getPayments()) {
+            System.out.println("paymentMethod = " + p.getPaymentMethod());
+            if (p.getPaymentMethod().equals(PaymentMethod.Credit)) {
+                System.out.println("p = " + p);
+                p.setPaymentValue(tot - paidTotal);
+                System.out.println("p.getPaymentValue() = " + p.getPaymentValue());
+            }
+        }
+
+    }
+
+    public void calculateTotalsForCustomerBills() {
+        System.out.println("calculateTotalForCustomerBills");
+        double tot = 0.0;
+        long c = 0;
+        for (BillItem bi : getBillItems()) {
+            tot += bi.getNetValue();
+            c += bi.getQuentity() + bi.getFreeQuentity();
+        }
+        setBillNetTotal(tot);
+        setBillTotal(tot);
+        setBillDiscount(0.0);
+        setBillTotalQuantity(c);
+        double paidTotal = 0;
+        double maxPaymentValue = 0.0;
+        System.out.println("getPayments() = " + getPayments());
+        for (Payment p : getPayments()) {
+            switch (p.paymentMethod) {
+                case Cash:
+                case Credit_Card:
+                    paidTotal += p.getPaymentValue();
+                    break;
+            }
+            if (p.paymentValue > maxPaymentValue) {
+                setPaymentMethod(p.getPaymentMethod());
+            }
+        }
+        System.out.println("tot = " + tot);
+        System.out.println("paidTotal = " + paidTotal);
+        for (Payment p : getPayments()) {
+            System.out.println("paymentMethod = " + p.getPaymentMethod());
+            if (p.getPaymentMethod().equals(PaymentMethod.Credit)) {
+                System.out.println("p = " + p);
+                p.setPaymentValue(tot - paidTotal);
+                System.out.println("p.getPaymentValue() = " + p.getPaymentValue());
+            }
+        }
+
     }
 
     public Long getBillTotalQuantity() {
@@ -285,10 +392,11 @@ public class Bill implements Serializable {
 
     public void setBillDiscount(Double billDiscount) {
         this.billDiscount = billDiscount;
+        calculateTotals();
     }
 
     public Double getBillNetTotal() {
-//        calculateTotalForCustomerBills();
+//        calculateTotalsForCustomerBills();
         return billNetTotal;
     }
 

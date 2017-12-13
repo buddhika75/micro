@@ -57,6 +57,34 @@ public class ApplicationController {
         System.out.println("is = " + is);
         return is;
     }
+    
+    public ItemStock findItemStock(Item i, double retailRate, double purchaseRate, Institute ins) {
+        String j = "select i "
+                + " from ItemStock i "
+                + " where i.item=:i "
+                + " and i.retailRate=:rr "
+                + " and i.purchaseRate=:pr "
+                + " and i.institute=:ins "
+                + " order by i.id desc";
+        Map m = new HashMap();
+        m.put("i", i);
+        m.put("rr", retailRate);
+        m.put("pr", purchaseRate);
+        m.put("ins", ins);
+
+        ItemStock is = getItemStockFacade().findFirstBySQL(j, m);
+        System.out.println("is = " + is);
+        if (is == null) {
+            is = new ItemStock();
+            is.setItem(i);
+            is.setRetailRate(retailRate);
+            is.setPurchaseRate(purchaseRate);
+            is.setInstitute(ins);
+            getItemStockFacade().create(is);
+        }
+        System.out.println("is = " + is);
+        return is;
+    }
 
     public List<ItemStock> fillAllItemStocks(Institute ins) {
         String j = "select i "

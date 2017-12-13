@@ -22,17 +22,40 @@
                                             itemValue="#{r}">
                                 <p:ajax process="@this"  event="itemSelect" ></p:ajax>
                             </p:autoComplete>
+                            <p:outputLabel value="Agency" ></p:outputLabel>
+                            <p:selectOneMenu value="#{itemStockController.agency}" >
+                                <f:selectItem itemLabel="All Agencies" ></f:selectItem>
+                                <f:selectItems value="#{enumController.agencies}" ></f:selectItems>
+                            </p:selectOneMenu>
                             <p:commandButton ajax="false" value="Fill" action="#{itemStockController.fillCurrentStocks()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Excel" >
                                 <p:dataExporter target="tbl" type="xls" fileName="current stock" ></p:dataExporter>
                             </p:commandButton>
                         </h:panelGrid>
                         <p:dataTable value="#{itemStockController.items}" var="is" id="tbl" >
-                            <p:column headerText="Item" >
+                            <p:column headerText="Item" sortBy="#{is.item.name}" filterBy="#{is.item.name}" footerText="Total">
                                 <p:outputLabel value="#{is.item.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Stock" >
+                            <p:column headerText="Agency"  footerText="">
+                                <p:outputLabel value="#{is.item.agency}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Stock" footerText="">
                                 <p:outputLabel value="#{is.stock}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Value at Purchase Rate" footerText="#{commonController.doubleToString(itemStockController.totalPurchaseValue)}" >
+                                <p:outputLabel value="#{is.transPurchaseValue}" >
+                                    <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Value at Sale Rate" footerText="#{commonController.doubleToString(itemStockController.totalSaleValue)}" >
+                                <p:outputLabel value="#{is.transSaleValue}" >
+                                    <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Profit" footerText="#{commonController.doubleToString(itemStockController.totalProfit)}" >
+                                <p:outputLabel value="#{is.transProfit}" >
+                                    <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                </p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" >
                                 <p:commandButton ajax="false" action="#{itemStockController.deleteStock}" disabled="#{!webUserController.canSystemAdministration}"

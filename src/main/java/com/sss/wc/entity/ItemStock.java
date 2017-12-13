@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  *
@@ -23,18 +24,42 @@ public class ItemStock implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne
     private Item item;
     @ManyToOne
     private Institute institute;
     private Double retailRate;
+    private Double purchaseRate;
     private Double stock;
-    
-    
-    
-    
-    
+
+    @Transient
+    Double transPurchaseValue;
+    Double transSaleValue;
+    Double transProfit;
+
+    public Double getTransPurchaseValue() {
+        if (stock == null || purchaseRate == null) {
+            transPurchaseValue = 0.0;
+        } else {
+            transPurchaseValue = stock * purchaseRate;
+        }
+        return transPurchaseValue;
+    }
+
+    public Double getTransSaleValue() {
+        if (stock == null || retailRate == null) {
+            transSaleValue = 0.0;
+        } else {
+            transSaleValue = stock * retailRate;
+        }
+        return transSaleValue;
+    }
+
+    public Double getTransProfit() {
+        transProfit= getTransSaleValue()-getTransPurchaseValue();
+        return transProfit;
+    }
 
     public Long getId() {
         return id;
@@ -94,8 +119,8 @@ public class ItemStock implements Serializable {
     }
 
     public Double getStock() {
-        if(stock==null){
-            stock=0.0;
+        if (stock == null) {
+            stock = 0.0;
         }
         return stock;
     }
@@ -103,5 +128,13 @@ public class ItemStock implements Serializable {
     public void setStock(Double stock) {
         this.stock = stock;
     }
-    
+
+    public Double getPurchaseRate() {
+        return purchaseRate;
+    }
+
+    public void setPurchaseRate(Double purchaseRate) {
+        this.purchaseRate = purchaseRate;
+    }
+
 }

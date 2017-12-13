@@ -5,6 +5,7 @@ import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
 import com.sss.wc.entity.Institute;
 import com.sss.wc.entity.Item;
+import com.sss.wc.enums.Agency;
 import com.sss.wc.facades.ItemStockFacade;
 
 import java.io.Serializable;
@@ -33,15 +34,32 @@ public class ItemStockController implements Serializable {
     private List<ItemStock> items = null;
     private ItemStock selected;
     Institute institute;
+    Agency agency;
+    Double totalPurchaseValue;
+    Double totalSaleValue;
+    Double totalProfit;
 
     public String fillCurrentStocks() {
+        Map m = new HashMap();
         String j = "select itms "
                 + " from ItemStock itms "
-                + " where itms.institute=:ins "
-                + " order by itms.item.name";
-        Map m = new HashMap();
+                + " where itms.institute=:ins ";
+        if (agency != null) {
+            j += " and itms.item.agency=:agency ";
+            m.put("agency", agency);
+        }
+        j += " order by itms.item.name";
+
         m.put("ins", institute);
         items = getFacade().findBySQL(j, m);
+        totalSaleValue = 0.0;
+        totalPurchaseValue = 0.0;
+        totalProfit = 0.0;
+        for (ItemStock is : items) {
+            totalSaleValue += is.getTransSaleValue();
+            totalPurchaseValue += is.getTransPurchaseValue();
+        }
+        totalProfit = totalSaleValue - totalPurchaseValue;
         return "/reports/current_stock";
     }
 
@@ -53,7 +71,7 @@ public class ItemStockController implements Serializable {
         items = getFacade().findBySQL(j, m);
         return "/reports/current_all_stock";
     }
-    
+
     public double findCurrentStocks(Institute ins, Item item) {
         String j = "select itms "
                 + " from ItemStock itms "
@@ -70,8 +88,8 @@ public class ItemStockController implements Serializable {
             return is.getStock();
         }
     }
-    
-     public void deleteAllStocks() {
+
+    public void deleteAllStocks() {
         String j = "select b from ItemStock b";
         items = getFacade().findBySQL(j);
         for (ItemStock b : items) {
@@ -190,6 +208,38 @@ public class ItemStockController implements Serializable {
 
     public List<ItemStock> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+    public Double getTotalPurchaseValue() {
+        return totalPurchaseValue;
+    }
+
+    public void setTotalPurchaseValue(Double totalPurchaseValue) {
+        this.totalPurchaseValue = totalPurchaseValue;
+    }
+
+    public Double getTotalSaleValue() {
+        return totalSaleValue;
+    }
+
+    public void setTotalSaleValue(Double totalSaleValue) {
+        this.totalSaleValue = totalSaleValue;
+    }
+
+    public Double getTotalProfit() {
+        return totalProfit;
+    }
+
+    public void setTotalProfit(Double totalProfit) {
+        this.totalProfit = totalProfit;
     }
 
     @FacesConverter(forClass = ItemStock.class)

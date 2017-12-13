@@ -17,20 +17,33 @@
             <ui:define name="body">
                 <h:form >
                     <p:panel header="Good Receive Bill" >
-                        <h:panelGrid columns="7">
-                            <p:commandButton ajax="false"  action="#{billController.settleGoodReceiveBill}" value="Settle &amp; Print" ></p:commandButton>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2" >
-                            <p:outputLabel value="Store" ></p:outputLabel>
-                            <p:autoComplete completeMethod="#{instituteController.completeStores}"
-                                            value="#{billController.selected.toInstitute}"
-                                            var="r" forceSelection="true"
-                                            itemLabel="#{r.name}"
-                                            itemValue="#{r}">
-                                <p:ajax process="@this"  event="itemSelect" ></p:ajax>
-                            </p:autoComplete>
-                        </h:panelGrid>
+                        <h:panelGrid columns="2" styleClass="alignTop">
+                            <h:panelGrid columns="2"  styleClass="alignTop">
+                                <p:commandButton ajax="false"  action="#{billController.settleGoodReceiveBill}" value="Settle &amp; Print" ></p:commandButton>
+                                <p:commandButton ajax="false"  action="#{billController.toNewGoodReceiveBill()}" value="New Bill" ></p:commandButton>
+                                <p:outputLabel value="Store" ></p:outputLabel>
+                                <p:autoComplete completeMethod="#{instituteController.completeStores}"
+                                                value="#{billController.selected.toInstitute}"
+                                                var="r" forceSelection="true"
+                                                itemLabel="#{r.name}"
+                                                itemValue="#{r}">
+                                    <p:ajax process="@this"  event="itemSelect" ></p:ajax>
+                                </p:autoComplete>
+                            </h:panelGrid>
+                            <p:panel style="float: right;" >
+                                <h:panelGrid columns="2" >
+                                    <p:outputLabel value="Gross Total" ></p:outputLabel>
+                                    <p:outputLabel id="grossTotal" value="#{commonController.doubleToString(billController.selected.billTotal)}" ></p:outputLabel>
+                                    <p:outputLabel value="Discount" ></p:outputLabel>
+                                    <p:inputNumber id="discount" value="#{billController.selected.billDiscount}" >
+                                        <p:ajax process="@this" update="netTotal" ></p:ajax>
+                                    </p:inputNumber>
+                                    <p:outputLabel value="Net Total" ></p:outputLabel>
+                                    <p:outputLabel id="netTotal" value="#{commonController.doubleToString(billController.selected.billNetTotal)}" ></p:outputLabel>
 
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
 
                     </p:panel>
                 </h:form>
@@ -41,14 +54,14 @@
                     <h:form>
                         <p:dataTable value="#{billController.selected.billItems}" var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle">
                             <p:column headerText="No" width="30" >
-                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
+                                <h:outputLabel id="sno" value="#{bi.serial}" style="#{bi.rbg}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Item"  >
-                                <p:outputLabel value="#{bi.item.name}" ></p:outputLabel>
+                                <p:outputLabel id="item" value="#{bi.item.name}"  style="#{bi.rbg}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Quentity"  >
                                 <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this"  />
+                                    <p:ajax process="@this" update="value :#{p:component('grossTotal')} :#{p:component('netTotal')}"  />
                                 </p:inputNumber>
                             </p:column>
                             <p:column headerText="Free"  >
@@ -58,22 +71,22 @@
                             </p:column>
                             <p:column headerText="Return"  >
                                 <p:inputNumber id="returnqty" value="#{bi.returnQuentity}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this"  />
+                                    <p:ajax process="@this" update="value :#{p:component('grossTotal')} :#{p:component('netTotal')}" />
                                 </p:inputNumber>
                             </p:column>
                             <p:column headerText="Rate"  >
                                 <p:inputNumber id="rate" value="#{bi.rate}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this"  />
+                                    <p:ajax process="@this" update="value sno item :#{p:component('grossTotal')} :#{p:component('netTotal')}"  />
                                 </p:inputNumber>
                             </p:column>
                             <p:column headerText="Value"  >
-                                <p:inputNumber id="value" value="#{bi.netValue}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this"  />
-                                </p:inputNumber>
+                                <p:outputLabel id="value" value="#{bi.netValue}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                </p:outputLabel>
                             </p:column>
-                              <p:column headerText="Retail Rate"  >
-                                <p:inputNumber id="retail" value="#{bi.rate}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this"  />
+                            <p:column headerText="Sale Rate"  >
+                                <p:inputNumber id="retail" value="#{bi.retailRate}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="sno item"  />
                                 </p:inputNumber>
                             </p:column>
                         </p:dataTable>

@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 /**
  *
@@ -51,6 +52,19 @@ public class BillItem implements Serializable {
     Double retailRate;
     @ManyToOne
     ItemStock itemStock;
+    @Transient
+    String rbg;
+
+    public String getRbg() {
+        if (rbg == null) {
+            rbg = "color:rgb(0, 0, 0);";
+        }
+        return rbg;
+    }
+
+    public void setRbg(String rbg) {
+        this.rbg = rbg;
+    }
 
     public Double getExpectedQuentity() {
         return expectedQuentity;
@@ -108,8 +122,6 @@ public class BillItem implements Serializable {
         this.differanceQuentity = differanceQuentity;
     }
 
-    
-    
     public ItemStock getItemStock() {
         return itemStock;
     }
@@ -118,27 +130,66 @@ public class BillItem implements Serializable {
         this.itemStock = itemStock;
     }
 
-    
-    
     public Double getRetailRate() {
         return retailRate;
     }
 
     public void setRetailRate(Double retailRate) {
         this.retailRate = retailRate;
+        calculateNetValue();
     }
-    
 
-    
-    
     public void calculateNetValue() {
-        if (quentity == null ) {
-            quentity = 0.0;
+        System.out.println("calculateNetValue");
+        switch (this.getBill().getBillCategory()) {
+            case Good_Receive:
+                calculateNetValueForGoodReceiveBills();
+                break;
+            default:
+                calculateNetValueForOtherBills();
+        }
+        getBill().calculateTotals();
+    }
+
+    public void calculateNetValueForGoodReceiveBills() {
+        System.out.println("calculateNetValueForGoodReceiveBills");
+        if (quentity == null) {
+            netValue = 0.0;
         }
         if (rate == null) {
-            rate = 0.0;
+            netValue = 0.0;
+        } else {
+            System.out.println("rate = " + rate);
+            if (retailRate != null) {
+                System.out.println("retailRate = " + retailRate);
+                if (retailRate > rate) {
+                    rbg = "color:rgb(0, 100, 0);";
+                } else {
+                    rbg = "color:rgb(255, 0, 0);";
+                }
+                System.out.println("rbg = " + rbg);
+            }
         }
-        netValue = rate * quentity;
+        if (rate != null && quentity != null) {
+            if (returnQuentity == null) {
+                netValue = rate * quentity;
+            } else {
+                netValue = rate * (quentity - returnQuentity);
+            }
+        }
+
+    }
+
+    public void calculateNetValueForOtherBills() {
+        if (quentity == null) {
+            netValue = 0.0;
+        }
+        if (rate == null) {
+            netValue = 0.0;
+        }
+        if (rate != null && quentity != null) {
+            netValue = rate * quentity;
+        }
     }
 
     public Integer getSerial() {
@@ -149,8 +200,6 @@ public class BillItem implements Serializable {
         this.serial = serial;
     }
 
-    
-    
     public Item getItem() {
         return item;
     }
@@ -184,7 +233,7 @@ public class BillItem implements Serializable {
     }
 
     public Double getQuentity() {
-        if(quentity==null){
+        if (quentity == null) {
             quentity = 0.0;
         }
         return quentity;
@@ -192,11 +241,12 @@ public class BillItem implements Serializable {
 
     public void setQuentity(Double quentity) {
         this.quentity = quentity;
+        calculateNetValue();
     }
 
     public Double getFreeQuentity() {
-        if(freeQuentity==null) {
-            freeQuentity =0.0;
+        if (freeQuentity == null) {
+            freeQuentity = 0.0;
         }
         return freeQuentity;
     }
@@ -210,12 +260,11 @@ public class BillItem implements Serializable {
     }
 
     public void setRate(Double rate) {
-        System.out.println("rate = " + rate);
         this.rate = rate;
+        calculateNetValue();
     }
 
     public Double getNetValue() {
-        calculateNetValue();
         return netValue;
     }
 

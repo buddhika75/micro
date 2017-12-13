@@ -76,19 +76,25 @@
                                         <td class="numericTableCell">
                                             Qty
                                         </td>
+                                        <td class="numericTableCell">
+                                            Free
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Qty
+                                        </td>
                                     </tr>
                                     <ui:repeat value="#{billController.selected.billItems}" var="bi" >
                                         <tr>
                                             <td>
-                                                #{bi.serial}
-                                                
+                                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
                                             </td>
                                             <td>
-                                                #{bi.item.name}
+                                                <p:outputLabel value="#{bi.item.name}"></p:outputLabel>
                                             </td>
                                             <td class="numericTableCell">
-                                                #{bi.quentity}
+                                                <p:outputLabel value="#{bi.quentity}"></p:outputLabel>
                                             </td>
+                                            
                                         </tr>
                                     </ui:repeat>
                                 </table>

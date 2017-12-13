@@ -186,7 +186,7 @@ public class ItemController implements Serializable {
             Map m = new HashMap();
             m.put("a", agency);
             String j;
-            j="select i from Item i where i.agency=:a order by i.name desc";
+            j="select i from Item i where i.agency=:a order by i.name";
             return getFacade().findBySQL(j,m);
        
     }
