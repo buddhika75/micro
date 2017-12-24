@@ -239,31 +239,37 @@ public class BillController implements Serializable {
     }
 
     public void prepareForNewCustomerBill() {
-        List<Payment> payments = new ArrayList<Payment>();
+
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Customer_Sale);
         selected.setBilledUser(getWebUserController().getLoggedUser());
+        getFacade().create(selected);
+
+        List<Payment> payments = new ArrayList<Payment>();
 
         Payment cash = new Payment();
         cash.setPaymentMethod(PaymentMethod.Cash);
         getPaymentFacade().create(cash);
         payments.add(cash);
+        cash.setBill(selected);
 
         Payment credit = new Payment();
         credit.setPaymentMethod(PaymentMethod.Cheque);
         getPaymentFacade().create(credit);
         payments.add(credit);
+        credit.setBill(selected);
 
         Payment cheque = new Payment();
         cheque.setPaymentMethod(PaymentMethod.Credit);
         getPaymentFacade().create(cheque);
         payments.add(cheque);
+        cheque.setBill(selected);
 
         selected.setPayments(payments);
         System.out.println("prepareForNewCustomerBill = " + selected);
         fillListOfLoadedBillsForLoggedUser();
-        getFacade().create(selected);
+        getFacade().edit(selected);
     }
 
     public void prepareForNewLoadingBill() {
@@ -272,6 +278,9 @@ public class BillController implements Serializable {
         selected.setBillCategory(BillCategory.Loading);
         selected.setBilledUser(getWebUserController().getLoggedUser());
         getFacade().create(selected);
+
+        
+
     }
 
     public void prepareForNewUnloadingBill() {
@@ -357,6 +366,39 @@ public class BillController implements Serializable {
             count++;
         }
         getFacade().create(selected);
+
+        List<Payment> payments = new ArrayList<Payment>();
+        
+        Payment cash = new Payment();
+        cash.setPaymentMethod(PaymentMethod.Cash);
+        cash.setBill(selected);
+        cash.setReceiving(true);
+        cash.setPaying(false);
+        getPaymentFacade().create(cash);
+        payments.add(cash);
+        
+
+        Payment credit = new Payment();
+        credit.setPaymentMethod(PaymentMethod.Cheque);
+        credit.setReceiving(true);
+        credit.setPaying(false);
+        credit.setBill(selected);
+        getPaymentFacade().create(credit);
+        payments.add(credit);
+        
+
+        Payment cheque = new Payment();
+        cheque.setPaymentMethod(PaymentMethod.Credit);
+        cheque.setBill(selected);
+        cheque.setReceiving(true);
+        cheque.setPaying(false);
+        getPaymentFacade().create(cheque);
+        payments.add(cheque);
+        
+
+        selected.setPayments(payments);
+        
+        getFacade().edit(selected);
     }
 
     public String settleLoadingBill() {
@@ -580,22 +622,22 @@ public class BillController implements Serializable {
             }
 
             System.out.println("is.getStock() = " + is.getStock());
-            
-            double addingQty=0.0;
-            
+
+            double addingQty = 0.0;
+
             if (bi.getQuentity() == null) {
                 System.out.println("Bill QUentity is null");
             } else {
-                addingQty=bi.getQuentity();
+                addingQty = bi.getQuentity();
                 if (bi.getFreeQuentity() != null) {
-                    addingQty+=bi.getFreeQuentity();
+                    addingQty += bi.getFreeQuentity();
                 }
-                if(bi.getReturnQuentity()!=null){
-                    addingQty-=bi.getReturnQuentity();
+                if (bi.getReturnQuentity() != null) {
+                    addingQty -= bi.getReturnQuentity();
                 }
                 applicationController.addToStock(is, addingQty);
             }
-            
+
             System.out.println("is.getStock() = " + is.getStock());
 
         }
@@ -603,7 +645,7 @@ public class BillController implements Serializable {
         selected.setBillAt(new Date());
         selected.setBillDate(new Date());
         selected.setBillTime(new Date());
-        selected.calculateTotalsForCustomerBills();
+        selected.calculateTotalsForGoodReceiveBills();
 
         selected.setBillType(BillType.Billed_Bill);
         getFacade().edit(selected);

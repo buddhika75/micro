@@ -8,6 +8,7 @@ package com.sss.wc.entity;
 import com.sss.wc.enums.BillCategory;
 import com.sss.wc.enums.BillType;
 import com.sss.wc.enums.PaymentMethod;
+import com.sun.javafx.scene.control.SelectedCellsMap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,11 @@ public class Bill implements Serializable {
     Double billTotal;
     Double billDiscount;
     Double billNetTotal;
+
+    Double billPurchaseValue;
+    Double billSaleValue;
+    Double billProfitValue;
+
     Long billTotalQuantity;
     @ManyToOne
     Institute fromInstitute;
@@ -207,54 +213,111 @@ public class Bill implements Serializable {
     public void calculateTotalsForGoodReceiveBills() {
         System.out.println("calculateTotalForGoodReceiveBills");
         double tot = 0.0;
+        double totSale = 0.0;
+        double totPurchase = 0.0;
+        double totProfit = 0.0;
         long c = 0;
         for (BillItem bi : getBillItems()) {
-            if (bi.getNetValue() != null) {
-                tot += bi.getNetValue();
-            }
+            double q = 0.0;
+            double pr = 0.0;
+            double rr = 0.0;
+            double rq = 0.0;
+            double fq = 0.0;
+            double nv = 0.0;
             if (bi.getQuentity() != null) {
-                c += bi.getQuentity();
+                q = bi.getQuentity();
             }
-            if (bi.getFreeQuentity() != null) {
-                c += bi.getFreeQuentity();
+            if (bi.getRate() != null) {
+                pr = bi.getRate();
+            }
+            if (bi.getRetailRate() != null) {
+                rr = bi.getRetailRate();
             }
             if (bi.getReturnQuentity() != null) {
-                c += bi.getReturnQuentity();
+                rq = bi.getReturnQuentity();
             }
+            if (bi.getFreeQuentity() != null) {
+                fq = bi.getFreeQuentity();
+            }
+            if (bi.getNetValue() != null) {
+                nv = bi.getNetValue();
+            }
+            tot += nv;
+            c += q + fq - rq;
+            totSale += rr * (q + fq - rq);
+            totPurchase += pr * (q - rq);
         }
+        totProfit = totSale - totPurchase;
 
-        setBillTotal(tot);
+        billTotal = tot;
+        billSaleValue = totSale;
+        billPurchaseValue = totPurchase;
+
         if (getBillDiscount() != null) {
-            setBillNetTotal(tot - getBillDiscount());
+            billNetTotal = tot - getBillDiscount();
+            billProfitValue = totProfit + getBillDiscount();
         } else {
-            setBillNetTotal(tot);
+            billNetTotal = tot;
+            billProfitValue = totProfit;
         }
 
-        setBillTotalQuantity(c);
-        
-        double paidTotal = 0;
+        billTotalQuantity = c;
+
+        double nonCreditTotal = 0;
+        double temSettledValue = 0.0;
         double maxPaymentValue = 0.0;
         System.out.println("getPayments() = " + getPayments());
         for (Payment p : getPayments()) {
             switch (p.paymentMethod) {
                 case Cash:
+                    if (p.getPaymentValue() != null) {
+                        if (initialCashValue == null) {
+                            initialCashValue = 0.0;
+                        }
+                        initialCashValue = initialCashValue + p.getPaymentValue();
+                        temSettledValue += p.getPaymentValue();
+                        nonCreditTotal += p.getPaymentValue();
+                    }
+                    break;
                 case Credit_Card:
-                    paidTotal += p.getPaymentValue();
+                    if (p.getPaymentValue() != null) {
+                        if (initialCreditCardValue == null) {
+                            initialCreditCardValue = 0.0;
+                        }
+                        initialCreditCardValue += p.paymentValue;
+                        temSettledValue += p.getPaymentValue();
+                        nonCreditTotal += p.getPaymentValue();
+                    }
+                    break;
+                case Cheque:
+                    if (p.getPaymentValue() != null) {
+                        if (initialChequeValue == null) {
+                            initialChequeValue = 0.0;
+                        }
+                        initialChequeValue += p.getPaymentValue();
+                        nonCreditTotal += p.getPaymentValue();
+                    }
                     break;
             }
-            if (p.paymentValue > maxPaymentValue) {
+            if (p.getPaymentValue() != null && p.paymentValue > maxPaymentValue) {
                 setPaymentMethod(p.getPaymentMethod());
+                maxPaymentValue = p.paymentValue;
             }
         }
         System.out.println("tot = " + tot);
-        System.out.println("paidTotal = " + paidTotal);
+        System.out.println("paidTotal = " + nonCreditTotal);
         for (Payment p : getPayments()) {
             System.out.println("paymentMethod = " + p.getPaymentMethod());
             if (p.getPaymentMethod().equals(PaymentMethod.Credit)) {
                 System.out.println("p = " + p);
-                p.setPaymentValue(tot - paidTotal);
+                p.paymentValue = tot - nonCreditTotal;
                 System.out.println("p.getPaymentValue() = " + p.getPaymentValue());
             }
+        }
+        settledValue = temSettledValue;
+        toSettleValue = Math.abs(billNetTotal) - Math.abs(settledValue);
+        if (toSettleValue < 10) {
+            settled = true;
         }
 
     }
@@ -264,12 +327,27 @@ public class Bill implements Serializable {
         double tot = 0.0;
         long c = 0;
         for (BillItem bi : getBillItems()) {
-            tot += bi.getNetValue();
-            c += bi.getQuentity() + bi.getFreeQuentity();
+            double temTot = 0.0;
+            double temQty = 0.0;
+            double temFreeQty = 0.0;
+            double temReturnQty = 0.0;
+            if (bi.getNetValue() != null) {
+                temTot = bi.getNetValue();
+            }
+            if (bi.getFreeQuentity() != null) {
+                temFreeQty = bi.getFreeQuentity();
+            }
+            if (bi.getQuentity() != null) {
+                temQty = bi.getQuentity();
+            }
+            if (bi.getReturnQuentity() != null) {
+                temReturnQty = bi.getReturnQuentity();
+            }
+            tot += temTot;
+            c += temQty + temFreeQty - temReturnQty;
         }
         setBillNetTotal(tot);
         setBillTotal(tot);
-        setBillDiscount(0.0);
         setBillTotalQuantity(c);
         double paidTotal = 0;
         double maxPaymentValue = 0.0;
@@ -592,6 +670,30 @@ public class Bill implements Serializable {
 
     public void setBillItems(List<BillItem> billItems) {
         this.billItems = billItems;
+    }
+
+    public Double getBillPurchaseValue() {
+        return billPurchaseValue;
+    }
+
+    public void setBillPurchaseValue(Double billPurchaseValue) {
+        this.billPurchaseValue = billPurchaseValue;
+    }
+
+    public Double getBillSaleValue() {
+        return billSaleValue;
+    }
+
+    public void setBillSaleValue(Double billSaleValue) {
+        this.billSaleValue = billSaleValue;
+    }
+
+    public Double getBillProfitValue() {
+        return billProfitValue;
+    }
+
+    public void setBillProfitValue(Double billProfitValue) {
+        this.billProfitValue = billProfitValue;
     }
 
     @Override

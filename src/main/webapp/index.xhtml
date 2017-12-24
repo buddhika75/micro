@@ -15,10 +15,11 @@
 
 
                     <div class="ui-g">
-                        <div class="ui-g-4">
+                        <div class="ui-g-6">
                             <div class="ui-g-12">
-                                <p:commandButton value="Good Receive" action="#{billController.toNewGoodReceiveBill()}"  class="mediumButton"/>
-
+                                <p:commandButton value="Good Receive - Crysbro" action="#{billController.toNewGoodReceiveBillCrysbro()}"  class="mediumButton"/>
+                                <p:commandButton value="Good Receive - Keells" action="#{billController.toNewGoodReceiveBillKeells() }"  class="mediumButton"/>
+                                <p:commandButton value="Good Receive - Elephant House" action="#{billController.toNewGoodReceiveBillEh()}"  class="mediumButton"/>
                             </div>
                             <div class="ui-g-12">
                                 <p:commandButton value="Vehicle Loading" action="#{billController.toNewLoadingBill()}"  class="mediumButton"/>
@@ -42,28 +43,16 @@
                             </div>
 
                         </div>
-                        <div class="ui-g-4">
+                        <div class="ui-g-6">
                             <div class="ui-g-12">
                                 <p:commandButton value="Stock Reports" action="/reports/stock_reports"  class="mediumButton"/>
-                                
+
                             </div>
                             <div class="ui-g-12">
                                 <p:commandButton value="Bill Reports" action="/reports/bill_reports"  class="mediumButton"/>
-                          
-                            </div>
-                           
-                        </div>
-                        <div class="ui-g-4">
 
-                            <div class="ui-g-12">
-                                 <p:commandButton value="#{bundle.Maintenance}" action="#{commonController.toMaintenance()}"  class="mediumButton"/>
-                               
                             </div>
-                            <div class="ui-g-12">
-                               <p:commandButton value="#{bundle.Administration}" action="#{commonController.toAdministration()}"  class="mediumButton"/>
-                           
-                            </div>
-                            
+
                         </div>
 
                     </div>

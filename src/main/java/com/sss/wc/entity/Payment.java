@@ -41,6 +41,8 @@ public class Payment implements Serializable {
     String referenceNo;
     Boolean chequeRealized;
     Double paymentValue;
+    Boolean paying;
+    Boolean receiving;
     @ManyToOne
     Institute fromInstitute;
     @ManyToOne
@@ -49,7 +51,7 @@ public class Payment implements Serializable {
     Date chequeDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     Date realizedDate;
-    boolean completed=false;
+    boolean completed = false;
     @ManyToOne
     private Bill bill;
     @Transient
@@ -58,8 +60,24 @@ public class Payment implements Serializable {
     boolean needChequeNo;
     @Transient
     boolean needCreditCardNo;
-     @Transient
+    @Transient
     boolean needEnterValue;
+
+    public Boolean getPaying() {
+        return paying;
+    }
+
+    public void setPaying(Boolean paying) {
+        this.paying = paying;
+    }
+
+    public Boolean getReceiving() {
+        return receiving;
+    }
+
+    public void setReceiving(Boolean receiving) {
+        this.receiving = receiving;
+    }
 
     public BillItem getBillItem() {
         return billItem;
@@ -77,10 +95,6 @@ public class Payment implements Serializable {
         this.completed = completed;
     }
 
-     
-     
-     
-     
     public boolean isNeedBank() {
         switch (paymentMethod) {
             case Bank_Transfer:
@@ -89,45 +103,44 @@ public class Payment implements Serializable {
                 needBank = true;
                 break;
             default:
-                needBank=false;
+                needBank = false;
         }
         return needBank;
     }
 
     public boolean isNeedChequeNo() {
-         switch (paymentMethod) {
+        switch (paymentMethod) {
             case Cheque:
                 needChequeNo = true;
                 break;
             default:
-                needChequeNo=false;
+                needChequeNo = false;
         }
         return needChequeNo;
     }
 
     public boolean isNeedCreditCardNo() {
-         switch (paymentMethod) {
+        switch (paymentMethod) {
             case Credit_Card:
                 needCreditCardNo = true;
                 break;
             default:
-                needCreditCardNo=false;
+                needCreditCardNo = false;
         }
         return needCreditCardNo;
     }
 
     public boolean isNeedEnterValue() {
-         switch (paymentMethod) {
+        switch (paymentMethod) {
             case Credit:
                 needEnterValue = false;
                 break;
             default:
-                needEnterValue=true;
+                needEnterValue = true;
         }
         return needEnterValue;
     }
-    
-    
+
     public Long getId() {
         return id;
     }
@@ -193,14 +206,17 @@ public class Payment implements Serializable {
     }
 
     public Double getPaymentValue() {
-        if(paymentValue==null){
-            paymentValue=0.0;
-        }
         return paymentValue;
     }
 
     public void setPaymentValue(Double paymentValue) {
         this.paymentValue = paymentValue;
+        if (bill != null) {
+            System.out.println("going to get bill cals");
+            bill.calculateTotals();
+        } else {
+            System.out.println("bill is null");
+        }
     }
 
     public Institute getFromInstitute() {
