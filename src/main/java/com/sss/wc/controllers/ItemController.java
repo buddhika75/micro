@@ -1,7 +1,5 @@
 package com.sss.wc.controllers;
 
-
-
 import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
 import com.sss.wc.entity.Item;
@@ -38,30 +36,23 @@ public class ItemController implements Serializable {
     public ItemController() {
     }
 
-    
-    
-    
     public List<Item> getItemItems() {
-        if(itemItems==null){
-            itemItems=getList(ItemType.Item);
+        if (itemItems == null) {
+            itemItems = getList(ItemType.Item);
         }
         return itemItems;
     }
 
-    
     public void setItemItems(List<Item> itemItems) {
         this.itemItems = itemItems;
     }
 
-    
-    
-    public List<Item> completeItemItems(String qry){
+    public List<Item> completeItemItems(String qry) {
         return getList(ItemType.Item, qry);
     }
-    
-    
-    public List<Item> getList(ItemType type, String qry){
-        String j="select i "
+
+    public List<Item> getList(ItemType type, String qry) {
+        String j = "select i "
                 + " from Item i "
                 + " where i.itemType=:t "
                 + " and lower(i.name) like :q "
@@ -71,9 +62,9 @@ public class ItemController implements Serializable {
         m.put("q", "%" + qry.toLowerCase() + "%");
         return getFacade().findBySQL(j, m);
     }
-    
-    public List<Item> getList(ItemType type){
-        String j="select i "
+
+    public List<Item> getList(ItemType type) {
+        String j = "select i "
                 + " from Item i "
                 + " where i.itemType=:t "
                 + " order by i.name";
@@ -81,20 +72,77 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
-    
-    
-    public String toItems(){
-        selected=null;
-        return "/admin/items";
+
+    public String toItems() {
+        selected = null;
+        return "/maintenance/items";
     }
-    
-    public void addNewItem(){
-        selected=new Item();
+
+    public String toCrysbroItems() {
+        selected = null;
+        items = getAgencyItems(Agency.Crysbro);
+        return "/maintenance/crysbro_items";
+    }
+
+    public String toKeellsItems() {
+        selected = null;
+        items = getAgencyItems(Agency.Keells);
+        return "/maintenance/keells_items";
+    }
+
+    public String toEhItems() {
+        selected = null;
+        items = getAgencyItems(Agency.EH);
+        return "/maintenance/eh_items";
+    }
+
+    public String toEditItem() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to Edit");
+            return "";
+        }
+        return "/maintenance/items";
+    }
+
+    public String toAddNewCysbroItem() {
+        agency = Agency.Crysbro;
+        addNewItem();
+        return "/maintenance/items";
+    }
+
+    public String toAddKeellsItem() {
+        agency = Agency.Keells;
+        addNewItem();
+        return "/maintenance/items";
+    }
+
+    public String toAddNewEhItem() {
+        agency = Agency.EH;
+        addNewItem();
+        return "/maintenance/items";
+    }
+
+    public String deleteItemFromList() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to Delete");
+            return "";
+        }
+        try {
+            getFacade().remove(selected);
+            JsfUtil.addSuccessMessage("Deleted");
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Can't delete.\n" + e.getMessage());
+            return "";
+        }
+        return toItems();
+    }
+
+    public void addNewItem() {
+        selected = new Item();
         selected.setAgency(agency);
         selected.setItemType(ItemType.Item);
     }
-    
-    
+
     public void saveItem() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
@@ -108,8 +156,8 @@ public class ItemController implements Serializable {
             JsfUtil.addSuccessMessage("Updated");
         }
         items = null;
-        itemItems=null;
-        agency=selected.getAgency();
+        itemItems = null;
+        agency = selected.getAgency();
         getItems();
     }
 
@@ -128,8 +176,7 @@ public class ItemController implements Serializable {
         items = null;
         getItems();
     }
-    
-    
+
     public Item getSelected() {
         return selected;
     }
@@ -176,19 +223,19 @@ public class ItemController implements Serializable {
     public List<Item> getItems() {
         if (items == null) {
             String j;
-            j="select i from Item i order by i.name desc";
+            j = "select i from Item i order by i.name desc";
             items = getFacade().findBySQL(j);
         }
         return items;
     }
-    
+
     public List<Item> getAgencyItems(Agency agency) {
-            Map m = new HashMap();
-            m.put("a", agency);
-            String j;
-            j="select i from Item i where i.agency=:a order by i.name";
-            return getFacade().findBySQL(j,m);
-       
+        Map m = new HashMap();
+        m.put("a", agency);
+        String j;
+        j = "select i from Item i where i.agency=:a order by i.name";
+        return getFacade().findBySQL(j, m);
+
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -231,16 +278,15 @@ public class ItemController implements Serializable {
         return getItems();
     }
 
-    public void temConvertAgencyOfAllItemsToKeells(){
-        items =null;
+    public void temConvertAgencyOfAllItemsToKeells() {
+        items = null;
         List<Item> its = getItems();
-        for(Item i:its){
+        for (Item i : its) {
             i.setAgency(Agency.Keells);
             getFacade().edit(i);
         }
     }
-    
-    
+
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {
 
