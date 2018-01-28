@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="contents">
+                <p:panel header="Crysbro Items" >
+
+
+                    <f:view>
+
+
+                        <h:form>
+
+                            <p:commandButton value="Download Excel" ajax="false" >
+                                <p:dataExporter target="tbl" fileName="item_list_crysbro" type="xls" ></p:dataExporter>
+                            </p:commandButton>
+                            
+                            <p:dataTable  id="tbl" value="#{itemController.itemItems}" var="item">
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Name"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.name}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Code"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.code}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.description}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Actions"/>
+                                    </f:facet>
+                                    <p:commandButton ajax="false" action="#{itemController.toEditItem()}" value="Edit" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{itemController.selected}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                    <p:commandButton ajax="false" action="#{itemController.deleteItemFromList()}" value="Delete" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{itemController.selected}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                    <p:commandButton ajax="false" action="#{itemController.toAddNewCysbroItem()}" value="Add New" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{itemController.selected}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </f:view>
+
+
+
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

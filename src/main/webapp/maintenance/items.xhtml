@@ -15,29 +15,44 @@
 
 
                     <h:panelGrid columns="2" >
-                        <p:panel header="Select" >
-                            <h:form>
-                                <h:panelGrid columns="1" >
-                                    <p:outputLabel value="List Items" ></p:outputLabel>
-                                    <p:autoComplete completeMethod="#{itemController.completeItemItems}"
-                                                    value="#{itemController.selected}"
-                                                    var="i" forceSelection="true"
-                                                    itemLabel="#{i.name}"
-                                                    itemValue="#{i}"
-                                                    >
-                                        <p:ajax event="itemSelect" process="@this" update=":#{p:component('details')}" ></p:ajax>
-                                    </p:autoComplete>
-                                </h:panelGrid>
-                                <h:panelGrid columns="2" >
-                                    <p:commandButton value="Add New" ajax="false"
-                                                     action="#{itemController.addNewItem()}" ></p:commandButton>
-                                    <p:commandButton value="Delete Selected" ajax="false"
-                                                     action="#{itemController.deleteItem()}"
-                                                     disabled="#{webUserController.canSystemAdministration}"></p:commandButton>
-                                </h:panelGrid>
+                        
+                        <h:panelGrid columns="1" >
+                            <p:panel header="Select" >
+                                <h:form>
+                                    <h:panelGrid columns="1" >
+                                        <p:outputLabel value="List Items" ></p:outputLabel>
+                                        <p:autoComplete completeMethod="#{itemController.completeItemItems}"
+                                                        value="#{itemController.selected}"
+                                                        var="i" forceSelection="true"
+                                                        itemLabel="#{i.name}"
+                                                        itemValue="#{i}"
+                                                        placeholder="Search Items by typing few letters"
+                                                        >
+                                            <p:ajax event="itemSelect" process="@this" update=":#{p:component('details')}" ></p:ajax>
+                                        </p:autoComplete>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" >
+                                        <p:commandButton value="Add New" ajax="false"
+                                                         action="#{itemController.addNewItem()}" ></p:commandButton>
+                                        <p:commandButton value="Delete Selected" ajax="false"
+                                                         action="#{itemController.deleteItem()}"
+                                                         disabled="#{webUserController.canSystemAdministration}"></p:commandButton>
+                                    </h:panelGrid>
 
-                            </h:form>
-                        </p:panel>
+                                </h:form>
+                            </p:panel>
+                            <p:panel header="Lists" >
+                                <h:form>
+                                    <h:panelGrid columns="1" >
+                                        <p:commandButton value="Crysbro Item List" action="#{itemController.toCrysbroItems()}" ajax="false" ></p:commandButton>
+                                        <p:commandButton value="Keells Item List" action="#{itemController.toKeellsItems()}" ajax="false" ></p:commandButton>
+                                        <p:commandButton value="Elephant House Litem List" action="#{itemController.toEhItems()}" ajax="false" ></p:commandButton>
+                                    </h:panelGrid>
+                                </h:form>
+                            </p:panel>
+                        </h:panelGrid>
+
+
                         <p:panel header="Details" id="details">
                             <h:panelGroup rendered="#{itemController.selected eq null}">
                                 <p:outputLabel value="Please search or click New button" ></p:outputLabel>
@@ -100,6 +115,8 @@
 
                             </h:form>
                         </p:panel>
+                    
+                    
                     </h:panelGrid>
 
                 </p:panel>
