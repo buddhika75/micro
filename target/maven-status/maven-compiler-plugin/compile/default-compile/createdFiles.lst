@@ -1,4 +1,3 @@
-com/sss/wc/controllers/CommonController$1.class
 com/sss/wc/entity/Payment_.class
 com/sss/wc/controllers/ItemController.class
 com/sss/wc/entity/Institute_.class
@@ -50,6 +49,7 @@ com/sss/wc/facades/InstituteFacade.class
 com/sss/wc/controllers/util/JsfUtil.class
 com/sss/wc/entity/ProgramPreferences_.class
 com/sss/wc/entity/Bill_.class
+com/sss/wc/controllers/AppHealthController$1.class
 com/sss/wc/facades/ItemFacade.class
 com/sss/wc/controllers/BillController.class
 com/sss/wc/controllers/EnumController.class
@@ -60,6 +60,7 @@ com/sss/wc/enums/Agency.class
 com/sss/wc/controllers/ProgramPreferencesController$ProgramPreferencesControllerConverter.class
 com/sss/wc/controllers/BillItemController.class
 com/sss/wc/controllers/PaymentController$PaymentControllerConverter.class
+com/sss/wc/controllers/AppHealthController.class
 com/sss/wc/controllers/BillItemController$BillItemControllerConverter.class
 com/sss/wc/enums/BillItemType.class
 com/sss/wc/enums/Privilege.class

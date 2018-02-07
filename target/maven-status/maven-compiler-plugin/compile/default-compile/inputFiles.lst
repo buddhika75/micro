@@ -39,6 +39,7 @@
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/entity/BillItemEntry.java
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/controllers/ApplicationController.java
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/entity/Item.java
+/home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/controllers/AppHealthController.java
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/enums/Gender.java
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/controllers/util/JsfUtil.java
 /home/nilukagun/NetBeansProjects/se/src/main/java/com/sss/wc/facades/ProgramPreferencesFacade.java
