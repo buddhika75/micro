@@ -71,7 +71,7 @@ public class BillController implements Serializable {
     private BillCategory billCategory;
 
     Agency agency;
-    
+
     Boolean selectedItemsBill = true;
 
     public BillController() {
@@ -136,49 +136,42 @@ public class BillController implements Serializable {
 
     public String toNewGoodReceiveBillCrysbroAllItems() {
         agency = Agency.Crysbro;
-        selectedItemsBill=false;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill";
+        selectedItemsBill = false;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBillCrysbroSingleItem() {
         agency = Agency.Crysbro;
-        selectedItemsBill=true;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill_selected";
+        selectedItemsBill = true;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBillKeellsAllItems() {
         agency = Agency.Keells;
-        selectedItemsBill=false;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill";
+        selectedItemsBill = false;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBillKeellsSingleItem() {
         agency = Agency.Keells;
-        selectedItemsBill=true;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill_selected";
+        selectedItemsBill = true;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBillEhAllItems() {
         agency = Agency.EH;
-        selectedItemsBill=false;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill";
+        selectedItemsBill = false;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBillEhSingleItem() {
         agency = Agency.EH;
-        selectedItemsBill=true;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill_selected";
+        selectedItemsBill = true;
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewGoodReceiveBill() {
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill";
+        return prepareForNewGoodReceiveBill(agency);
     }
 
     public String toNewLoadingBill() {
@@ -371,17 +364,18 @@ public class BillController implements Serializable {
         }
     }
 
-     public void prepareForNewGoodReceiveBill(Agency agency) {
-         if(selectedItemsBill){
-             prepareForNewGoodReceiveBillSingleItem(agency);
-         }else{
-             prepareForNewGoodReceiveBillAllItems(agency);
-         }
-     }
-    
-    
+    public String prepareForNewGoodReceiveBill(Agency agency) {
+        if (selectedItemsBill) {
+            prepareForNewGoodReceiveBillSingleItem(agency);
+            return "/bill/good_receive_bill_selected";
+        } else {
+            prepareForNewGoodReceiveBillAllItems(agency);
+            return "/bill/good_receive_bill";
+        }
+    }
+
     public void prepareForNewGoodReceiveBillAllItems(Agency agency) {
-      
+
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
@@ -440,7 +434,7 @@ public class BillController implements Serializable {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
             return;
         }
-        if(selectedBillItem.getItem()==null){
+        if (selectedBillItem.getItem() == null) {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
             return;
         }
@@ -450,28 +444,27 @@ public class BillController implements Serializable {
         if (selectedBillItem.getItem().getRetailRate() != null && selectedBillItem.getItem().getRetailRate() != 0.0) {
             selectedBillItem.setRetailRate(selectedBillItem.getItem().getRetailRate());
         }
-        
+
     }
-    
+
     public void addItemToGoodReceiveBill() {
         if (selectedBillItem == null) {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
             return;
         }
-        if(selectedBillItem.getItem()==null){
+        if (selectedBillItem.getItem() == null) {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
             return;
         }
         selectedBillItem.setBill(selected);
-        
-        
+
         selectedBillItem.setSerial(selected.getBillItems().size() + 1);
         selected.getBillItems().add(selectedBillItem);
-        
+
         selected.calculateTotals();
-        
+
         selectedBillItem = null;
-        
+
     }
 
     public void prepareForNewGoodReceiveBillSingleItem(Agency agency) {
@@ -795,7 +788,7 @@ public class BillController implements Serializable {
                 + " order by i.name";
         return getFacade().findBySQL(j, m);
     }
-    
+
     public BillItemController getBillItemController() {
         return billItemController;
     }

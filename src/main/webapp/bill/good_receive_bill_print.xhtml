@@ -22,7 +22,9 @@
                             <p:commandButton value="Print" ajax="false" >
                                 <p:printer target="bill" ></p:printer>
                             </p:commandButton>
-                            <p:commandButton ajax="false" style="float: right;" action="#{billController.toNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+                            <p:commandButton 
+                                ajax="false" style="float: right;" 
+                                action="#{billController.toNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
 
                         </h:form>
                     </f:facet>
