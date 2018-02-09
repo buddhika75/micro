@@ -5,22 +5,11 @@
  */
 package com.sss.wc.controllers;
 
-import com.sss.wc.facades.WebUserFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
-import javax.ejb.EJB;
-import javax.ejb.Schedule;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  *
