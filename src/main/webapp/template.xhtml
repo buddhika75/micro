@@ -29,7 +29,12 @@
                         <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home"/>
 
                         <p:submenu label="Billing" >
-                            <p:submenu label="Good Receive" >
+                            <p:submenu label="Good Receive (All Items)" >
+                                <p:menuitem value="Crysbro" action="#{billController.toNewGoodReceiveBillCrysbro()}" ajax="false" />
+                                <p:menuitem value="Keells" action="#{billController.toNewGoodReceiveBillKeells()}" ajax="false" />
+                                <p:menuitem value="Elephant House" action="#{billController.toNewGoodReceiveBillEh()}" ajax="false" />
+                            </p:submenu>
+                             <p:submenu label="Good Receive (Selected Items)" >
                                 <p:menuitem value="Crysbro" action="#{billController.toNewGoodReceiveBillCrysbro()}" ajax="false" />
                                 <p:menuitem value="Keells" action="#{billController.toNewGoodReceiveBillKeells()}" ajax="false" />
                                 <p:menuitem value="Elephant House" action="#{billController.toNewGoodReceiveBillEh()}" ajax="false" />

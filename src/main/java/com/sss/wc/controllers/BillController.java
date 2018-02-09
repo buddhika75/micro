@@ -134,6 +134,13 @@ public class BillController implements Serializable {
         prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
+    
+     public String toNewGoodReceiveBillCrysbroSingleItem() {
+        agency = Agency.Crysbro;
+        prepareForNewGoodReceiveBill(agency);
+        return "/bill/good_receive_bill";
+    }
+
 
     public String toNewGoodReceiveBillKeells() {
         agency = Agency.Keells;
@@ -401,6 +408,64 @@ public class BillController implements Serializable {
         getFacade().edit(selected);
     }
 
+    public void prepareForNewGoodReceiveBillSingleItem(Agency agency) {
+        selected = new Bill();
+        selected.setBillType(BillType.Pre_Bill);
+        selected.setBillCategory(BillCategory.Good_Receive);
+        selected.setBilledUser(getWebUserController().getLoggedUser());
+        List<Item> tis = getItemController().getAgencyItems(agency);
+        int count = 1;
+        for (Item i : tis) {
+            BillItem bi = new BillItem();
+            bi.setBill(selected);
+            bi.setItem(i);
+            if (i.getDealerRate() != null && i.getDealerRate() != 0.0) {
+                bi.setRate(i.getDealerRate());
+            }
+            if (i.getRetailRate() != null && i.getRetailRate() != 0.0) {
+                bi.setRetailRate(i.getRetailRate());
+            }
+            bi.setSerial(count);
+            selected.getBillItems().add(bi);
+            count++;
+        }
+        getFacade().create(selected);
+
+        List<Payment> payments = new ArrayList<Payment>();
+        
+        Payment cash = new Payment();
+        cash.setPaymentMethod(PaymentMethod.Cash);
+        cash.setBill(selected);
+        cash.setReceiving(true);
+        cash.setPaying(false);
+        getPaymentFacade().create(cash);
+        payments.add(cash);
+        
+
+        Payment credit = new Payment();
+        credit.setPaymentMethod(PaymentMethod.Cheque);
+        credit.setReceiving(true);
+        credit.setPaying(false);
+        credit.setBill(selected);
+        getPaymentFacade().create(credit);
+        payments.add(credit);
+        
+
+        Payment cheque = new Payment();
+        cheque.setPaymentMethod(PaymentMethod.Credit);
+        cheque.setBill(selected);
+        cheque.setReceiving(true);
+        cheque.setPaying(false);
+        getPaymentFacade().create(cheque);
+        payments.add(cheque);
+        
+
+        selected.setPayments(payments);
+        
+        getFacade().edit(selected);
+    }
+    
+    
     public String settleLoadingBill() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
