@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Loading Bill Print
+            </ui:define>
+
+            <ui:define name="body">
+                <p:panel >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Loading Bill Print" ></p:outputLabel>
+                        <h:form >
+                            <p:commandButton value="Print" ajax="false" >
+                                <p:printer target="bill" ></p:printer>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" style="float: right;" action="#{billController.toNewLoadingBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+
+                        </h:form>
+                    </f:facet>
+                    <h:panelGroup  id="bill" >
+                        <div class="customerBill" >
+                            <div class="customerBillHeader" >
+                                <h:outputText value="#{programPreferencesController.selected.customerBillHeader}" escape="false"/>
+
+                            </div>
+                            <div class="customerBillDetails" >
+                                <table class="fullWidthTable" >
+                                    <tr>
+                                        <td>Vehicle</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.vehicle.name}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sales Rep</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.salesRep.name}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stores</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.fromInstitute.phone}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="customerBillItemDetails" >
+                                <br/>
+                                <table class="fullWidthTable" >
+                                    <tr>
+                                        <td>
+                                            No
+                                        </td>
+                                        <td>
+                                            Item
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Expected Qty
+                                        </td>
+                                         <td class="numericTableCell">
+                                            Actual Qty
+                                        </td>
+                                    </tr>
+                                    <ui:repeat value="#{billController.selected.billItems}" var="bi" >
+                                        <tr>
+                                            <td>
+                                                #{bi.serial}
+                                                
+                                            </td>
+                                            <td>
+                                                #{bi.item.name}
+                                            </td>
+                                            <td class="numericTableCell">
+                                                #{bi.expectedQuentity}
+                                            </td>
+                                             <td class="numericTableCell">
+                                                #{bi.quentity}
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </table>
+                            </div>
+                         
+                            <div class="customerBillFooter" >
+                                <h:outputText value="#{programPreferencesController.selected.customerBillFooter}" escape="false"/>
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

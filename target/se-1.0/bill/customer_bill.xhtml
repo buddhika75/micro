@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Customer Bill
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form >
+                    <p:panel header="Customer Bill" >
+
+                        <p:panelGrid columns="3" styleClass="alignTop" >
+                            <h:panelGrid columns="2" >
+                                <p:outputLabel value="Route" ></p:outputLabel>
+                                <p:autoComplete completeMethod="#{instituteController.completeRoutes}"
+                                                value="#{billController.route}"
+                                                var="r" forceSelection="true"
+                                                itemLabel="#{r.name}"
+                                                itemValue="#{r}">
+                                    <p:ajax process="@this"  event="itemSelect" ></p:ajax>
+                                </p:autoComplete>
+                                <p:outputLabel value="Customer" ></p:outputLabel>
+                                <p:autoComplete completeMethod="#{instituteController.completeCustomers}"
+                                                value="#{billController.selected.toInstitute}"
+                                                var="c" forceSelection="true"
+                                                itemLabel="#{c.name}"
+                                                itemValue="#{c}">
+                                    <p:ajax process="@this"  event="itemSelect" ></p:ajax>
+                                </p:autoComplete>
+                                <p:outputLabel value="Vehicle" ></p:outputLabel>
+                                <p:selectOneMenu value="#{billController.selected.loadingBillForCustomerBills}">
+                                    <f:selectItem itemLabel="Select Vehicle" ></f:selectItem>
+                                    <f:selectItems value="#{billController.listOfLoadedVehicles}" var="b"
+                                                   itemLabel="#{b.vehicle.name}"
+                                                   itemValue="#{b}"></f:selectItems>
+                                    <p:ajax process="@this" update=":#{p:component('billItems')}" event="change"
+                                            listener="#{billController.prepareBillItemWhenVehicleChangesForCustomerBill()}"></p:ajax>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <h:panelGroup id="gpPay" >
+                                <table class="alignTop">
+                                    <ui:repeat value="#{billController.selected.payments}" var="p" >
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel value="#{p.paymentMethod} Amount" ></p:outputLabel>
+                                            </td>
+                                            <td>
+                                                <h:panelGrid columns="1" styleClass="alignTop">
+                                                    <p:inputText id="lblPayValue" value="#{p.paymentValue}" disabled="#{!p.needEnterValue}" >
+                                                        <p:ajax process="@this" update=":#{p:component('billTotal')} :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}" />
+
+                                                    </p:inputText>
+                                                    <p:selectOneMenu value="#{p.bank}" rendered="#{p.needBank}" >
+                                                        <f:selectItem itemLabel="Select Bank" ></f:selectItem>
+                                                        <f:selectItems value="#{instituteController.banks}" ></f:selectItems>
+                                                    </p:selectOneMenu>
+                                                    <p:inputText value="#{p.chequeNo}" rendered="#{p.needChequeNo}" placeholder="Enter Cheque Number" ></p:inputText>
+                                                    <p:calendar value="#{p.chequeDate}" rendered="#{p.needChequeNo}" placeholder="Select Cheque Date" ></p:calendar>
+                                                </h:panelGrid>
+                                            </td>
+                                        </tr>
+
+
+                                    </ui:repeat>
+                                </table>
+                            </h:panelGroup>
+                            <h:panelGrid columns="1">
+                                <h:panelGrid columns="3" >
+                                    <p:outputLabel value="Net Total" ></p:outputLabel>
+                                    <p:outputLabel value=":" ></p:outputLabel> 
+                                    <p:outputLabel id="billTotal" value="#{commonController.doubleToString(billController.selected.billNetTotal)}" ></p:outputLabel>
+                                </h:panelGrid>
+
+                                <p:commandButton ajax="false"  action="#{billController.settleCustomerBill}" value="Settle &amp; Print" ></p:commandButton>
+                                <p:commandButton ajax="false" action="#{billController.toNewCustomerBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+                            </h:panelGrid>
+                        </p:panelGrid>
+
+
+
+                    </p:panel>
+                </h:form>
+                <p:panel header="Bill Items" >
+
+
+
+                    <h:form>
+                        <p:dataTable id="billItems" value="#{billController.selected.billItems}" var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle">
+                            <p:column headerText="No" width="30" >
+                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Item"  >
+                                <p:outputLabel value="#{bi.item.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Stock"  >
+                                <p:outputLabel value="#{bi.itemStock.stock}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Quentity"  >
+                                <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}" />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Free"   >
+                                <p:inputNumber id="free" value="#{bi.freeQuentity}" styleClass="shortNumber" >
+                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}"/>
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Rate" >
+                                <p:inputNumber id="rate" value="#{bi.rate}"  styleClass="shortNumber" >
+                                    <p:ajax event="keyup" process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}"/>
+                                </p:inputNumber>
+                                <p:slider for="rate"  minValue="#{bi.item.retailerRateMin}" maxValue="#{bi.item.retailerRateMax}" step="0.5"/>
+                            </p:column>
+                            <p:column headerText="Value"  >
+                                <p:outputLabel id="lblVal" value="#{bi.netValue}" ></p:outputLabel>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

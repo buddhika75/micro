@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Unloading Bill
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form >
+                    <p:panel header="Unloading Bill" >
+                        <h:panelGrid columns="7">
+                            <p:commandButton ajax="false"  action="#{billController.settleUnloadingBill}" value="Settle &amp; Print" ></p:commandButton>
+                            <p:commandButton ajax="false" action="#{billController.toNewLoadingBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+                        </h:panelGrid>
+                        <h:panelGrid columns="8" >
+                            <p:outputLabel value="Stores" ></p:outputLabel>
+                            <p:selectOneMenu value="#{billController.selected.toInstitute}" >
+                                <f:selectItem itemLabel="Select a store" ></f:selectItem>
+                                <f:selectItems value="#{instituteController.stores}" ></f:selectItems>
+                                <p:ajax process="@this" event="change" listener="#{billController.prepareBillItemWhenStoreChangesForLoadingBill}"  update=":#{p:component('billItems')}"></p:ajax>
+                            </p:selectOneMenu>
+
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:outputLabel value="Vehicle" ></p:outputLabel>
+                            <p:selectOneMenu value="#{billController.selected.loadingBill}">
+                                <f:selectItem itemLabel="Select Vehicle" ></f:selectItem>
+                                <f:selectItems value="#{billController.listOfLoadedVehicles}" var="b"
+                                               itemLabel="#{b.vehicle.name}"
+                                               itemValue="#{b}"></f:selectItems>
+                                <p:ajax process="@this" update=":#{p:component('billItems')} :#{p:component('rep')}" event="change"
+                                        listener="#{billController.prepareBillItemWhenVehicleChangesForUnloadingBill()}"></p:ajax>
+                            </p:selectOneMenu>
+
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:outputLabel value="Rep" ></p:outputLabel>
+                            <h:panelGroup id="rep" >
+                                <p:outputLabel value="#{billController.selected.loadingBill.salesRep.name}" rendered="#{billController.selected.loadingBill.salesRep.name ne null}"></p:outputLabel>
+                            </h:panelGroup>
+
+                           
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+                <p:panel header="Bill Items" >
+                    <h:form>
+                        <p:dataTable id="billItems" value="#{billController.selected.billItems}"
+                                     var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle"
+                                     emptyMessage="No Stocks To Receive">
+                            <p:column headerText="No" width="30" >
+                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Item"  >
+                                <p:outputLabel value="#{bi.item.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Current Stock"  >
+                                <p:outputLabel value="#{bi.itemStock.stock}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Quentity"  >
+                                <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax event="keyup" process="@this" ></p:ajax>
+                                </p:inputNumber>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
