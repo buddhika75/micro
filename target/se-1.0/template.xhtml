@@ -28,28 +28,35 @@
                     <p:menubar>
                         <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home"/>
 
-                        <p:submenu label="Billing" >
-                            <p:submenu label="Good Receive" >
-                                <p:menuitem value="Crysbro" action="#{billController.toNewGoodReceiveBillCrysbro()}" ajax="false" />
-                                <p:menuitem value="Keells" action="#{billController.toNewGoodReceiveBillKeells()}" ajax="false" />
-                                <p:menuitem value="Elephant House" action="#{billController.toNewGoodReceiveBillEh()}" ajax="false" />
+                        <p:submenu label="Good Receive" >
+                            <p:submenu label="All Items" >
+                                <p:menuitem value="Crysbro" action="#{billController.toNewGoodReceiveBillCrysbroAllItems()}" ajax="false" />
+                                <p:menuitem value="Keells" action="#{billController.toNewGoodReceiveBillKeellsAllItems()}" ajax="false" />
+                                <p:menuitem value="Elephant House" action="#{billController.toNewGoodReceiveBillEhAllItems()}" ajax="false" />
                             </p:submenu>
-                            <p:submenu label="Loading" >
-                                <p:menuitem value="Crysbro" action="#{billController.toNewLoadingBill()}" ajax="false" />
-                                <p:menuitem value="Keells" action="#{billController.toNewLoadingBill()}" ajax="false" />
-                                <p:menuitem value="Elephant House" action="#{billController.toNewLoadingBill()}" ajax="false" />
-                            </p:submenu>
-                            <p:submenu label="Billing" >
-                                <p:menuitem value="Crysbro" action="#{billController.toNewCustomerBill()}" ajax="false" />
-                                <p:menuitem value="Keells" action="#{billController.toNewCustomerBill()}" ajax="false" />
-                                <p:menuitem value="Elephant House" action="#{billController.toNewCustomerBill()}" ajax="false" />
-                            </p:submenu>
-                            <p:submenu label="Un-Loading" >
-                                <p:menuitem value="Crysbro" action="#{billController.toNewUnloadingBill()}" ajax="false" />
-                                <p:menuitem value="Keells" action="#{billController.toNewUnloadingBill()}" ajax="false" />
-                                <p:menuitem value="Elephant House" action="#{billController.toNewUnloadingBill()}" ajax="false" />
+                            <p:submenu label="Selected Items" >
+                                <p:menuitem value="Crysbro" action="#{billController.toNewGoodReceiveBillCrysbroSingleItem()}" ajax="false" />
+                                <p:menuitem value="Keells" action="#{billController.toNewGoodReceiveBillKeellsSingleItem()}" ajax="false" />
+                                <p:menuitem value="Elephant House" action="#{billController.toNewGoodReceiveBillEhSingleItem()}" ajax="false" />
                             </p:submenu>
                         </p:submenu>
+
+                        <p:submenu label="Loading" >
+                            <p:menuitem value="Crysbro" action="#{billController.toNewLoadingBill()}" ajax="false" />
+                            <p:menuitem value="Keells" action="#{billController.toNewLoadingBill()}" ajax="false" />
+                            <p:menuitem value="Elephant House" action="#{billController.toNewLoadingBill()}" ajax="false" />
+                        </p:submenu>
+                        <p:submenu label="Billing" >
+                            <p:menuitem value="Crysbro" action="#{billController.toNewCustomerBill()}" ajax="false" />
+                            <p:menuitem value="Keells" action="#{billController.toNewCustomerBill()}" ajax="false" />
+                            <p:menuitem value="Elephant House" action="#{billController.toNewCustomerBill()}" ajax="false" />
+                        </p:submenu>
+                        <p:submenu label="Un-Loading" >
+                            <p:menuitem value="Crysbro" action="#{billController.toNewUnloadingBill()}" ajax="false" />
+                            <p:menuitem value="Keells" action="#{billController.toNewUnloadingBill()}" ajax="false" />
+                            <p:menuitem value="Elephant House" action="#{billController.toNewUnloadingBill()}" ajax="false" />
+                        </p:submenu>
+
                         <p:submenu label="Reports" >
                             <p:menuitem value="Stock Reports" action="/reports/stock_reports" ajax="false" />
                             <p:menuitem value="Bill Lists" action="/reports/bill_reports" ajax="false" />

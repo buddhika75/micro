@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Good Receive Bill
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form >
+                    <p:panel header="Good Receive Bill" >
+                        <h:panelGrid columns="3" styleClass="alignTop">
+                            <p:panelGrid columns="1"  >
+                                <p:panel  header="Bill Settle" >
+                                    <h:panelGrid columns="3"  styleClass="alignTop">
+                                        <p:commandButton ajax="false"  action="#{billController.settleGoodReceiveBill}" value="Settle &amp; Print" ></p:commandButton>
+                                        <p:spacer height="1" width="10" ></p:spacer>
+                                        <p:commandButton ajax="false"  action="#{billController.toNewGoodReceiveBill()}" value="New Bill" ></p:commandButton>
+
+                                        <p:inputText disabled="true" value="Store" ></p:inputText>
+                                        <p:spacer height="1" width="10" ></p:spacer>
+                                        <p:autoComplete completeMethod="#{instituteController.completeStores}"
+                                                        value="#{billController.selected.toInstitute}"
+                                                        var="r" forceSelection="true"
+                                                        itemLabel="#{r.name}" placeholder="Select a store"
+                                                        itemValue="#{r}">
+                                            <p:ajax process="@this"  event="itemSelect" ></p:ajax>
+                                        </p:autoComplete>
+                                        <p:inputText value="Gross Total" disabled="true" ></p:inputText>
+                                        <p:spacer height="1" width="10" ></p:spacer>
+                                        <p:inputText id="grossTotal" value="#{commonController.doubleToString(billController.selected.billTotal)}" disabled="true" >
+                                        </p:inputText>
+                                        <p:inputText disabled="true" value="Discount" ></p:inputText>
+                                        <p:spacer height="1" width="10" ></p:spacer>
+                                        <p:inputNumber id="discount" value="#{billController.selected.billDiscount}" placeholder="Enter the discount" >
+                                            <p:ajax process="@this" update="netTotal gpPay profits" ></p:ajax>
+                                        </p:inputNumber>
+                                        <p:inputText disabled="true" value="Net Total" ></p:inputText>
+                                        <p:spacer height="1" width="10" ></p:spacer>
+                                        <p:inputText id="netTotal" value="#{commonController.doubleToString(billController.selected.billNetTotal)}" 
+                                                     disabled="true" ></p:inputText>
+
+                                    </h:panelGrid>
+                                </p:panel>
+
+
+                            </p:panelGrid>
+
+                            <p:panel id="gpPay" header="Payment Details"   >
+
+
+                                <p:dataTable value="#{billController.selected.payments}" var="p" id="tblPay" >
+                                    <p:column style="vertical-align: top;text-align: left;">
+                                        <p:outputLabel value="#{p.paymentMethod} Amount" >
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column >
+                                        <h:panelGroup id="lblPayValue">
+                                            <p:inputText  value="#{p.paymentValue}" rendered="#{p.needEnterValue}" placeholder="Enter the #{p.paymentMethod} Amount" >
+                                                <p:ajax event="keyup" process="@this" update="tblPay" ></p:ajax>
+                                            </p:inputText>
+                                            <p:inputText  value="#{p.paymentValue}" disabled="true" rendered="#{!p.needEnterValue}" >
+                                            </p:inputText>
+                                        </h:panelGroup>
+
+                                        <p:panelGrid columns="1" styleClass="alignTop">
+
+                                            <p:selectOneMenu value="#{p.bank}" rendered="#{p.needBank}" >
+                                                <f:selectItem itemLabel="Select Bank" ></f:selectItem>
+                                                <f:selectItems value="#{instituteController.banks}" ></f:selectItems>
+                                                <p:ajax  event="blur" process="@this" ></p:ajax>
+                                            </p:selectOneMenu>
+                                            <p:inputText value="#{p.chequeNo}" rendered="#{p.needChequeNo}" placeholder="Enter Cheque Number" >
+                                                <p:ajax  event="blur" process="@this" ></p:ajax>
+                                            </p:inputText>
+                                            <p:calendar value="#{p.chequeDate}" rendered="#{p.needChequeNo}" placeholder="Select Cheque Date" >
+                                                <p:ajax event="blur" process="@this" ></p:ajax>
+                                            </p:calendar>
+                                        </p:panelGrid>
+                                    </p:column>
+
+                                </p:dataTable>
+
+
+
+                            </p:panel>
+
+                            <p:panel style="float: right;" id="profits" header="Profits" >
+                                <h:panelGrid columns="2" >
+                                    <p:inputText value="Purchase Value" disabled="true" ></p:inputText>
+                                    <p:inputText id="costValue" disabled="true"
+                                                 value="#{commonController.doubleToString(billController.selected.billPurchaseValue )}" >
+                                    </p:inputText>
+                                    <p:inputText disabled="true" value="Sale Value" ></p:inputText>
+                                    <p:inputText disabled="true" id="saleValue" value="#{commonController.doubleToString(billController.selected.billSaleValue)}" >
+                                    </p:inputText>
+                                    <p:inputText disabled="true" value="Profit Value" ></p:inputText>
+                                    <p:inputText disabled="true" id="profitValue" value="#{commonController.doubleToString(billController.selected.billProfitValue)}" >
+                                    </p:inputText>
+
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </p:panel>
+                </h:form>
+                <p:panel header="Bill Items" >
+                    <h:form >
+                        <h:panelGrid columns="8" >
+                            <p:outputLabel value="Item" ></p:outputLabel>
+                            <p:outputLabel value="Qty" ></p:outputLabel>
+                            <p:outputLabel value="Free" ></p:outputLabel>
+                            <p:outputLabel value="Return" ></p:outputLabel>
+                            <p:outputLabel value="Rate" ></p:outputLabel>
+                            <p:outputLabel value="Sale Rate" ></p:outputLabel>
+                            <p:outputLabel value="Value" ></p:outputLabel>
+                            <p:spacer></p:spacer>
+
+                            <p:autoComplete id="acItem" value="#{billController.selectedBillItem.item}"
+                                            completeMethod="#{billController.completeAgencyItems}"
+                                            var="i" forceSelection="true"
+                                            itemLabel="#{i.name}" inputStyle="width: 300px"
+                                            itemValue="#{i}"
+                                            placeholder="Search Items by typing few letters">
+                                <p:ajax event="itemSelect" process="@this"  update="txtRate txtSaleRate lblValue" listener="#{billController.onItemSelect}" />
+
+                            </p:autoComplete>
+                            <p:inputText id="txtQty" value="#{billController.selectedBillItem.quentity}" styleClass="shortNumber">
+                            </p:inputText>
+                            <p:inputText id="txtFreeQty" value="#{billController.selectedBillItem.freeQuentity}"  styleClass="shortNumber">
+                            </p:inputText>
+                            <p:inputText id="txtReturnQty" value="#{billController.selectedBillItem.returnQuentity}"  styleClass="shortNumber">
+                            </p:inputText>
+                            <p:inputText id="txtRate" value="#{billController.selectedBillItem.rate}"  styleClass="shortNumber">
+                            </p:inputText>
+                            <p:inputText id="txtSaleRate" value="#{billController.selectedBillItem.retailRate}"  styleClass="shortNumber">
+                            </p:inputText>
+                            <p:outputLabel id="lblValue" value="#{billController.selectedBillItem.netValue}" >
+                            </p:outputLabel>
+                            <p:commandButton id="btnAdd" value="Add" action="#{billController.addItemToGoodReceiveBill()}"
+                                             process="acItem txtQty txtFreeQty txtFreeQty txtRate txtSaleRate txtReturnQty btnAdd" 
+                                             update="acItem txtQty txtFreeQty txtFreeQty txtRate txtSaleRate txtReturnQty btnAdd :#{p:component('tblBillItems')} :#{p:component('grossTotal')} :#{p:component('netTotal')} :#{p:component('profits')} :#{p:component('gpPay')}" >
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+
+
+                    <h:form>
+                        <p:dataTable id="tblBillItems" value="#{billController.selected.billItems}" var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle">
+                            <p:column headerText="No" width="30" >
+                                <h:outputLabel id="sno" value="#{bi.serial}" style="#{bi.rbg}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Item"  >
+                                <p:outputLabel id="item" value="#{bi.item.name}"  style="#{bi.rbg}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Quentity"  >
+                                <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="value :#{p:component('grossTotal')} :#{p:component('netTotal')} :#{p:component('profits')} :#{p:component('gpPay')}"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Free"  >
+                                <p:inputNumber id="freeqty" value="#{bi.freeQuentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this"  update=":#{p:component('profits')}" />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Return"  >
+                                <p:inputNumber id="returnqty" value="#{bi.returnQuentity}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="value :#{p:component('grossTotal')} :#{p:component('netTotal')} :#{p:component('profits')}  :#{p:component('gpPay')}" />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Rate"  >
+                                <p:inputNumber id="rate" value="#{bi.rate}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="value sno item :#{p:component('grossTotal')} :#{p:component('netTotal')} :#{p:component('profits')}  :#{p:component('gpPay')}"  />
+                                </p:inputNumber>
+                            </p:column>
+                            <p:column headerText="Value"  >
+                                <p:outputLabel id="value" value="#{bi.netValue}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sale Rate"  >
+                                <p:inputNumber id="retail" value="#{bi.retailRate}" styleClass="shortNumber" style="width: 80px!important;"  >
+                                    <p:ajax process="@this" update="sno item :#{p:component('profits')}"  />
+                                </p:inputNumber>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

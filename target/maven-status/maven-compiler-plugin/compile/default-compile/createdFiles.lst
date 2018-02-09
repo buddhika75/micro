@@ -53,6 +53,7 @@ com/sss/wc/controllers/AppHealthController$1.class
 com/sss/wc/facades/ItemFacade.class
 com/sss/wc/controllers/BillController.class
 com/sss/wc/controllers/EnumController.class
+.netbeans_automatic_build
 com/sss/wc/enums/UserType.class
 com/sss/wc/enums/Gender.class
 com/sss/wc/entity/ProgramPreferences.class

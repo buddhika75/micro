@@ -36,6 +36,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
+import org.primefaces.event.SelectEvent;
 
 @Named("billController")
 @SessionScoped
@@ -60,6 +61,8 @@ public class BillController implements Serializable {
     private List<Bill> items = null;
     List<Bill> listOfLoadedVehicles = null;
     private Bill selected;
+    BillItem selectedBillItem;
+    BillItem removingBillItem;
     Institute route;
 
     private Date fromDate;
@@ -68,6 +71,8 @@ public class BillController implements Serializable {
     private BillCategory billCategory;
 
     Agency agency;
+    
+    Boolean selectedItemsBill = true;
 
     public BillController() {
     }
@@ -129,29 +134,46 @@ public class BillController implements Serializable {
         return "/bill/customer_bill";
     }
 
-    public String toNewGoodReceiveBillCrysbro() {
+    public String toNewGoodReceiveBillCrysbroAllItems() {
         agency = Agency.Crysbro;
-        prepareForNewGoodReceiveBill(agency);
-        return "/bill/good_receive_bill";
-    }
-    
-     public String toNewGoodReceiveBillCrysbroSingleItem() {
-        agency = Agency.Crysbro;
+        selectedItemsBill=false;
         prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
 
+    public String toNewGoodReceiveBillCrysbroSingleItem() {
+        agency = Agency.Crysbro;
+        selectedItemsBill=true;
+        prepareForNewGoodReceiveBill(agency);
+        return "/bill/good_receive_bill_selected";
+    }
 
-    public String toNewGoodReceiveBillKeells() {
+    public String toNewGoodReceiveBillKeellsAllItems() {
         agency = Agency.Keells;
+        selectedItemsBill=false;
         prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
     }
 
-    public String toNewGoodReceiveBillEh() {
+    public String toNewGoodReceiveBillKeellsSingleItem() {
+        agency = Agency.Keells;
+        selectedItemsBill=true;
+        prepareForNewGoodReceiveBill(agency);
+        return "/bill/good_receive_bill_selected";
+    }
+
+    public String toNewGoodReceiveBillEhAllItems() {
         agency = Agency.EH;
+        selectedItemsBill=false;
         prepareForNewGoodReceiveBill(agency);
         return "/bill/good_receive_bill";
+    }
+
+    public String toNewGoodReceiveBillEhSingleItem() {
+        agency = Agency.EH;
+        selectedItemsBill=true;
+        prepareForNewGoodReceiveBill(agency);
+        return "/bill/good_receive_bill_selected";
     }
 
     public String toNewGoodReceiveBill() {
@@ -286,8 +308,6 @@ public class BillController implements Serializable {
         selected.setBilledUser(getWebUserController().getLoggedUser());
         getFacade().create(selected);
 
-        
-
     }
 
     public void prepareForNewUnloadingBill() {
@@ -351,7 +371,17 @@ public class BillController implements Serializable {
         }
     }
 
-    public void prepareForNewGoodReceiveBill(Agency agency) {
+     public void prepareForNewGoodReceiveBill(Agency agency) {
+         if(selectedItemsBill){
+             prepareForNewGoodReceiveBillSingleItem(agency);
+         }else{
+             prepareForNewGoodReceiveBillAllItems(agency);
+         }
+     }
+    
+    
+    public void prepareForNewGoodReceiveBillAllItems(Agency agency) {
+      
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
@@ -375,7 +405,7 @@ public class BillController implements Serializable {
         getFacade().create(selected);
 
         List<Payment> payments = new ArrayList<Payment>();
-        
+
         Payment cash = new Payment();
         cash.setPaymentMethod(PaymentMethod.Cash);
         cash.setBill(selected);
@@ -383,7 +413,6 @@ public class BillController implements Serializable {
         cash.setPaying(false);
         getPaymentFacade().create(cash);
         payments.add(cash);
-        
 
         Payment credit = new Payment();
         credit.setPaymentMethod(PaymentMethod.Cheque);
@@ -392,7 +421,6 @@ public class BillController implements Serializable {
         credit.setBill(selected);
         getPaymentFacade().create(credit);
         payments.add(credit);
-        
 
         Payment cheque = new Payment();
         cheque.setPaymentMethod(PaymentMethod.Credit);
@@ -401,11 +429,49 @@ public class BillController implements Serializable {
         cheque.setPaying(false);
         getPaymentFacade().create(cheque);
         payments.add(cheque);
-        
 
         selected.setPayments(payments);
-        
+
         getFacade().edit(selected);
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        if (selectedBillItem == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        if(selectedBillItem.getItem()==null){
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        if (selectedBillItem.getItem().getDealerRate() != null && selectedBillItem.getItem().getDealerRate() != 0.0) {
+            selectedBillItem.setRate(selectedBillItem.getItem().getDealerRate());
+        }
+        if (selectedBillItem.getItem().getRetailRate() != null && selectedBillItem.getItem().getRetailRate() != 0.0) {
+            selectedBillItem.setRetailRate(selectedBillItem.getItem().getRetailRate());
+        }
+        
+    }
+    
+    public void addItemToGoodReceiveBill() {
+        if (selectedBillItem == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        if(selectedBillItem.getItem()==null){
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        selectedBillItem.setBill(selected);
+        
+        
+        selectedBillItem.setSerial(selected.getBillItems().size() + 1);
+        selected.getBillItems().add(selectedBillItem);
+        
+        selected.calculateTotals();
+        
+        selectedBillItem = null;
+        
     }
 
     public void prepareForNewGoodReceiveBillSingleItem(Agency agency) {
@@ -413,26 +479,10 @@ public class BillController implements Serializable {
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
         selected.setBilledUser(getWebUserController().getLoggedUser());
-        List<Item> tis = getItemController().getAgencyItems(agency);
-        int count = 1;
-        for (Item i : tis) {
-            BillItem bi = new BillItem();
-            bi.setBill(selected);
-            bi.setItem(i);
-            if (i.getDealerRate() != null && i.getDealerRate() != 0.0) {
-                bi.setRate(i.getDealerRate());
-            }
-            if (i.getRetailRate() != null && i.getRetailRate() != 0.0) {
-                bi.setRetailRate(i.getRetailRate());
-            }
-            bi.setSerial(count);
-            selected.getBillItems().add(bi);
-            count++;
-        }
         getFacade().create(selected);
 
         List<Payment> payments = new ArrayList<Payment>();
-        
+
         Payment cash = new Payment();
         cash.setPaymentMethod(PaymentMethod.Cash);
         cash.setBill(selected);
@@ -440,7 +490,6 @@ public class BillController implements Serializable {
         cash.setPaying(false);
         getPaymentFacade().create(cash);
         payments.add(cash);
-        
 
         Payment credit = new Payment();
         credit.setPaymentMethod(PaymentMethod.Cheque);
@@ -449,7 +498,6 @@ public class BillController implements Serializable {
         credit.setBill(selected);
         getPaymentFacade().create(credit);
         payments.add(credit);
-        
 
         Payment cheque = new Payment();
         cheque.setPaymentMethod(PaymentMethod.Credit);
@@ -458,14 +506,12 @@ public class BillController implements Serializable {
         cheque.setPaying(false);
         getPaymentFacade().create(cheque);
         payments.add(cheque);
-        
 
         selected.setPayments(payments);
-        
+
         getFacade().edit(selected);
     }
-    
-    
+
     public String settleLoadingBill() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
@@ -737,6 +783,19 @@ public class BillController implements Serializable {
         items = getFacade().findBySQL(j);
     }
 
+    public List<Item> completeAgencyItems(String qry) {
+        Map m = new HashMap();
+        m.put("a", agency);
+        m.put("q", "%" + qry.toLowerCase() + "%");
+        String j;
+        j = "select i "
+                + " from Item i "
+                + " where i.agency=:a "
+                + " and lower(i.name) like :q "
+                + " order by i.name";
+        return getFacade().findBySQL(j, m);
+    }
+    
     public BillItemController getBillItemController() {
         return billItemController;
     }
@@ -932,6 +991,26 @@ public class BillController implements Serializable {
 
     public ItemFacade getItemFacade() {
         return itemFacade;
+    }
+
+    public BillItem getSelectedBillItem() {
+        if (selectedBillItem == null) {
+            selectedBillItem = new BillItem();
+            selectedBillItem.setBill(selected);
+        }
+        return selectedBillItem;
+    }
+
+    public void setSelectedBillItem(BillItem selectedBillItem) {
+        this.selectedBillItem = selectedBillItem;
+    }
+
+    public BillItem getRemovingBillItem() {
+        return removingBillItem;
+    }
+
+    public void setRemovingBillItem(BillItem removingBillItem) {
+        this.removingBillItem = removingBillItem;
     }
 
     @FacesConverter(forClass = Bill.class)
