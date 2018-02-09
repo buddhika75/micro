@@ -5,6 +5,7 @@
  */
 package com.sss.wc.entity;
 
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.BillCategory;
 import com.sss.wc.enums.BillType;
 import com.sss.wc.enums.PaymentMethod;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -109,7 +111,20 @@ public class Bill implements Serializable {
     Institute route;
     @ManyToOne
     Institute vehicle;
+    @Enumerated(EnumType.STRING)
+    Agency agency;
 
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+    
+    
+    
     public Bill getBilledBillForReturnedBills() {
         return billedBillForReturnedBills;
     }

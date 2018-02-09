@@ -3,6 +3,7 @@ package com.sss.wc.controllers;
 import com.sss.wc.entity.Institute;
 import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.InstituteType;
 import com.sss.wc.facades.InstituteFacade;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
@@ -75,6 +76,16 @@ public class InstituteController implements Serializable {
             dealers = getList(InstituteType.Dealer);
         }
         return dealers;
+    }
+     
+     public Institute getAgencyInstitute(Agency agency) {
+        if (dealers == null) {
+            dealers = getList(InstituteType.Dealer);
+        }
+        for(Institute d:dealers){
+            if(d.getAgency()==agency) return d;
+        }
+        return null;
     }
 
     public void setDealers(List<Institute> dealers) {

@@ -22,9 +22,7 @@
                             <p:commandButton value="Print" ajax="false" >
                                 <p:printer target="bill" ></p:printer>
                             </p:commandButton>
-                            <p:commandButton 
-                                ajax="false" style="float: right;" 
-                                action="#{billController.toNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+                            <p:commandButton ajax="false" style="float: right;" action="#{billController.toNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
 
                         </h:form>
                     </f:facet>
@@ -32,35 +30,25 @@
                         <div class="customerBill" >
                             <div class="customerBillHeader" >
                                 <h:outputText value="#{programPreferencesController.selected.goodReceiveBillHeader}" escape="false"/>
-
                             </div>
                             <div class="customerBillDetails" >
                                 <table class="fullWidthTable" >
                                     <tr>
-                                        <td>Customer</td>
+                                        <td>Supplier</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.fromInstitute}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stores</td>
                                         <td>
                                             &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
                                         </td>
                                         <td>
                                             #{billController.selected.toInstitute.name}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>
-                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
-                                        </td>
-                                        <td>
-                                            #{billController.selected.toInstitute.address}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>
-                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
-                                        </td>
-                                        <td>
-                                            #{billController.selected.toInstitute.phone}
                                         </td>
                                     </tr>
                                 </table>
@@ -82,12 +70,15 @@
                                             Free
                                         </td>
                                         <td class="numericTableCell">
-                                            Qty
+                                            Rate
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Value
                                         </td>
                                     </tr>
                                     <ui:repeat value="#{billController.selected.billItems}" var="bi" >
                                         <tr>
-                                            <td>
+                                            <td class="serialTableCell">
                                                 <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
                                             </td>
                                             <td>
@@ -96,7 +87,15 @@
                                             <td class="numericTableCell">
                                                 <p:outputLabel value="#{bi.quentity}"></p:outputLabel>
                                             </td>
-                                            
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.freeQuentity}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.rate}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.netValue}"></p:outputLabel>
+                                            </td>
                                         </tr>
                                     </ui:repeat>
                                 </table>
@@ -106,7 +105,49 @@
                                 <table >
                                     <tr>
                                         <td>
+                                            Total
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billTotal}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Discount
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billDiscount}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Net Total
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billNetTotal}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             Item Count
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
                                         </td>
                                         <td>
                                             #{billController.selected.billTotalQuantity}
@@ -114,6 +155,54 @@
                                     </tr>
                                 </table>
                             </div>
+
+                            <div >
+
+
+                                <table >
+                                    <tr>
+                                        <th colspan="4" >
+                                            Payment Details
+                                        </th>
+                                    </tr>
+
+                                    <ui:repeat value="#{billController.selected.payments}" var="p" id="tblPay" >
+                                        <h:panelGroup rendered="#{p.paymentValue gt 0}" styleClass="alignTop" >
+                                            <tr class="alignTop">
+                                                <td >
+                                                    <p:outputLabel value="#{p.paymentMethod}" >
+                                                    </p:outputLabel>
+                                                </td>
+                                                <td>
+                                                    <h:panelGrid columns="9" styleClass="alignTop">
+                                                        <p:outputLabel styleClass="shortNumber"   value="#{p.paymentValue}"  >
+                                                        </p:outputLabel>
+                                                        <p:spacer height="1" width="10" ></p:spacer>
+                                                        <p:outputLabel value="#{p.bank.name}"  >
+                                                        </p:outputLabel>
+                                                        <p:spacer height="1" width="10" ></p:spacer>
+                                                        <p:outputLabel value="#{p.chequeNo}"  >
+                                                        </p:outputLabel>
+                                                        <p:spacer height="1" width="10" ></p:spacer>
+                                                        <p:outputLabel value="#{p.chequeDate}"  >
+                                                            <f:convertDateTime pattern="dd MMM yyyy" ></f:convertDateTime>
+                                                        </p:outputLabel>
+                                                    </h:panelGrid>
+                                                </td>
+                                            </tr>
+                                        </h:panelGroup>
+
+                                    </ui:repeat>
+
+                                </table>
+
+
+
+
+
+
+                            </div>
+
                             <div class="customerBillFooter" >
                                 <h:outputText value="#{programPreferencesController.selected.goodReceiveBillFooter}" escape="false"/>
 

@@ -50,6 +50,8 @@ public class BillController implements Serializable {
     BillItemController billItemController;
     @Inject
     ApplicationController applicationController;
+    @Inject
+    InstituteController instituteController;
     @EJB
     private com.sss.wc.facades.BillFacade ejbFacade;
     @EJB
@@ -366,6 +368,7 @@ public class BillController implements Serializable {
 
     public String prepareForNewGoodReceiveBill(Agency agency) {
         if (selectedItemsBill) {
+            selectedBillItem = null;
             prepareForNewGoodReceiveBillSingleItem(agency);
             return "/bill/good_receive_bill_selected";
         } else {
@@ -380,6 +383,10 @@ public class BillController implements Serializable {
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
         selected.setBilledUser(getWebUserController().getLoggedUser());
+        
+        selected.setFromInstitute(instituteController.getAgencyInstitute(agency));
+        selected.setAgency(agency);
+        
         List<Item> tis = getItemController().getAgencyItems(agency);
         int count = 1;
         for (Item i : tis) {
@@ -472,9 +479,13 @@ public class BillController implements Serializable {
         selected.setBillType(BillType.Pre_Bill);
         selected.setBillCategory(BillCategory.Good_Receive);
         selected.setBilledUser(getWebUserController().getLoggedUser());
+        
+        selected.setFromInstitute(instituteController.getAgencyInstitute(agency));
+        selected.setAgency(agency);
+        
         getFacade().create(selected);
 
-        List<Payment> payments = new ArrayList<Payment>();
+        List<Payment> payments = new ArrayList<>();
 
         Payment cash = new Payment();
         cash.setPaymentMethod(PaymentMethod.Cash);

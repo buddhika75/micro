@@ -5,6 +5,7 @@ import com.sss.wc.entity.BillItem;
 import com.sss.wc.entity.Institute;
 import com.sss.wc.entity.Payment;
 import com.sss.wc.entity.WebUser;
+import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.BillCategory;
 import com.sss.wc.enums.BillType;
 import com.sss.wc.enums.PaymentMethod;
@@ -14,7 +15,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-10T02:53:14")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-10T03:27:35")
 @StaticMetamodel(Bill.class)
 public class Bill_ { 
 
@@ -43,6 +44,7 @@ public class Bill_ {
     public static volatile SingularAttribute<Bill, BillCategory> billCategory;
     public static volatile SingularAttribute<Bill, Double> billDiscount;
     public static volatile SingularAttribute<Bill, Double> initialCreditValue;
+    public static volatile SingularAttribute<Bill, Agency> agency;
     public static volatile SingularAttribute<Bill, Boolean> settled;
     public static volatile SingularAttribute<Bill, BillType> billType;
     public static volatile SingularAttribute<Bill, Date> billDate;

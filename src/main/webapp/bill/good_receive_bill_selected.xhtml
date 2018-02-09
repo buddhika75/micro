@@ -129,20 +129,25 @@
                                             completeMethod="#{billController.completeAgencyItems}"
                                             var="i" forceSelection="true"
                                             itemLabel="#{i.name}" inputStyle="width: 300px"
-                                            itemValue="#{i}"
+                                            itemValue="#{i}" maxResults="10" minQueryLength="3"
                                             placeholder="Search Items by typing few letters">
                                 <p:ajax event="itemSelect" process="@this"  update="txtRate txtSaleRate lblValue" listener="#{billController.onItemSelect}" />
 
                             </p:autoComplete>
                             <p:inputText id="txtQty" value="#{billController.selectedBillItem.quentity}" styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  update="lblValue" />
                             </p:inputText>
                             <p:inputText id="txtFreeQty" value="#{billController.selectedBillItem.freeQuentity}"  styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  update="lblValue" />
                             </p:inputText>
                             <p:inputText id="txtReturnQty" value="#{billController.selectedBillItem.returnQuentity}"  styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  update="lblValue" />
                             </p:inputText>
                             <p:inputText id="txtRate" value="#{billController.selectedBillItem.rate}"  styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  update="lblValue" />
                             </p:inputText>
                             <p:inputText id="txtSaleRate" value="#{billController.selectedBillItem.retailRate}"  styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  update="lblValue" />
                             </p:inputText>
                             <p:outputLabel id="lblValue" value="#{billController.selectedBillItem.netValue}" >
                             </p:outputLabel>
