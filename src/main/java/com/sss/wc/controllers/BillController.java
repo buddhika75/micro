@@ -768,16 +768,26 @@ public class BillController implements Serializable {
     }
 
     public void fillBills() {
+        fillBills(billCategory);
+    }
+    
+    public void fillBills(BillCategory cat) {
         String j = "select b "
                 + " from Bill b "
                 + " where b.billCategory =:bc "
                 + " and b.billDate between :fd and :td "
+                + " and b.agency =:a "
                 + " order by b.id";
         Map m = new HashMap();
-        m.put("bc", billCategory);
+        m.put("bc", cat);
         m.put("fd", fromDate);
         m.put("td", toDate);
+        m.put("a", agency);
         items = getFacade().findBySQL(j, m);
+    }
+    
+    public void fillGrnBills() {
+        fillBills(BillCategory.Good_Receive);
     }
 
     public void fillAllBills() {

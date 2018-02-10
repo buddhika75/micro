@@ -70,10 +70,16 @@
                                             Free
                                         </td>
                                         <td class="numericTableCell">
+                                            Return
+                                        </td>
+                                        <td class="numericTableCell">
                                             Rate
                                         </td>
                                         <td class="numericTableCell">
                                             Value
+                                        </td>
+                                         <td class="numericTableCell">
+                                            Sale Rate
                                         </td>
                                     </tr>
                                     <ui:repeat value="#{billController.selected.billItems}" var="bi" >
@@ -91,10 +97,16 @@
                                                 <p:outputLabel value="#{bi.freeQuentity}"></p:outputLabel>
                                             </td>
                                             <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.returnQuentity}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
                                                 <p:outputLabel value="#{bi.rate}"></p:outputLabel>
                                             </td>
                                             <td class="numericTableCell">
                                                 <p:outputLabel value="#{bi.netValue}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.retailRate}"></p:outputLabel>
                                             </td>
                                         </tr>
                                     </ui:repeat>
