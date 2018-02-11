@@ -12,7 +12,7 @@
 
             <ui:define name="contents">
                 <h:form >
-                    <p:panel header="Bill List" >
+                    <p:panel header="Good Receive Bill List" >
                         <h:panelGrid columns="3" >
 
                             <p:outputLabel value="Agency" ></p:outputLabel>
@@ -44,7 +44,7 @@
 
                         <p:dataTable id="tbl" value="#{billController.items}" var="item">
                             <p:column width="120" headerText="Actions" exportable="false" >
-                                <p:commandButton value="View" ajax="false" action="#{billController.toViewBill()}" >
+                                <p:commandButton value="View" ajax="false" action="#{billController.toViewGrnBill()}" >
                                     <f:setPropertyActionListener value="#{billController.selected}" target="#{item}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                                 <p:commandButton value="Delete" ajax="false" action="#{billController.deleteBill()}" disabled ="#{!webUserController.canSystemAdministration}">

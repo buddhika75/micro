@@ -181,13 +181,16 @@ public class Bill implements Serializable {
             case Good_Receive:
                 calculateTotalsForGoodReceiveBills();
                 break;
+            case Loading:
+                calculateTotalsForLoadingBills();
+                break;
             default:
                 calculateTotalsForOtherBills();
         }
     }
 
     public void calculateTotalsForOtherBills() {
-        System.out.println("calculateTotalForCustomerBills");
+        System.out.println("calculateTotalForOtherBills");
         double tot = 0.0;
         long c = 0;
         for (BillItem bi : getBillItems()) {
@@ -334,6 +337,64 @@ public class Bill implements Serializable {
         if (toSettleValue < 10) {
             settled = true;
         }
+
+    }
+    
+    
+    public void calculateTotalsForLoadingBills() {
+        System.out.println("calculateTotalForGoodLadingBills");
+        double tot = 0.0;
+        double totSale = 0.0;
+        double totPurchase = 0.0;
+        double totProfit = 0.0;
+        long c = 0;
+        for (BillItem bi : getBillItems()) {
+            double q = 0.0;
+            double pr = 0.0;
+            double rr = 0.0;
+            double rq = 0.0;
+            double fq = 0.0;
+            double nv = 0.0;
+            if (bi.getQuentity() != null) {
+                q = bi.getQuentity();
+            }
+            if (bi.getRate() != null) {
+                pr = bi.getRate();
+            }
+            if (bi.getRetailRate() != null) {
+                rr = bi.getRetailRate();
+            }
+            if (bi.getReturnQuentity() != null) {
+                rq = bi.getReturnQuentity();
+            }
+            if (bi.getFreeQuentity() != null) {
+                fq = bi.getFreeQuentity();
+            }
+            if (bi.getNetValue() != null) {
+                nv = bi.getNetValue();
+            }
+            tot += nv;
+            c += q + fq - rq;
+            totSale += rr * (q + fq - rq);
+            totPurchase += pr * (q - rq);
+        }
+        totProfit = totSale - totPurchase;
+
+        billTotal = tot;
+        billSaleValue = totSale;
+        billPurchaseValue = totPurchase;
+
+        if (getBillDiscount() != null) {
+            billNetTotal = tot - getBillDiscount();
+            billProfitValue = totProfit + getBillDiscount();
+        } else {
+            billNetTotal = tot;
+            billProfitValue = totProfit;
+        }
+
+        billTotalQuantity = c;
+
+        settled=false;
 
     }
 

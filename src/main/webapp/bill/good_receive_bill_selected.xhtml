@@ -131,7 +131,7 @@
                                             itemLabel="#{i.name}" inputStyle="width: 300px"
                                             itemValue="#{i}" maxResults="10" minQueryLength="3"
                                             placeholder="Search Items by typing few letters">
-                                <p:ajax event="itemSelect" process="@this"  update="txtRate txtSaleRate lblValue" listener="#{billController.onItemSelect}" />
+                                <p:ajax event="itemSelect" process="@this"  update="txtRate txtSaleRate lblValue" listener="#{billController.onItemSelectForGrn}" />
 
                             </p:autoComplete>
                             <p:inputText id="txtQty" value="#{billController.selectedBillItem.quentity}" styleClass="shortNumber">

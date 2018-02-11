@@ -15,6 +15,7 @@ import com.sss.wc.enums.PaymentMethod;
 import com.sss.wc.facades.BillFacade;
 import com.sss.wc.facades.BillItemFacade;
 import com.sss.wc.facades.ItemFacade;
+import com.sss.wc.facades.ItemStockFacade;
 import com.sss.wc.facades.PaymentFacade;
 
 import java.io.Serializable;
@@ -60,6 +61,8 @@ public class BillController implements Serializable {
     PaymentFacade paymentFacade;
     @EJB
     ItemFacade itemFacade;
+    @EJB
+    ItemStockFacade itemStockFacade;
     private List<Bill> items = null;
     List<Bill> listOfLoadedVehicles = null;
     private Bill selected;
@@ -128,7 +131,27 @@ public class BillController implements Serializable {
     }
 
     public String toViewBill() {
+        if(selected==null){
+            JsfUtil.addErrorMessage("No Bill is selected");
+            return "";
+        }
         return "/reports/bill";
+    }
+    
+    public String toViewGrnBill() {
+         if(selected==null){
+            JsfUtil.addErrorMessage("No Bill is selected");
+            return "";
+        }
+        return "/bill/good_receive_bill_print";
+    }
+    
+    public String toViewLoadingBill() {
+         if(selected==null){
+            JsfUtil.addErrorMessage("No Bill is selected");
+            return "";
+        }
+        return "/bill/loading_bill_print";
     }
 
     public String toNewCustomerBill() {
@@ -176,6 +199,22 @@ public class BillController implements Serializable {
         return prepareForNewGoodReceiveBill(agency);
     }
 
+    public String toNewLoadingBillCrysbro() {
+        prepareForNewLoadingBillCrysbro();
+        return "/bill/loading_bill";
+    }
+    
+    public String toNewLoadingBillKeells() {
+        prepareForNewLoadingBillKeells();
+        return "/bill/loading_bill";
+    }
+    
+    public String toNewLoadingBillEh() {
+        prepareForNewLoadingBillEh();
+        return "/bill/loading_bill";
+    }
+    
+    
     public String toNewLoadingBill() {
         prepareForNewLoadingBill();
         return "/bill/loading_bill";
@@ -296,13 +335,29 @@ public class BillController implements Serializable {
         getFacade().edit(selected);
     }
 
+     public void prepareForNewLoadingBillCrysbro() {
+        agency = Agency.Crysbro;
+        prepareForNewLoadingBill();
+    }
+    
+    public void prepareForNewLoadingBillKeells() {
+        agency = Agency.Keells;
+        prepareForNewLoadingBill();
+    }
+    
+     public void prepareForNewLoadingBillEh() {
+        agency = Agency.EH;
+        prepareForNewLoadingBill();
+    }
+    
     public void prepareForNewLoadingBill() {
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
+        selected.setAgency(agency);
+        selected.setFromInstitute(instituteController.getAgencyInstitute(agency));
         selected.setBillCategory(BillCategory.Loading);
         selected.setBilledUser(getWebUserController().getLoggedUser());
         getFacade().create(selected);
-
     }
 
     public void prepareForNewUnloadingBill() {
@@ -436,7 +491,7 @@ public class BillController implements Serializable {
         getFacade().edit(selected);
     }
 
-    public void onItemSelect(SelectEvent event) {
+    public void onItemSelectForGrn(SelectEvent event) {
         if (selectedBillItem == null) {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
             return;
@@ -453,6 +508,19 @@ public class BillController implements Serializable {
         }
 
     }
+    
+    public void onItemSelectForLoading(SelectEvent event) {
+        if (selectedBillItem == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        if (selectedBillItem.getItemStock() == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item Stock.");
+            return;
+        }
+        
+    }
+
 
     public void addItemToGoodReceiveBill() {
         if (selectedBillItem == null) {
@@ -474,6 +542,37 @@ public class BillController implements Serializable {
 
     }
 
+    
+    public void addItemToGoodLoadingBill() {
+        if (selectedBillItem == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        if (selectedBillItem.getItemStock() == null) {
+            JsfUtil.addErrorMessage("No Selected Bill Item.");
+            return;
+        }
+        
+        
+        for(BillItem tbi:selected.getBillItems()){
+            if(tbi.getItemStock().equals(selectedBillItem.getItemStock())){
+                JsfUtil.addErrorMessage("This stock is already added.");
+                return;
+            }
+        }
+        
+        selectedBillItem.setItem(selectedBillItem.getItemStock().getItem());
+        selectedBillItem.setBill(selected);
+
+        selectedBillItem.setSerial(selected.getBillItems().size() + 1);
+        selected.getBillItems().add(selectedBillItem);
+
+        selected.calculateTotals();
+
+        selectedBillItem = null;
+
+    }
+    
     public void prepareForNewGoodReceiveBillSingleItem(Agency agency) {
         selected = new Bill();
         selected.setBillType(BillType.Pre_Bill);
@@ -797,6 +896,30 @@ public class BillController implements Serializable {
         items = getFacade().findBySQL(j);
     }
 
+    public List<ItemStock> completeStoreStock(String qry) {
+//        System.out.println("completeStoreStock");
+        if(selected==null){
+            System.out.println("selected is null");
+            return new ArrayList<>();
+        }
+        if(selected.getFromInstitute()==null){
+            System.out.println("getFromInstitute is null");
+            return new ArrayList<>();
+        }
+        Map m = new HashMap();
+        m.put("a", agency);
+        m.put("ins", selected.getFromInstitute());
+        m.put("q", "%" + qry.toLowerCase() + "%");
+        String j;
+        j = "select i "
+                + " from ItemStock i "
+                + " where i.item.agency=:a "
+                + " and i.institute=:ins "
+                + " and lower(i.item.name) like :q "
+                + " order by i.item.name";
+        return itemStockFacade.findBySQL(j, m);
+    }
+    
     public List<Item> completeAgencyItems(String qry) {
         Map m = new HashMap();
         m.put("a", agency);
@@ -807,7 +930,7 @@ public class BillController implements Serializable {
                 + " where i.agency=:a "
                 + " and lower(i.name) like :q "
                 + " order by i.name";
-        return getFacade().findBySQL(j, m);
+        return itemFacade.findBySQL(j, m);
     }
 
     public BillItemController getBillItemController() {

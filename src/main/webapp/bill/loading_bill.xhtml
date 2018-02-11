@@ -16,7 +16,7 @@
 
             <ui:define name="body">
                 <h:form >
-                    <p:panel header="Loading Bill" >
+                    <p:panel header="Loading Bill - #{billController.agency}" >
                         <h:panelGrid columns="7">
                             <p:commandButton ajax="false"  action="#{billController.settleLoadingBill}" value="Settle &amp; Print" ></p:commandButton>
                             <p:commandButton ajax="false" action="#{billController.toNewLoadingBill()}" value="Clear &amp; New Bill" ></p:commandButton>
@@ -26,7 +26,7 @@
                             <p:selectOneMenu value="#{billController.selected.fromInstitute}" >
                                 <f:selectItem itemLabel="Select a store" ></f:selectItem>
                                 <f:selectItems value="#{instituteController.stores}" ></f:selectItems>
-                                <p:ajax process="@this" event="change" listener="#{billController.prepareBillItemWhenStoreChangesForLoadingBill}"  update=":#{p:component('billItems')}"></p:ajax>
+                                <p:ajax process="@this" event="change"></p:ajax>
                             </p:selectOneMenu>
 
                             <p:spacer height="1" width="10" ></p:spacer>
@@ -50,8 +50,39 @@
                     </p:panel>
                 </h:form>
                 <p:panel header="Bill Items" >
+
+                    <h:form >
+                        <h:panelGrid columns="3" >
+                            <p:outputLabel value="Item" ></p:outputLabel>
+                            <p:outputLabel value="Qty" ></p:outputLabel>
+                            <p:spacer></p:spacer>
+
+                            <p:autoComplete id="acItem" value="#{billController.selectedBillItem.itemStock}"
+                                            completeMethod="#{billController.completeStoreStock}"
+                                            var="i" forceSelection="true"
+                                            itemLabel="#{i.item.name}" inputStyle="width: 300px"
+                                            itemValue="#{i}" maxResults="10" minQueryLength="3"
+                                            placeholder="Search Items by typing few letters">
+                                <p:ajax event="itemSelect" process="@this"  />
+                                <p:column headerText="Item" >
+                                    <p:outputLabel value="#{i.item.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Stock" >
+                                    <p:outputLabel value="#{i.stock}" ></p:outputLabel>
+                                </p:column>
+                            </p:autoComplete>
+                            <p:inputText id="txtQty" value="#{billController.selectedBillItem.quentity}" styleClass="shortNumber">
+                                <p:ajax event="keyup" process="@this"  />
+                            </p:inputText>
+
+                            <p:commandButton id="btnAdd" value="Add" action="#{billController.addItemToGoodLoadingBill()}"
+                                             process="acItem txtQty btnAdd" 
+                                             update="acItem txtQty :#{p:component('tblBillItems')}" >
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
                     <h:form>
-                        <p:dataTable id="billItems" value="#{billController.selected.billItems}" var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle">
+                        <p:dataTable id="tblBillItems" value="#{billController.selected.billItems}" var="bi" rowKey="#{bi.serial}" tableStyleClass="ui-table-columntoggle">
                             <p:column headerText="No" width="30" >
                                 <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
                             </p:column>
