@@ -64,8 +64,10 @@
                                     </p:column>
                                     <p:column >
                                         <h:panelGroup id="lblPayValue">
-                                            <p:inputText  value="#{p.paymentValue}" rendered="#{p.needEnterValue}" placeholder="Enter the #{p.paymentMethod} Amount" >
-                                                <p:ajax event="keyup" process="@this" update="tblPay" ></p:ajax>
+                                            <p:inputText  value="#{p.paymentValue}" 
+                                                          rendered="#{p.needEnterValue}" 
+                                                          placeholder="Enter the #{p.paymentMethod} Amount" >
+                                                <p:ajax event="blur" process="@this" update="tblPay" ></p:ajax>
                                             </p:inputText>
                                             <p:inputText  value="#{p.paymentValue}" disabled="true" rendered="#{!p.needEnterValue}" >
                                             </p:inputText>
@@ -81,7 +83,8 @@
                                             <p:inputText value="#{p.chequeNo}" rendered="#{p.needChequeNo}" placeholder="Enter Cheque Number" >
                                                 <p:ajax  event="blur" process="@this" ></p:ajax>
                                             </p:inputText>
-                                            <p:calendar value="#{p.chequeDate}" rendered="#{p.needChequeNo}" placeholder="Select Cheque Date" >
+                                            <p:calendar value="#{p.chequeDate}" rendered="#{p.needChequeNo}" 
+                                                        placeholder="Select Cheque Date" pattern="dd MMM yyyy">
                                                 <p:ajax event="blur" process="@this" ></p:ajax>
                                             </p:calendar>
                                         </p:panelGrid>
@@ -129,7 +132,7 @@
                                             completeMethod="#{billController.completeAgencyItems}"
                                             var="i" forceSelection="true"
                                             itemLabel="#{i.name}" inputStyle="width: 300px"
-                                            itemValue="#{i}" maxResults="10" minQueryLength="3"
+                                            itemValue="#{i}" maxResults="20" 
                                             placeholder="Search Items by typing few letters">
                                 <p:ajax event="itemSelect" process="@this"  update="txtRate txtSaleRate lblValue" listener="#{billController.onItemSelectForGrn}" />
 

@@ -80,7 +80,7 @@ public class BillItem implements Serializable {
 
     public void setReturnQuentity(Double returnQuentity) {
         this.returnQuentity = returnQuentity;
-         calculateNetValue();
+        calculateNetValue();
     }
 
     public Double getSoldQuentity() {
@@ -172,11 +172,9 @@ public class BillItem implements Serializable {
             }
         }
         if (rate != null && quentity != null) {
-            if (returnQuentity == null) {
-                netValue = rate * quentity;
-            } else {
-                netValue = rate * (quentity - returnQuentity);
-            }
+
+            netValue = rate * quentity;
+
         }
 
     }
