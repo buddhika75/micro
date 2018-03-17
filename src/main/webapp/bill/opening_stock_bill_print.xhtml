@@ -72,31 +72,36 @@
                                         <td class="numericTableCell">
                                             Value
                                         </td>
-                                         <td class="numericTableCell">
+                                        <td class="numericTableCell">
                                             Sale Rate
                                         </td>
                                     </tr>
                                     <ui:repeat value="#{billController.selected.billItems}" var="bi" >
-                                        <tr>
-                                            <td class="serialTableCell">
-                                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:outputLabel value="#{bi.item.name}"></p:outputLabel>
-                                            </td>
-                                            <td class="numericTableCell">
-                                                <p:outputLabel value="#{bi.quentity}"></p:outputLabel>
-                                            </td>
-                                            <td class="numericTableCell">
-                                                <p:outputLabel value="#{bi.rate}"></p:outputLabel>
-                                            </td>
-                                            <td class="numericTableCell">
-                                                <p:outputLabel value="#{bi.netValue}"></p:outputLabel>
-                                            </td>
-                                            <td class="numericTableCell">
-                                                <p:outputLabel value="#{bi.retailRate}"></p:outputLabel>
-                                            </td>
-                                        </tr>
+                                        <h:panelGroup rendered="#{bi.quentity ne null}">
+                                            <tr>
+                                                <td class="serialTableCell">
+                                                    <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
+                                                </td>
+                                                <td>
+                                                    <p:outputLabel value="#{bi.item.name}"></p:outputLabel>
+                                                </td>
+                                                <td class="numericTableCell">
+                                                    <p:outputLabel value="#{bi.quentity}"></p:outputLabel>
+                                                </td>
+                                                <td class="numericTableCell">
+                                                    <p:outputLabel value="#{bi.rate}"></p:outputLabel>
+                                                </td>
+                                                <td class="numericTableCell">
+                                                    <p:outputLabel value="#{bi.netValue}"></p:outputLabel>
+                                                </td>
+                                                <td class="numericTableCell">
+                                                    <p:outputLabel value="#{bi.retailRate}"></p:outputLabel>
+                                                </td>
+                                            </tr>
+
+                                        </h:panelGroup>
+
+
                                     </ui:repeat>
                                 </table>
                             </div>
@@ -156,7 +161,7 @@
                                 </table>
                             </div>
 
-                           
+
 
                             <div class="customerBillFooter" >
                                 <h:outputText value="#{programPreferencesController.selected.goodReceiveBillFooter}" escape="false"/>

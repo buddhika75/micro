@@ -85,7 +85,7 @@
                             <p:column headerText="No" width="30" >
                                 <h:outputLabel id="sno" value="#{bi.serial}" style="#{bi.rbg}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Item" filterBy="#{bi.item.name}" >
+                            <p:column headerText="Item" filterBy="#{bi.item.name}" filterMatchMode="contains" >
                                 <p:outputLabel id="item" value="#{bi.item.name}"  style="#{bi.rbg}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Quentity"  >
