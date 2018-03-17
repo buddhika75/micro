@@ -41,7 +41,7 @@
 
 
 
-
+ggggugughiuhihih
                         <p:dataTable id="tbl" value="#{billController.items}" var="item">
                             <p:column width="120" headerText="Actions" exportable="false" >
                                 <p:commandButton value="View" ajax="false" action="#{billController.toViewGrnBill()}" >
@@ -51,12 +51,7 @@
                                     <f:setPropertyActionListener value="#{billController.selected}" target="#{item}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Bill Category"/>
-                                </f:facet>
-                                <h:outputText value="#{item.billCategory}"/>
-                            </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="Bill Type"/>
@@ -202,7 +197,7 @@
                                 </f:facet>
                                 <h:outputText value="#{item.agency}"/>
                             </p:column>
-                            
+
                         </p:dataTable>
 
 

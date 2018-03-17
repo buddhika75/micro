@@ -14,6 +14,7 @@
             </ui:define>
 
             <ui:define name="body">
+                
                 <h:panelGrid columns="2" class="alignTop" >
                     <p:panel header="Bill Reports" >
                         <h:form >
@@ -21,11 +22,8 @@
                                 <p:commandButton ajax="false" value="List GRN Bills" action="/reports/grn_bill_list"  styleClass="mediumButton" ></p:commandButton>
                                 <p:commandButton ajax="false" value="List Loading Bills" action="/reports/loading_bill_list"  styleClass="mediumButton" ></p:commandButton>
                                 <p:commandButton ajax="false" value="List Opening Stock Bills" action="/reports/opening_stock_bill_list"  styleClass="mediumButton" ></p:commandButton>
-
                                 <p:commandButton ajax="false" value="List All Bills" action="/reports/bill_list"  styleClass="mediumButton" ></p:commandButton>
-                            
-                                 <p:commandButton ajax="false" value="Good Receive Returns Report" action="/reports/good_receive_return_report"  styleClass="mediumButton" ></p:commandButton>
-                            
+                                <p:commandButton ajax="false" value="Good Receive Returns Report" action="/reports/good_receive_return_report"  styleClass="mediumButton" ></p:commandButton>
                             </h:panelGrid>  
                         </h:form>
 
