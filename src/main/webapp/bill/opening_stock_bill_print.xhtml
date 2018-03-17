@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="title">
+                Opening Stock Bill Print
+            </ui:define>
+
+            <ui:define name="body">
+                <p:panel >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Opening Stock Bill Print" ></p:outputLabel>
+                        <h:form >
+                            <p:commandButton value="Print" ajax="false" >
+                                <p:printer target="bill" ></p:printer>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" style="float: right;" action="#{billController.toNewGoodReceiveBill()}" value="Clear &amp; New Bill" ></p:commandButton>
+
+                        </h:form>
+                    </f:facet>
+                    <h:panelGroup  id="bill" >
+                        <div class="customerBill" >
+                            <div class="customerBillHeader" >
+                                <h:outputText value="#{programPreferencesController.selected.goodReceiveBillHeader}" escape="false"/>
+                            </div>
+                            <div class="customerBillDetails" >
+                                <table class="fullWidthTable" >
+                                    <tr>
+                                        <td>Supplier</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.fromInstitute}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stores</td>
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td>
+                                            #{billController.selected.toInstitute.name}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="customerBillItemDetails" >
+                                <br/>
+                                <table class="fullWidthTable" >
+                                    <tr>
+                                        <td>
+                                            No
+                                        </td>
+                                        <td>
+                                            Item
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Qty
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Rate
+                                        </td>
+                                        <td class="numericTableCell">
+                                            Value
+                                        </td>
+                                         <td class="numericTableCell">
+                                            Sale Rate
+                                        </td>
+                                    </tr>
+                                    <ui:repeat value="#{billController.selected.billItems}" var="bi" >
+                                        <tr>
+                                            <td class="serialTableCell">
+                                                <p:outputLabel value="#{bi.serial}" ></p:outputLabel>
+                                            </td>
+                                            <td>
+                                                <p:outputLabel value="#{bi.item.name}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.quentity}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.rate}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.netValue}"></p:outputLabel>
+                                            </td>
+                                            <td class="numericTableCell">
+                                                <p:outputLabel value="#{bi.retailRate}"></p:outputLabel>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </table>
+                            </div>
+                            <div class="customerBillDetailsFooter" >
+                                <br/>
+                                <table >
+                                    <tr>
+                                        <td>
+                                            Total
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billTotal}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Discount
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billDiscount}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Net Total
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel value= "#{billController.selected.billNetTotal}">
+                                                <f:convertNumber pattern="#,##0.00" ></f:convertNumber>
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Item Count
+                                        </td>
+                                        <td>
+                                            <p:spacer height="1" width="10" ></p:spacer>
+                                        </td>
+                                        <td>
+                                            #{billController.selected.billTotalQuantity}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                           
+
+                            <div class="customerBillFooter" >
+                                <h:outputText value="#{programPreferencesController.selected.goodReceiveBillFooter}" escape="false"/>
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

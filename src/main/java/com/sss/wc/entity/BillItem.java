@@ -146,6 +146,8 @@ public class BillItem implements Serializable {
             case Good_Receive:
                 calculateNetValueForGoodReceiveBills();
                 break;
+            case Opening_Stock:
+                calculateNetValueForOpeningStockBills();
             default:
                 calculateNetValueForOtherBills();
         }
@@ -179,6 +181,34 @@ public class BillItem implements Serializable {
 
     }
 
+    public void calculateNetValueForOpeningStockBills() {
+        System.out.println("calculateNetValueForOpeningStockBills");
+        if (quentity == null) {
+            netValue = 0.0;
+        }
+        if (rate == null) {
+            netValue = 0.0;
+        } else {
+            System.out.println("rate = " + rate);
+            if (retailRate != null) {
+                System.out.println("retailRate = " + retailRate);
+                if (retailRate > rate) {
+                    rbg = "color:rgb(0, 100, 0);";
+                } else {
+                    rbg = "color:rgb(255, 0, 0);";
+                }
+                System.out.println("rbg = " + rbg);
+            }
+        }
+        if (rate != null && quentity != null) {
+
+            netValue = rate * quentity;
+
+        }
+
+    }
+
+    
     public void calculateNetValueForOtherBills() {
         if (quentity == null) {
             netValue = 0.0;

@@ -43,7 +43,7 @@ public class ItemStockController implements Serializable {
         Map m = new HashMap();
         String j = "select itms "
                 + " from ItemStock itms "
-                + " where itms.institute=:ins ";
+                + " where itms.institute=:ins and itms.stock > :sv ";
         if (agency != null) {
             j += " and itms.item.agency=:agency ";
             m.put("agency", agency);
@@ -51,6 +51,7 @@ public class ItemStockController implements Serializable {
         j += " order by itms.item.name";
 
         m.put("ins", institute);
+        m.put("sv", 0.0);
         items = getFacade().findBySQL(j, m);
         totalSaleValue = 0.0;
         totalPurchaseValue = 0.0;
@@ -99,14 +100,16 @@ public class ItemStockController implements Serializable {
         items = null;
     }
 
-    public void deleteStock() {
+    public void makeStocksZero() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to delete");
             return;
         }
-        getFacade().remove(selected);
+        selected.setStock(0.0);
+        getFacade().edit(selected);
         JsfUtil.addErrorMessage("Deleted");
-        setInstitute(null);
+//        setInstitute(null);
+        fillCurrentStocks();
     }
 
     public ItemStockController() {

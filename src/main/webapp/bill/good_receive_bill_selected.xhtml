@@ -11,12 +11,12 @@
         <ui:composition template="./../template.xhtml">
 
             <ui:define name="title">
-                Good Receive Bill
+                Good Receive Bill - #{billController.agency}
             </ui:define>
 
             <ui:define name="body">
                 <h:form >
-                    <p:panel header="Good Receive Bill" >
+                    <p:panel header="Good Receive Bill  - #{billController.agency}" >
                         <h:panelGrid columns="3" styleClass="alignTop">
                             <p:panelGrid columns="1"  >
                                 <p:panel  header="Bill Settle" >

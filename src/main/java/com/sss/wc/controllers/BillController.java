@@ -90,10 +90,12 @@ public class BillController implements Serializable {
                 + " Bill b "
                 + " where b.billCategory=:cat "
                 + " and b.billType=:type "
+                + " and b.agency=:a "
                 + " and b.salesRep.id=:rep ";
         Map m = new HashMap();
         m.put("cat", BillCategory.Loading);
         m.put("type", BillType.Billed_Bill);
+        m.put("a", agency);
         m.put("rep", getWebUserController().getLoggedUser().getId());
         System.out.println("getWebUserController().getLoggedUser() = " + getWebUserController().getLoggedUser());
         listOfLoadedVehicles = getFacade().findBySQL(j, m, TemporalType.DATE, 10);
@@ -154,13 +156,59 @@ public class BillController implements Serializable {
         }
         return "/bill/loading_bill_print";
     }
+    
+    public String toViewOpeningStockBill() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("No Bill is selected");
+            return "";
+        }
+        return "/bill/opening_stock_bill_print";
+    }
 
     public String toNewCustomerBill() {
         prepareForNewCustomerBill();
         return "/bill/customer_bill";
     }
 
-    public String toNewGoodReceiveBillCrysbroAllItems() {
+    public String toNewCustomerBillEh() {
+        agency = Agency.EH;
+        prepareForNewCustomerBill();
+        return "/bill/customer_bill";
+    }
+
+    public String toNewCustomerBillKeells() {
+        agency = Agency.Keells;
+        prepareForNewCustomerBill();
+        return "/bill/customer_bill";
+    }
+
+    public String toNewCustomerBillCrysbro() {
+        agency = Agency.Crysbro;
+        prepareForNewCustomerBill();
+        return "/bill/customer_bill";
+    }
+
+    
+    
+    public String toOpeningStockBillCrysbroAllItems() {
+        agency = Agency.Crysbro;
+        selectedItemsBill = false;
+        return prepareForNewOpeningStockBill(agency);
+    }
+    
+    public String toOpeningStockBillKeellsAllItems() {
+        agency = Agency.Keells;
+        selectedItemsBill = false;
+        return prepareForNewOpeningStockBill(agency);
+    }
+    
+    public String toOpeningStockBillEhAllItems() {
+        agency = Agency.EH;
+        selectedItemsBill = false;
+        return prepareForNewOpeningStockBill(agency);
+    }
+    
+    public String toNewGoodReceiveBillEhAllItems() {
         agency = Agency.Crysbro;
         selectedItemsBill = false;
         return prepareForNewGoodReceiveBill(agency);
@@ -184,11 +232,6 @@ public class BillController implements Serializable {
         return prepareForNewGoodReceiveBill(agency);
     }
 
-    public String toNewGoodReceiveBillEhAllItems() {
-        agency = Agency.EH;
-        selectedItemsBill = false;
-        return prepareForNewGoodReceiveBill(agency);
-    }
 
     public String toNewGoodReceiveBillEhSingleItem() {
         agency = Agency.EH;
@@ -196,6 +239,11 @@ public class BillController implements Serializable {
         return prepareForNewGoodReceiveBill(agency);
     }
 
+    public String toNewOpeningStockBill() {
+        return prepareForNewOpeningStockBill(agency);
+    }
+
+    
     public String toNewGoodReceiveBill() {
         return prepareForNewGoodReceiveBill(agency);
     }
@@ -375,7 +423,7 @@ public class BillController implements Serializable {
             return;
         }
         getFacade().remove(selected);
-        JsfUtil.addErrorMessage("Delete");
+        JsfUtil.addSuccessMessage("Deleted");
         items = null;
     }
 
@@ -431,6 +479,18 @@ public class BillController implements Serializable {
             return "/bill/good_receive_bill";
         }
     }
+    
+    
+    public String prepareForNewOpeningStockBill(Agency agency) {
+        if (selectedItemsBill) {
+            selectedBillItem = null;
+            prepareForNewOpeningStockBillAllItems(agency);
+            return "/bill/opening_stock_bill";
+        } else {
+            prepareForNewOpeningStockBillAllItems(agency);
+            return "/bill/opening_stock_bill";
+        }
+    }
 
     public void prepareForNewGoodReceiveBillAllItems(Agency agency) {
 
@@ -470,27 +530,66 @@ public class BillController implements Serializable {
         getPaymentFacade().create(cash);
         payments.add(cash);
 
+        if (agency != Agency.Crysbro) {
+            Payment cheque = new Payment();
+            cheque.setPaymentMethod(PaymentMethod.Cheque);
+            cheque.setReceiving(false);
+            cheque.setPaying(true);
+            cheque.setBill(selected);
+            getPaymentFacade().create(cheque);
+            payments.add(cheque);
+        }
+
         Payment credit = new Payment();
-        credit.setPaymentMethod(PaymentMethod.Cheque);
-        credit.setReceiving(true);
-        credit.setPaying(false);
+        credit.setPaymentMethod(PaymentMethod.Credit);
         credit.setBill(selected);
+        credit.setReceiving(false);
+        credit.setPaying(true);
         getPaymentFacade().create(credit);
         payments.add(credit);
-
-        Payment cheque = new Payment();
-        cheque.setPaymentMethod(PaymentMethod.Credit);
-        cheque.setBill(selected);
-        cheque.setReceiving(true);
-        cheque.setPaying(false);
-        getPaymentFacade().create(cheque);
-        payments.add(cheque);
 
         selected.setPayments(payments);
 
         getFacade().edit(selected);
     }
 
+    
+    
+    public void prepareForNewOpeningStockBillAllItems(Agency agency) {
+
+        selected = new Bill();
+        selected.setBillType(BillType.Pre_Bill);
+        selected.setBillCategory(BillCategory.Opening_Stock);
+        selected.setBilledUser(getWebUserController().getLoggedUser());
+        selected.setFromInstitute(instituteController.getAgencyInstitute(agency));
+        selected.setAgency(agency);
+
+        List<Item> tis = getItemController().getAgencyItems(agency);
+        int count = 1;
+        for (Item i : tis) {
+            BillItem bi = new BillItem();
+            bi.setBill(selected);
+            bi.setItem(i);
+            if (i.getDealerRate() != null && i.getDealerRate() != 0.0) {
+                bi.setRate(i.getDealerRate());
+            }
+            if (i.getRetailRate() != null && i.getRetailRate() != 0.0) {
+                bi.setRetailRate(i.getRetailRate());
+            }
+            bi.setSerial(count);
+            selected.getBillItems().add(bi);
+            count++;
+        }
+        getFacade().create(selected);
+
+        selected.setPayments(new ArrayList<Payment>());
+
+        getFacade().edit(selected);
+    }
+
+    
+    
+    
     public void onItemSelectForGrn(SelectEvent event) {
         if (selectedBillItem == null) {
             JsfUtil.addErrorMessage("No Selected Bill Item.");
@@ -586,26 +685,30 @@ public class BillController implements Serializable {
         Payment cash = new Payment();
         cash.setPaymentMethod(PaymentMethod.Cash);
         cash.setBill(selected);
-        cash.setReceiving(true);
-        cash.setPaying(false);
+        cash.setReceiving(false);
+        cash.setPaying(true);
         getPaymentFacade().create(cash);
         payments.add(cash);
 
+        if (agency != Agency.Crysbro) {
+
+            Payment cheque = new Payment();
+            cheque.setPaymentMethod(PaymentMethod.Cheque);
+            cheque.setReceiving(true);
+            cheque.setPaying(false);
+            cheque.setBill(selected);
+            getPaymentFacade().create(cheque);
+            payments.add(cheque);
+
+        }
+
         Payment credit = new Payment();
-        credit.setPaymentMethod(PaymentMethod.Cheque);
-        credit.setReceiving(true);
-        credit.setPaying(false);
+        credit.setPaymentMethod(PaymentMethod.Credit);
         credit.setBill(selected);
+        credit.setReceiving(false);
+        credit.setPaying(true);
         getPaymentFacade().create(credit);
         payments.add(credit);
-
-        Payment cheque = new Payment();
-        cheque.setPaymentMethod(PaymentMethod.Credit);
-        cheque.setBill(selected);
-        cheque.setReceiving(true);
-        cheque.setPaying(false);
-        getPaymentFacade().create(cheque);
-        payments.add(cheque);
 
         selected.setPayments(payments);
 
@@ -863,6 +966,102 @@ public class BillController implements Serializable {
         return "/bill/good_receive_bill_print";
     }
 
+    
+    
+    public String settleOpeningStockBill() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to save");
+            return "";
+        }
+        if (selected.getToInstitute() == null) {
+            JsfUtil.addErrorMessage("Select Stores");
+            return "";
+        }
+        int count = 0;
+        for (BillItem bi : selected.getBillItems()) {
+            count++;
+            System.out.println("count = " + count);
+            System.out.println("bi.getItem() = " + bi.getItem().getName());
+            if (bi.getItem() == null) {
+                continue;
+            }
+            System.out.println("bi.getItem().getRetailRate() = " + bi.getRetailRate());
+            if (bi.getRetailRate() == null) {
+                continue;
+            } else {
+                if (bi.getItem().getRetailRate() != null) {
+                    if (!bi.getItem().getRetailRate().equals(bi.getRetailRate())) {
+                        bi.getItem().setRetailRate(bi.getRetailRate());
+                        getItemFacade().edit(bi.getItem());
+                    }
+                } else {
+                    bi.getItem().setRetailRate(bi.getRetailRate());
+                    getItemFacade().edit(bi.getItem());
+                }
+            }
+            if (bi.getRate() == null) {
+                continue;
+            } else {
+                if (bi.getItem().getDealerRate() != null) {
+                    if (!bi.getItem().getDealerRate().equals(bi.getRate())) {
+                        bi.getItem().setDealerRate(bi.getRate());
+                        getItemFacade().edit(bi.getItem());
+                    }
+                } else {
+                    bi.getItem().setDealerRate(bi.getRate());
+                    getItemFacade().edit(bi.getItem());
+                }
+            }
+            System.out.println("selected.getToInstitute() = " + selected.getToInstitute());
+            if (selected.getToInstitute() == null) {
+                continue;
+            }
+            ItemStock is = getApplicationController().findItemStock(
+                    bi.getItem(),
+                    bi.getRetailRate(),
+                    bi.getRate(),
+                    selected.getToInstitute());
+            System.out.println("is = " + is);
+
+            if (is == null) {
+                continue;
+            }
+
+            System.out.println("is.getStock() = " + is.getStock());
+
+            double addingQty = 0.0;
+
+            if (bi.getQuentity() == null) {
+                System.out.println("Bill QUentity is null");
+            } else {
+                addingQty = bi.getQuentity();
+                if (bi.getFreeQuentity() != null) {
+                    addingQty += bi.getFreeQuentity();
+                }
+                if (bi.getReturnQuentity() != null) {
+                    addingQty -= bi.getReturnQuentity();
+                }
+                applicationController.addToStock(is, addingQty);
+            }
+
+            System.out.println("is.getStock() = " + is.getStock());
+
+        }
+
+        selected.setBillAt(new Date());
+        selected.setBillDate(new Date());
+        selected.setBillTime(new Date());
+        selected.calculateTotalsForOpeningStockBills();
+
+        selected.setBillType(BillType.Billed_Bill);
+        getFacade().edit(selected);
+        return "/bill/opening_stock_bill_print";
+    }
+
+    
+    
+    
+    
     public void fillBills() {
         fillBills(billCategory);
     }
@@ -901,6 +1100,10 @@ public class BillController implements Serializable {
 
     public void fillGrnBills() {
         fillBills(BillCategory.Good_Receive);
+    }
+    
+    public void fillOpeningStockBills() {
+        fillBills(BillCategory.Opening_Stock);
     }
 
     public void fillGrnBillItemReturns() {

@@ -16,7 +16,7 @@
 
             <ui:define name="body">
                 <h:form >
-                    <p:panel header="Customer Bill" >
+                    <p:panel header="Customer Bill -  #{billController.agency}" >
 
                         <p:panelGrid columns="3" styleClass="alignTop" >
                             <h:panelGrid columns="2" >
@@ -106,19 +106,23 @@
                             </p:column>
                             <p:column headerText="Quentity"  >
                                 <p:inputNumber id="qty" value="#{bi.quentity}" styleClass="shortNumber" style="width: 80px!important;"  >
-                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}" />
+                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotals()}" />
                                 </p:inputNumber>
                             </p:column>
                             <p:column headerText="Free"   >
                                 <p:inputNumber id="free" value="#{bi.freeQuentity}" styleClass="shortNumber" >
-                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}"/>
+                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotals()}"/>
+                                </p:inputNumber>
+                            </p:column>
+                             <p:column headerText="Return"   >
+                                 <p:inputNumber id="return" value="#{bi.returnQuentity}" styleClass="shortNumber" >
+                                    <p:ajax process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotals()}"/>
                                 </p:inputNumber>
                             </p:column>
                             <p:column headerText="Rate" >
                                 <p:inputNumber id="rate" value="#{bi.rate}"  styleClass="shortNumber" >
-                                    <p:ajax event="keyup" process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotalForCustomerBills()}"/>
+                                    <p:ajax event="keyup" process="@this" update="lblVal :#{p:component('billTotal')}  :#{p:component('gpPay')}" listener="#{billController.selected.calculateTotals()}"/>
                                 </p:inputNumber>
-                                <p:slider for="rate"  minValue="#{bi.item.retailerRateMin}" maxValue="#{bi.item.retailerRateMax}" step="0.5"/>
                             </p:column>
                             <p:column headerText="Value"  >
                                 <p:outputLabel id="lblVal" value="#{bi.netValue}" ></p:outputLabel>

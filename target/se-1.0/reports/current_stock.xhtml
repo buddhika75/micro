@@ -58,7 +58,7 @@
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" >
-                                <p:commandButton ajax="false" action="#{itemStockController.deleteStock}" disabled="#{!webUserController.canSystemAdministration}"
+                                <p:commandButton ajax="false" action="#{itemStockController.makeStocksZero}" disabled="#{!webUserController.canSystemAdministration}"
                                                  value="Delete" >
                                     <f:setPropertyActionListener value="#{is}" target="#{itemStockController.selected}" ></f:setPropertyActionListener>
                                 </p:commandButton>

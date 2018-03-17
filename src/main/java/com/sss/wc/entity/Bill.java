@@ -114,6 +114,16 @@ public class Bill implements Serializable {
     @Enumerated(EnumType.STRING)
     Agency agency;
 
+    Long meterReading;
+
+    public Long getMeterReading() {
+        return meterReading;
+    }
+
+    public void setMeterReading(Long meterReading) {
+        this.meterReading = meterReading;
+    }
+
     public Agency getAgency() {
         return agency;
     }
@@ -122,9 +132,6 @@ public class Bill implements Serializable {
         this.agency = agency;
     }
 
-    
-    
-    
     public Bill getBilledBillForReturnedBills() {
         return billedBillForReturnedBills;
     }
@@ -184,6 +191,9 @@ public class Bill implements Serializable {
             case Loading:
                 calculateTotalsForLoadingBills();
                 break;
+            case Opening_Stock:
+                calculateTotalsForOpeningStockBills();
+                break;
             default:
                 calculateTotalsForOtherBills();
         }
@@ -199,7 +209,7 @@ public class Bill implements Serializable {
         }
         setBillNetTotal(tot);
         setBillTotal(tot);
-        setBillDiscount(0.0);
+        
         setBillTotalQuantity(c);
         double paidTotal = 0;
         double maxPaymentValue = 0.0;
@@ -339,8 +349,63 @@ public class Bill implements Serializable {
         }
 
     }
-    
-    
+
+    public void calculateTotalsForOpeningStockBills() {
+        System.out.println("calculateTotalForOpeningStockBills");
+        double tot = 0.0;
+        double totSale = 0.0;
+        double totPurchase = 0.0;
+        double totProfit = 0.0;
+        long c = 0;
+        for (BillItem bi : getBillItems()) {
+            double q = 0.0;
+            double pr = 0.0;
+            double rr = 0.0;
+            double rq = 0.0;
+            double fq = 0.0;
+            double nv = 0.0;
+            if (bi.getQuentity() != null) {
+                q = bi.getQuentity();
+            }
+            if (bi.getRate() != null) {
+                pr = bi.getRate();
+            }
+            if (bi.getRetailRate() != null) {
+                rr = bi.getRetailRate();
+            }
+            if (bi.getReturnQuentity() != null) {
+                rq = bi.getReturnQuentity();
+            }
+            if (bi.getFreeQuentity() != null) {
+                fq = bi.getFreeQuentity();
+            }
+            if (bi.getNetValue() != null) {
+                nv = bi.getNetValue();
+            }
+            tot += nv;
+            c += q + fq - rq;
+            totSale += rr * (q + fq - rq);
+            totPurchase += pr * (q - rq);
+        }
+        totProfit = totSale - totPurchase;
+
+        billTotal = tot;
+        billSaleValue = totSale;
+        billPurchaseValue = totPurchase;
+
+        if (getBillDiscount() != null) {
+            billNetTotal = tot - getBillDiscount();
+            billProfitValue = totProfit + getBillDiscount();
+        } else {
+            billNetTotal = tot;
+            billProfitValue = totProfit;
+        }
+
+        billTotalQuantity = c;
+
+        settled = true;
+    }
+
     public void calculateTotalsForLoadingBills() {
         System.out.println("calculateTotalForGoodLadingBills");
         double tot = 0.0;
@@ -394,7 +459,7 @@ public class Bill implements Serializable {
 
         billTotalQuantity = c;
 
-        settled=false;
+        settled = false;
 
     }
 

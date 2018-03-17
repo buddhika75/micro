@@ -47,16 +47,20 @@
                             <p:menuitem value="Elephant House" action="#{billController.toNewLoadingBillEh()}" ajax="false" />
                         </p:submenu>
                         <p:submenu label="Billing" >
-                            <p:menuitem value="Crysbro" action="#{billController.toNewCustomerBill()}" ajax="false" />
-                            <p:menuitem value="Keells" action="#{billController.toNewCustomerBill()}" ajax="false" />
-                            <p:menuitem value="Elephant House" action="#{billController.toNewCustomerBill()}" ajax="false" />
+                            <p:menuitem value="Crysbro" action="#{billController.toNewCustomerBillCrysbro()}" ajax="false" />
+                            <p:menuitem value="Keells" action="#{billController.toNewCustomerBillKeells()}" ajax="false" />
+                            <p:menuitem value="Elephant House" action="#{billController.toNewCustomerBillEh()}" ajax="false" />
                         </p:submenu>
                         <p:submenu label="Un-Loading" >
                             <p:menuitem value="Crysbro" action="#{billController.toNewUnloadingBill()}" ajax="false" />
                             <p:menuitem value="Keells" action="#{billController.toNewUnloadingBill()}" ajax="false" />
                             <p:menuitem value="Elephant House" action="#{billController.toNewUnloadingBill()}" ajax="false" />
                         </p:submenu>
-
+                        <p:submenu label="Opening Stock" >
+                            <p:menuitem value="Crysbro" action="#{billController.toOpeningStockBillCrysbroAllItems()}" ajax="false" />
+                            <p:menuitem value="Keells" action="#{billController.toOpeningStockBillKeellsAllItems()}" ajax="false" />
+                            <p:menuitem value="Elephant House" action="#{billController.toOpeningStockBillEhAllItems()}" ajax="false" />
+                        </p:submenu>
                         <p:submenu label="Reports" >
                             <p:menuitem value="Stock Reports" action="/reports/stock_reports" ajax="false" />
                             <p:menuitem value="Bill Lists" action="/reports/bill_reports" ajax="false" />

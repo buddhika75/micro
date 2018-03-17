@@ -21,7 +21,7 @@
                             <p:commandButton ajax="false"  action="#{billController.settleLoadingBill}" value="Settle &amp; Print" ></p:commandButton>
                             <p:commandButton ajax="false" action="#{billController.toNewLoadingBill()}" value="Clear &amp; New Bill" ></p:commandButton>
                         </h:panelGrid>
-                        <h:panelGrid columns="8" >
+                        <h:panelGrid columns="12" >
                             <p:outputLabel value="Stores" ></p:outputLabel>
                             <p:selectOneMenu value="#{billController.selected.fromInstitute}" >
                                 <f:selectItem itemLabel="Select a store" ></f:selectItem>
@@ -46,6 +46,11 @@
                                             itemValue="#{r}">
                                 <p:ajax process="@this"  event="itemSelect" ></p:ajax>
                             </p:autoComplete>
+
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:outputLabel value="Vehicle Meter Reading" ></p:outputLabel>
+                            <p:inputNumber value="#{billController.selected.meterReading}" ></p:inputNumber>
+
                         </h:panelGrid>
                     </p:panel>
                 </h:form>
@@ -61,7 +66,7 @@
                                             completeMethod="#{billController.completeStoreStock}"
                                             var="i" forceSelection="true"
                                             itemLabel="#{i.item.name}" inputStyle="width: 300px"
-                                            itemValue="#{i}" maxResults="10" minQueryLength="3"
+                                            itemValue="#{i}" maxResults="20" 
                                             placeholder="Search Items by typing few letters">
                                 <p:ajax event="itemSelect" process="@this"  />
                                 <p:column headerText="Item" >

@@ -18,4 +18,6 @@ public enum BillCategory {
     Cheque_Realization_Bill,
     Loading,
     Unloading,
+    Opening_Stock,
+    Stock_Adjustment,
 }
