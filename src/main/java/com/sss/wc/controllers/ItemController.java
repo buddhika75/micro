@@ -38,7 +38,7 @@ public class ItemController implements Serializable {
 
     public List<Item> getItemItems() {
         if (itemItems == null) {
-            itemItems = getList(ItemType.Item);
+            itemItems = getList(ItemType.Item, agency);
         }
         return itemItems;
     }
@@ -72,6 +72,18 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
+    
+    public List<Item> getList(ItemType type, Agency agency) {
+        String j = "select i "
+                + " from Item i "
+                + " where i.itemType=:t "
+                + " and i.agency=:a "
+                + " order by i.name";
+        Map m = new HashMap();
+        m.put("t", type);
+         m.put("a", agency);
+        return getFacade().findBySQL(j, m);
+    }
 
     public String toItems() {
         selected = null;
@@ -81,18 +93,21 @@ public class ItemController implements Serializable {
     public String toCrysbroItems() {
         selected = null;
         items = getAgencyItems(Agency.Crysbro);
+        itemItems = null;
         return "/maintenance/crysbro_items";
     }
 
     public String toKeellsItems() {
         selected = null;
         items = getAgencyItems(Agency.Keells);
+        itemItems = null;
         return "/maintenance/keells_items";
     }
 
     public String toEhItems() {
         selected = null;
         items = getAgencyItems(Agency.EH);
+        itemItems = null;
         return "/maintenance/eh_items";
     }
 

@@ -225,6 +225,12 @@ public class BillController implements Serializable {
         selectedItemsBill = false;
         return prepareForNewGoodReceiveBill(agency);
     }
+    
+    public String toNewGoodReceiveBillCrysbroAllItems() {
+        agency = Agency.Crysbro;
+        selectedItemsBill = false;
+        return prepareForNewGoodReceiveBill(agency);
+    }
 
     public String toNewGoodReceiveBillKeellsSingleItem() {
         agency = Agency.Keells;

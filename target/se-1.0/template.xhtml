@@ -19,7 +19,7 @@
 
         <p:layout fullPage="true" >
 
-            <p:growl id="growl" life="3000" autoUpdate="true" class="noPrint" />
+            <p:growl id="growl"  />
 
             <p:layoutUnit position="north" header="S. Susantha Enterprises (Pvt) Ltd" maxSize="80" styleClass="noPrint"  >
 
@@ -85,20 +85,22 @@
 
             <p:layoutUnit position="south" class="noPrint" >
                 <ui:insert name="footer">
-                    <h:panelGrid columns="4" styleClass="noPrint" >
-                        <p:outputLabel value="&copy; Sunila Software Solutions" ></p:outputLabel>
-                        <h:panelGroup >
-                            <p:spacer ></p:spacer>
-                            |
-                            <p:spacer ></p:spacer>
-                        </h:panelGroup>
-                        <p:outputLabel rendered="#{webUserController.loggedUser ne null}" value="You are logged as #{webUserController.loggedUser.name}" ></p:outputLabel>
-                        <h:form >
-                            <p:commandLink rendered="#{webUserController.loggedUser ne null}" value="Logout" ajax="false" action="#{webUserController.logOut()}" ></p:commandLink>
-                        </h:form>
-                        <p:outputLabel rendered="#{webUserController.loggedUser eq null}" value="Please login to continue" ></p:outputLabel>
+                    <h:form id="formFooter" >
+                        <h:panelGrid columns="4" styleClass="noPrint" >
+                            <p:outputLabel value="&copy; Sunila Software Solutions" ></p:outputLabel>
+                            <h:panelGroup >
+                                <p:spacer ></p:spacer>
+                                |
+                                <p:spacer ></p:spacer>
+                            </h:panelGroup>
+                            <p:outputLabel rendered="#{webUserController.loggedUser ne null}" value="You are logged as #{webUserController.loggedUser.name}" ></p:outputLabel>
 
-                    </h:panelGrid>
+                            <p:commandLink rendered="#{webUserController.loggedUser ne null}" value="Logout" ajax="false" action="#{webUserController.logOut()}" ></p:commandLink>
+
+                            <p:outputLabel rendered="#{webUserController.loggedUser eq null}" value="Please login to continue" ></p:outputLabel>
+
+                        </h:panelGrid>
+                    </h:form>
                 </ui:insert>
             </p:layoutUnit>
 
@@ -112,7 +114,7 @@
                         <p:panel header="Login" styleClass="loginBox" rendered="#{webUserController.loggedUser eq null}" >
 
 
-                            <h:form >
+                            <h:form id="frmLogin" >
                                 <h:panelGrid columns="3" >
                                     <p:outputLabel value="Username" ></p:outputLabel>
                                     <p:spacer width="10" height="1" ></p:spacer>
