@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.se</groupId>
-    <artifactId>se</artifactId>
+    <artifactId>micro</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>se</name>
+    <name>micro</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

@@ -3,8 +3,6 @@ package com.sss.wc.controllers;
 import com.sss.wc.entity.WebUser;
 import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
-import com.sss.wc.entity.Location;
-import com.sss.wc.entity.Institute;
 import com.sss.wc.entity.UserPrivilege;
 import com.sss.wc.enums.Privilege;
 import com.sss.wc.enums.UserType;
@@ -38,10 +36,6 @@ public class WebUserController implements Serializable {
 
     @Inject
     UserPrivilegeController userPrivilegeController;
-    @Inject
-    InstituteController instituteController;
-    @Inject
-    LocationController locationController;
 
     private List<WebUser> items = null;
     private WebUser selected;
@@ -488,9 +482,6 @@ public class WebUserController implements Serializable {
         return userPrivilegeController;
     }
 
-    public InstituteController getInstituteController() {
-        return instituteController;
-    }
 
     @FacesConverter(forClass = WebUser.class)
     public static class WebUserControllerConverter implements Converter {

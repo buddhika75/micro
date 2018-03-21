@@ -39,10 +39,6 @@ public class WebUser implements Serializable {
     @ManyToOne
     Item position;
     boolean executiveOfficer;
-    @ManyToOne
-    Institute institute;
-    @ManyToOne
-    Location location;
     @Enumerated(EnumType.STRING)
     UserType userType;
     @Transient
@@ -65,27 +61,6 @@ public class WebUser implements Serializable {
     }
     
     
-    
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location department) {
-        this.location = department;
-    }
-    
-
-    public Institute getInstitute() {
-        return institute;
-    }
-
-    public void setInstitute(Institute institute) {
-        this.institute = institute;
-    }
-    
-    
-
     public String getSname() {
         return sname;
     }

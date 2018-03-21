@@ -3,7 +3,6 @@ package com.sss.wc.controllers;
 import com.sss.wc.controllers.util.JsfUtil;
 import com.sss.wc.controllers.util.JsfUtil.PersistAction;
 import com.sss.wc.entity.Item;
-import com.sss.wc.enums.Agency;
 import com.sss.wc.enums.ItemType;
 import com.sss.wc.facades.ItemFacade;
 import java.io.Serializable;
@@ -31,14 +30,14 @@ public class ItemController implements Serializable {
     private List<Item> items = null;
     private Item selected;
     List<Item> itemItems;
-    Agency agency;
+
 
     public ItemController() {
     }
 
-    public List<Item> getItemItems() {
+    public List<Item> getAntibiotics() {
         if (itemItems == null) {
-            itemItems = getList(ItemType.Item, agency);
+            itemItems = getList(ItemType.Antibiotic);
         }
         return itemItems;
     }
@@ -47,8 +46,8 @@ public class ItemController implements Serializable {
         this.itemItems = itemItems;
     }
 
-    public List<Item> completeItemItems(String qry) {
-        return getList(ItemType.Item, qry);
+    public List<Item> completeAntiobiotics(String qry) {
+        return getList(ItemType.Antibiotic, qry);
     }
 
     public List<Item> getList(ItemType type, String qry) {
@@ -73,69 +72,13 @@ public class ItemController implements Serializable {
         return getFacade().findBySQL(j, m);
     }
     
-    public List<Item> getList(ItemType type, Agency agency) {
-        String j = "select i "
-                + " from Item i "
-                + " where i.itemType=:t "
-                + " and i.agency=:a "
-                + " order by i.name";
-        Map m = new HashMap();
-        m.put("t", type);
-         m.put("a", agency);
-        return getFacade().findBySQL(j, m);
-    }
-
+   
     public String toItems() {
         selected = null;
         return "/maintenance/items";
     }
 
-    public String toCrysbroItems() {
-        selected = null;
-        items = getAgencyItems(Agency.Crysbro);
-        itemItems = null;
-        return "/maintenance/crysbro_items";
-    }
-
-    public String toKeellsItems() {
-        selected = null;
-        items = getAgencyItems(Agency.Keells);
-        itemItems = null;
-        return "/maintenance/keells_items";
-    }
-
-    public String toEhItems() {
-        selected = null;
-        items = getAgencyItems(Agency.EH);
-        itemItems = null;
-        return "/maintenance/eh_items";
-    }
-
-    public String toEditItem() {
-        if (selected == null) {
-            JsfUtil.addErrorMessage("Nothing to Edit");
-            return "";
-        }
-        return "/maintenance/items";
-    }
-
-    public String toAddNewCysbroItem() {
-        agency = Agency.Crysbro;
-        addNewItem();
-        return "/maintenance/items";
-    }
-
-    public String toAddKeellsItem() {
-        agency = Agency.Keells;
-        addNewItem();
-        return "/maintenance/items";
-    }
-
-    public String toAddNewEhItem() {
-        agency = Agency.EH;
-        addNewItem();
-        return "/maintenance/items";
-    }
+    
 
     public String deleteItemFromList() {
         if (selected == null) {
@@ -152,11 +95,6 @@ public class ItemController implements Serializable {
         return toItems();
     }
 
-    public void addNewItem() {
-        selected = new Item();
-        selected.setAgency(agency);
-        selected.setItemType(ItemType.Item);
-    }
 
     public void saveItem() {
         if (selected == null) {
@@ -172,7 +110,6 @@ public class ItemController implements Serializable {
         }
         items = null;
         itemItems = null;
-        agency = selected.getAgency();
         getItems();
     }
 
@@ -244,14 +181,7 @@ public class ItemController implements Serializable {
         return items;
     }
 
-    public List<Item> getAgencyItems(Agency agency) {
-        Map m = new HashMap();
-        m.put("a", agency);
-        String j;
-        j = "select i from Item i where i.agency=:a order by i.name";
-        return getFacade().findBySQL(j, m);
 
-    }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
@@ -293,14 +223,7 @@ public class ItemController implements Serializable {
         return getItems();
     }
 
-    public void temConvertAgencyOfAllItemsToKeells() {
-        items = null;
-        List<Item> its = getItems();
-        for (Item i : its) {
-            i.setAgency(Agency.Keells);
-            getFacade().edit(i);
-        }
-    }
+   
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {

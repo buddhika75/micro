@@ -5,9 +5,11 @@
  */
 package com.sss.wc.entity;
 
-import com.sss.wc.enums.Agency;
+
 import com.sss.wc.enums.ItemType;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,6 +17,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,6 +27,10 @@ import javax.persistence.Lob;
  */
 @Entity
 public class Item implements Serializable {
+
+    @OneToOne(mappedBy = "referenceToItem")
+    private Item referenceFromItem;
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,75 +40,33 @@ public class Item implements Serializable {
     String name;
     String code;
     @Lob
-    String description;
+    String contents;
+    
     @Enumerated(EnumType.STRING)
     ItemType itemType;
-    @Enumerated(EnumType.STRING)
-    Agency agency;
-    Double retailRate;
-    Double retailerRate;
-    Double retailerRateMin;
-    Double retailerRateMax;
-    Double wholesaleRate;
-    Double wholesaleRateMin;
-    Double wholesaleRateMax;
-    Double dealerRate;
-    Double dealerRateMin;
-    Double dealerRateMax;
-    double maxQtySaleForCustomer;
-    double maxQtySaleForDealer;
-
-    public Agency getAgency() {
-        return agency;
-    }
-
-    public void setAgency(Agency agency) {
-        this.agency = agency;
-    }
-
     
+    @ManyToOne(cascade = CascadeType.ALL)
+    Item parentItem;
+    @OneToMany(mappedBy = "parentItem")
+    private List<Item> childItems;
     
-    
-    public Double getRetailerRate() {
-        return retailerRate;
+    @OneToOne(cascade = CascadeType.ALL)
+    Item referenceToItem;
+
+    public Item getReferenceFromItem() {
+        return referenceFromItem;
     }
 
-    public void setRetailerRate(Double retailerRate) {
-        this.retailerRate = retailerRate;
+    public void setReferenceFromItem(Item referenceFromItem) {
+        this.referenceFromItem = referenceFromItem;
     }
 
-    public Double getRetailerRateMin() {
-        return retailerRateMin;
+    public Long getId() {
+        return id;
     }
 
-    public void setRetailerRateMin(Double retailerRateMin) {
-        this.retailerRateMin = retailerRateMin;
-    }
-
-    public Double getRetailerRateMax() {
-        return retailerRateMax;
-    }
-
-    public void setRetailerRateMax(Double retailerRateMax) {
-        this.retailerRateMax = retailerRateMax;
-    }
-
-    
-    
-    public double getMaxQtySaleForCustomer() {
-        return maxQtySaleForCustomer;
-    }
-
-    public void setMaxQtySaleForCustomer(double maxQtySaleForCustomer) {
-        this.maxQtySaleForCustomer = maxQtySaleForCustomer;
-    }
-
-    public double getMaxQtySaleForDealer() {
-        return maxQtySaleForDealer;
-    }
-
-    public void setMaxQtySaleForDealer(double maxQtySaleForDealer) {
-        this.maxQtySaleForDealer = maxQtySaleForDealer;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -110,62 +77,6 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public Double getRetailRate() {
-        return retailRate;
-    }
-
-    public void setRetailRate(Double retailRate) {
-        this.retailRate = retailRate;
-    }
-
-    public Double getWholesaleRate() {
-        return wholesaleRate;
-    }
-
-    public void setWholesaleRate(Double wholesaleRate) {
-        this.wholesaleRate = wholesaleRate;
-    }
-
-    public Double getWholesaleRateMin() {
-        return wholesaleRateMin;
-    }
-
-    public void setWholesaleRateMin(Double wholesaleRateMin) {
-        this.wholesaleRateMin = wholesaleRateMin;
-    }
-
-    public Double getWholesaleRateMax() {
-        return wholesaleRateMax;
-    }
-
-    public void setWholesaleRateMax(Double wholesaleRateMax) {
-        this.wholesaleRateMax = wholesaleRateMax;
-    }
-
-    public Double getDealerRate() {
-        return dealerRate;
-    }
-
-    public void setDealerRate(Double dealerRate) {
-        this.dealerRate = dealerRate;
-    }
-
-    public Double getDealerRateMin() {
-        return dealerRateMin;
-    }
-
-    public void setDealerRateMin(Double dealerRateMin) {
-        this.dealerRateMin = dealerRateMin;
-    }
-
-    public Double getDealerRateMax() {
-        return dealerRateMax;
-    }
-
-    public void setDealerRateMax(Double dealerRateMax) {
-        this.dealerRateMax = dealerRateMax;
-    }
-
     public String getCode() {
         return code;
     }
@@ -174,12 +85,12 @@ public class Item implements Serializable {
         this.code = code;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContents() {
+        return contents;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public ItemType getItemType() {
@@ -190,13 +101,34 @@ public class Item implements Serializable {
         this.itemType = itemType;
     }
 
-    public Long getId() {
-        return id;
+    public Item getParentItem() {
+        return parentItem;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setParentItem(Item parentItem) {
+        this.parentItem = parentItem;
     }
+
+    public List<Item> getChildItems() {
+        return childItems;
+    }
+
+    public void setChildItems(List<Item> childItems) {
+        this.childItems = childItems;
+    }
+
+    public Item getReferenceToItem() {
+        return referenceToItem;
+    }
+
+    public void setReferenceToItem(Item referenceToItem) {
+        this.referenceToItem = referenceToItem;
+    }
+    
+    
+    
+    
+    
 
     @Override
     public int hashCode() {
