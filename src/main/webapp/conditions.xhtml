@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <f:view renderKitId="PRIMEFACES_MOBILE" />
     <h:head>
 
     </h:head>
     <h:body>
         <pm:page  >
-            <pm:header  style="text-align: center; padding: 1px;">Antimicrobial Guidelines</pm:header>
+            <pm:header  style="text-align: center; padding: 1px;">Conditions</pm:header>
             <pm:content  >
                 <h:form >
-                    <p:commandButton value="Conditions" action="/conditions" ajax="false"/>
-                    <p:commandButton value="Systems" action="conditions" ajax="false"/>
-                    <p:commandButton value="Antibiotics" type="button"/>
-                    <p:commandButton value="Search" type="button"/>
-                    <p:commandButton value="About" type="button"/>
+                     <p:commandButton value="Back"  ajax="false" action="/mobile"/>
+                    
                 </h:form>
             </pm:content>
             <pm:footer title="&copy; Sri Lanka College of Microbiologists" >

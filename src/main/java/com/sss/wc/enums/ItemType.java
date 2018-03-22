@@ -26,6 +26,7 @@ public enum ItemType {
     Condition_Primary_Therapy_Alternative_herapy_Comments,
     Condition_In_Condition_Primary_Therapy_Alternative_herapy_Comments,
     Primary_Therapy_In_Condition_Primary_Therapy_Alternative_herapy_Comments,
+    Alternative_Therapy_In_Condition_Primary_Therapy_Alternative_herapy_Comments,
     Header,
     Footer,
     Text,

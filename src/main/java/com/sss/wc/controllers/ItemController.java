@@ -31,7 +31,6 @@ public class ItemController implements Serializable {
     private Item selected;
     List<Item> itemItems;
 
-
     public ItemController() {
     }
 
@@ -50,18 +49,33 @@ public class ItemController implements Serializable {
         return getList(ItemType.Antibiotic, qry);
     }
 
+    public List<Item> completeItems(String qry) {
+        return getList(null, qry);
+    }
+
     public List<Item> getList(ItemType type, String qry) {
         String j = "select i "
                 + " from Item i "
-                + " where i.itemType=:t "
-                + " and lower(i.name) like :q "
-                + " order by i.name";
+                + " where lower(i.name) like :q ";
         Map m = new HashMap();
-        m.put("t", type);
+        if (type != null) {
+            j += " and i.itemType=:t ";
+            m.put("t", type);
+        }
+        j += " order by i.name";
         m.put("q", "%" + qry.toLowerCase() + "%");
         return getFacade().findBySQL(j, m);
     }
 
+    public String toListConditions(){
+        
+        return "";
+    }
+    
+    public void addNewItem(){
+        selected = new Item();
+    }
+    
     public List<Item> getList(ItemType type) {
         String j = "select i "
                 + " from Item i "
@@ -71,14 +85,11 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
-    
-   
+
     public String toItems() {
         selected = null;
         return "/maintenance/items";
     }
-
-    
 
     public String deleteItemFromList() {
         if (selected == null) {
@@ -94,7 +105,6 @@ public class ItemController implements Serializable {
         }
         return toItems();
     }
-
 
     public void saveItem() {
         if (selected == null) {
@@ -181,8 +191,6 @@ public class ItemController implements Serializable {
         return items;
     }
 
-
-
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -222,8 +230,6 @@ public class ItemController implements Serializable {
     public List<Item> getItemsAvailableSelectOne() {
         return getItems();
     }
-
-   
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {

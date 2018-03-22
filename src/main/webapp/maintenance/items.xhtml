@@ -21,7 +21,7 @@
                                 <h:form>
                                     <h:panelGrid columns="1" >
                                         <p:outputLabel value="List Items" ></p:outputLabel>
-                                        <p:autoComplete completeMethod="#{itemController.completeItemItems}"
+                                        <p:autoComplete completeMethod="#{itemController.completeItems}"
                                                         value="#{itemController.selected}"
                                                         var="i" forceSelection="true"
                                                         itemLabel="#{i.name}"
@@ -44,9 +44,9 @@
                             <p:panel header="Lists" >
                                 <h:form>
                                     <h:panelGrid columns="1" >
-                                        <p:commandButton value="Crysbro Item List" action="#{itemController.toCrysbroItems()}" ajax="false" ></p:commandButton>
-                                        <p:commandButton value="Keells Item List" action="#{itemController.toKeellsItems()}" ajax="false" ></p:commandButton>
-                                        <p:commandButton value="Elephant House Litem List" action="#{itemController.toEhItems()}" ajax="false" ></p:commandButton>
+                                        <p:commandButton value="Conditions" action="#{itemController.toCrysbroItems()}" ajax="false" ></p:commandButton>
+                                        <p:commandButton value="Systems" action="#{itemController.toKeellsItems()}" ajax="false" ></p:commandButton>
+                                        <p:commandButton value="Antibiotics" action="#{itemController.toEhItems()}" ajax="false" ></p:commandButton>
                                     </h:panelGrid>
                                 </h:form>
                             </p:panel>
