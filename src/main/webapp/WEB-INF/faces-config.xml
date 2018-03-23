@@ -8,49 +8,5 @@
             <base-name>/Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle</base-name>
-            <var>bundle</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle1</base-name>
-            <var>bundle1</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/Bundle1</base-name>
-            <var>bundle1</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundlePt</base-name>
-            <var>bundlePt</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleIns</base-name>
-            <var>bundleIns</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleArea</base-name>
-            <var>bundleArea</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleUser1</base-name>
-            <var>bundleUser1</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleUser2</base-name>
-            <var>bundleUser2</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleBills</base-name>
-            <var>bundleBills</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleProPre</base-name>
-            <var>bundleProPre</var>
-        </resource-bundle>
-        <resource-bundle>
-            <base-name>/BundleS</base-name>
-            <var>bundleS</var>
-        </resource-bundle>
     </application>
 </faces-config>

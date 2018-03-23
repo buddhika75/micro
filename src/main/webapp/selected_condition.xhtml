@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <pm:page  >
+            <pm:header title="#{itemController.selected.name}" ></pm:header>
+            <pm:content  >
+                <h:form >
+
+                    <p:outputLabel value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
+
+                    <ui:repeat rendered="#{!itemController.selected.hasGrandChildren}" value="#{itemController.selected.childItems}" 
+                               var="cip" >
+                        <p:commandButton value="#{ci.name}"  ajax="false" action="/selected_condition" >
+                            <f:setPropertyActionListener value="#{ci}" target="#{itemController.selected}" ></f:setPropertyActionListener>
+                        </p:commandButton>
+                    </ui:repeat>
+
+                    <ui:repeat rendered="#{itemController.selected.hasGrandChildren}" value="#{itemController.selected.childItems}" var="ci" >
+                        <p:outputLabel value="#{ci.name}" ></p:outputLabel>
+                        <p:outputLabel value="#{ci.primaryTherapy}" ></p:outputLabel>
+                        <p:outputLabel value="#{ci.alternativeTherapy}" ></p:outputLabel>
+                        <p:outputLabel value="#{ci.comments}" ></p:outputLabel>
+                    </ui:repeat>
+
+                    <p:commandButton value="Back"  ajax="false" action="/conditions"/>
+                </h:form>
+            </pm:content>
+            <pm:footer title="&copy; Sri Lanka College of Microbiologists" >
+
+            </pm:footer >
+        </pm:page>
+    </h:body>
+</html>
+

@@ -8,18 +8,18 @@
 
     <ui:composition>
 
-        <p:dialog id="UserPrivilegeViewDlg" widgetVar="UserPrivilegeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleUser1.ViewUserPrivilegeTitle}">
+        <p:dialog id="UserPrivilegeViewDlg" widgetVar="UserPrivilegeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewUserPrivilegeTitle}">
             <h:form id="UserPrivilegeViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{userPrivilegeController.selected != null}">
-                        <h:outputText value="#{bundleUser1.ViewUserPrivilegeLabel_id}"/>
-                        <h:outputText value="#{userPrivilegeController.selected.id}" title="#{bundleUser1.ViewUserPrivilegeTitle_id}"/>
-                        <h:outputText value="#{bundleUser1.ViewUserPrivilegeLabel_webUser}"/>
-                        <h:outputText value="#{userPrivilegeController.selected.webUser}" title="#{bundleUser1.ViewUserPrivilegeTitle_webUser}"/>
-                        <h:outputText value="#{bundleUser1.ViewUserPrivilegeLabel_privilege}"/>
-                        <h:outputText value="#{userPrivilegeController.selected.privilege}" title="#{bundleUser1.ViewUserPrivilegeTitle_privilege}"/>
+                        <h:outputText value="#{bundle.ViewUserPrivilegeLabel_id}"/>
+                        <h:outputText value="#{userPrivilegeController.selected.id}" title="#{bundle.ViewUserPrivilegeTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewUserPrivilegeLabel_webUser}"/>
+                        <h:outputText value="#{userPrivilegeController.selected.webUser}" title="#{bundle.ViewUserPrivilegeTitle_webUser}"/>
+                        <h:outputText value="#{bundle.ViewUserPrivilegeLabel_privilege}"/>
+                        <h:outputText value="#{userPrivilegeController.selected.privilege}" title="#{bundle.ViewUserPrivilegeTitle_privilege}"/>
                     </p:panelGrid>
-                    <p:commandButton value="#{bundleUser1.Close}" onclick="UserPrivilegeViewDialog.hide()"/>
+                    <p:commandButton value="#{bundle.Close}" onclick="UserPrivilegeViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

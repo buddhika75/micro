@@ -8,34 +8,34 @@
 
     <ui:composition>
 
-        <p:dialog id="ProgramPreferencesViewDlg" widgetVar="ProgramPreferencesViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleProPre.ViewProgramPreferencesTitle}">
+        <p:dialog id="ProgramPreferencesViewDlg" widgetVar="ProgramPreferencesViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewProgramPreferencesTitle}">
             <h:form id="ProgramPreferencesViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{programPreferencesController.selected != null}">
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_customerBillHeader}"/>
-                        <h:outputText value="#{programPreferencesController.selected.customerBillHeader}" title="#{bundleProPre.ViewProgramPreferencesTitle_customerBillHeader}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_customerBillFooter}"/>
-                        <h:outputText value="#{programPreferencesController.selected.customerBillFooter}" title="#{bundleProPre.ViewProgramPreferencesTitle_customerBillFooter}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_customerPaymentReceiveHeader}"/>
-                        <h:outputText value="#{programPreferencesController.selected.customerPaymentReceiveHeader}" title="#{bundleProPre.ViewProgramPreferencesTitle_customerPaymentReceiveHeader}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_customerPaymentReceiveBillFooter}"/>
-                        <h:outputText value="#{programPreferencesController.selected.customerPaymentReceiveBillFooter}" title="#{bundleProPre.ViewProgramPreferencesTitle_customerPaymentReceiveBillFooter}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_dealerBillHeader}"/>
-                        <h:outputText value="#{programPreferencesController.selected.dealerBillHeader}" title="#{bundleProPre.ViewProgramPreferencesTitle_dealerBillHeader}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_dealerBillFooter}"/>
-                        <h:outputText value="#{programPreferencesController.selected.dealerBillFooter}" title="#{bundleProPre.ViewProgramPreferencesTitle_dealerBillFooter}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_dealerPaymentReceiveHeader}"/>
-                        <h:outputText value="#{programPreferencesController.selected.dealerPaymentReceiveHeader}" title="#{bundleProPre.ViewProgramPreferencesTitle_dealerPaymentReceiveHeader}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_dealerPaymentReceiveBillFooter}"/>
-                        <h:outputText value="#{programPreferencesController.selected.dealerPaymentReceiveBillFooter}" title="#{bundleProPre.ViewProgramPreferencesTitle_dealerPaymentReceiveBillFooter}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_goodReceiveBillHeader}"/>
-                        <h:outputText value="#{programPreferencesController.selected.goodReceiveBillHeader}" title="#{bundleProPre.ViewProgramPreferencesTitle_goodReceiveBillHeader}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_goodReceiveBillFooter}"/>
-                        <h:outputText value="#{programPreferencesController.selected.goodReceiveBillFooter}" title="#{bundleProPre.ViewProgramPreferencesTitle_goodReceiveBillFooter}"/>
-                        <h:outputText value="#{bundleProPre.ViewProgramPreferencesLabel_id}"/>
-                        <h:outputText value="#{programPreferencesController.selected.id}" title="#{bundleProPre.ViewProgramPreferencesTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_customerBillHeader}"/>
+                        <h:outputText value="#{programPreferencesController.selected.customerBillHeader}" title="#{bundle.ViewProgramPreferencesTitle_customerBillHeader}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_customerBillFooter}"/>
+                        <h:outputText value="#{programPreferencesController.selected.customerBillFooter}" title="#{bundle.ViewProgramPreferencesTitle_customerBillFooter}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_customerPaymentReceiveHeader}"/>
+                        <h:outputText value="#{programPreferencesController.selected.customerPaymentReceiveHeader}" title="#{bundle.ViewProgramPreferencesTitle_customerPaymentReceiveHeader}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_customerPaymentReceiveBillFooter}"/>
+                        <h:outputText value="#{programPreferencesController.selected.customerPaymentReceiveBillFooter}" title="#{bundle.ViewProgramPreferencesTitle_customerPaymentReceiveBillFooter}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_dealerBillHeader}"/>
+                        <h:outputText value="#{programPreferencesController.selected.dealerBillHeader}" title="#{bundle.ViewProgramPreferencesTitle_dealerBillHeader}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_dealerBillFooter}"/>
+                        <h:outputText value="#{programPreferencesController.selected.dealerBillFooter}" title="#{bundle.ViewProgramPreferencesTitle_dealerBillFooter}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_dealerPaymentReceiveHeader}"/>
+                        <h:outputText value="#{programPreferencesController.selected.dealerPaymentReceiveHeader}" title="#{bundle.ViewProgramPreferencesTitle_dealerPaymentReceiveHeader}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_dealerPaymentReceiveBillFooter}"/>
+                        <h:outputText value="#{programPreferencesController.selected.dealerPaymentReceiveBillFooter}" title="#{bundle.ViewProgramPreferencesTitle_dealerPaymentReceiveBillFooter}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_goodReceiveBillHeader}"/>
+                        <h:outputText value="#{programPreferencesController.selected.goodReceiveBillHeader}" title="#{bundle.ViewProgramPreferencesTitle_goodReceiveBillHeader}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_goodReceiveBillFooter}"/>
+                        <h:outputText value="#{programPreferencesController.selected.goodReceiveBillFooter}" title="#{bundle.ViewProgramPreferencesTitle_goodReceiveBillFooter}"/>
+                        <h:outputText value="#{bundle.ViewProgramPreferencesLabel_id}"/>
+                        <h:outputText value="#{programPreferencesController.selected.id}" title="#{bundle.ViewProgramPreferencesTitle_id}"/>
                     </p:panelGrid>
-                    <p:commandButton value="#{bundleProPre.Close}" onclick="ProgramPreferencesViewDialog.hide()"/>
+                    <p:commandButton value="#{bundle.Close}" onclick="ProgramPreferencesViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

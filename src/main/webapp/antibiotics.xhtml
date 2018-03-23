@@ -12,14 +12,15 @@
     </h:head>
     <h:body>
         <pm:page  >
-            <pm:header  title="Conditions"></pm:header>
+            <pm:header title="Antibiotics"  style="text-align: center; padding: 1px;"></pm:header>
             <pm:content  >
                 <h:form >
-                    <ui:repeat value="#{itemController.conditions}" var="c" >
+                    <ui:repeat value="#{itemController.antibiotics}" var="c" >
 
-                        <p:commandButton value="#{c.name}" action="#{itemController.toSelectedCondition()}" >
+                        <p:commandButton value="#{c.name}" action="#{itemController.toSelectedAntibiotic()}" >
                             <f:setPropertyActionListener value="#{c}" target="#{itemController.selected}" ></f:setPropertyActionListener>
                         </p:commandButton>
+
                     </ui:repeat>
                     <p:commandButton value="Back"  ajax="false" action="/mobile"/>
                 </h:form>

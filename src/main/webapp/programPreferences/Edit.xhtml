@@ -8,35 +8,35 @@
 
     <ui:composition>
 
-        <p:dialog id="ProgramPreferencesEditDlg" widgetVar="ProgramPreferencesEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleProPre.EditProgramPreferencesTitle}">
+        <p:dialog id="ProgramPreferencesEditDlg" widgetVar="ProgramPreferencesEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProgramPreferencesTitle}">
             <h:form id="ProgramPreferencesEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{programPreferencesController.selected != null}">
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_customerBillHeader}" for="customerBillHeader" />
-                        <p:inputTextarea rows="4" cols="30" id="customerBillHeader" value="#{programPreferencesController.selected.customerBillHeader}" title="#{bundleProPre.EditProgramPreferencesTitle_customerBillHeader}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_customerBillFooter}" for="customerBillFooter" />
-                        <p:inputTextarea rows="4" cols="30" id="customerBillFooter" value="#{programPreferencesController.selected.customerBillFooter}" title="#{bundleProPre.EditProgramPreferencesTitle_customerBillFooter}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_customerPaymentReceiveHeader}" for="customerPaymentReceiveHeader" />
-                        <p:inputTextarea rows="4" cols="30" id="customerPaymentReceiveHeader" value="#{programPreferencesController.selected.customerPaymentReceiveHeader}" title="#{bundleProPre.EditProgramPreferencesTitle_customerPaymentReceiveHeader}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_customerPaymentReceiveBillFooter}" for="customerPaymentReceiveBillFooter" />
-                        <p:inputTextarea rows="4" cols="30" id="customerPaymentReceiveBillFooter" value="#{programPreferencesController.selected.customerPaymentReceiveBillFooter}" title="#{bundleProPre.EditProgramPreferencesTitle_customerPaymentReceiveBillFooter}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_dealerBillHeader}" for="dealerBillHeader" />
-                        <p:inputTextarea rows="4" cols="30" id="dealerBillHeader" value="#{programPreferencesController.selected.dealerBillHeader}" title="#{bundleProPre.EditProgramPreferencesTitle_dealerBillHeader}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_dealerBillFooter}" for="dealerBillFooter" />
-                        <p:inputTextarea rows="4" cols="30" id="dealerBillFooter" value="#{programPreferencesController.selected.dealerBillFooter}" title="#{bundleProPre.EditProgramPreferencesTitle_dealerBillFooter}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_dealerPaymentReceiveHeader}" for="dealerPaymentReceiveHeader" />
-                        <p:inputTextarea rows="4" cols="30" id="dealerPaymentReceiveHeader" value="#{programPreferencesController.selected.dealerPaymentReceiveHeader}" title="#{bundleProPre.EditProgramPreferencesTitle_dealerPaymentReceiveHeader}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_dealerPaymentReceiveBillFooter}" for="dealerPaymentReceiveBillFooter" />
-                        <p:inputTextarea rows="4" cols="30" id="dealerPaymentReceiveBillFooter" value="#{programPreferencesController.selected.dealerPaymentReceiveBillFooter}" title="#{bundleProPre.EditProgramPreferencesTitle_dealerPaymentReceiveBillFooter}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_goodReceiveBillHeader}" for="goodReceiveBillHeader" />
-                        <p:inputTextarea rows="4" cols="30" id="goodReceiveBillHeader" value="#{programPreferencesController.selected.goodReceiveBillHeader}" title="#{bundleProPre.EditProgramPreferencesTitle_goodReceiveBillHeader}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_goodReceiveBillFooter}" for="goodReceiveBillFooter" />
-                        <p:inputTextarea rows="4" cols="30" id="goodReceiveBillFooter" value="#{programPreferencesController.selected.goodReceiveBillFooter}" title="#{bundleProPre.EditProgramPreferencesTitle_goodReceiveBillFooter}" />
-                        <p:outputLabel value="#{bundleProPre.EditProgramPreferencesLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{programPreferencesController.selected.id}" title="#{bundleProPre.EditProgramPreferencesTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_customerBillHeader}" for="customerBillHeader" />
+                        <p:inputTextarea rows="4" cols="30" id="customerBillHeader" value="#{programPreferencesController.selected.customerBillHeader}" title="#{bundle.EditProgramPreferencesTitle_customerBillHeader}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_customerBillFooter}" for="customerBillFooter" />
+                        <p:inputTextarea rows="4" cols="30" id="customerBillFooter" value="#{programPreferencesController.selected.customerBillFooter}" title="#{bundle.EditProgramPreferencesTitle_customerBillFooter}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_customerPaymentReceiveHeader}" for="customerPaymentReceiveHeader" />
+                        <p:inputTextarea rows="4" cols="30" id="customerPaymentReceiveHeader" value="#{programPreferencesController.selected.customerPaymentReceiveHeader}" title="#{bundle.EditProgramPreferencesTitle_customerPaymentReceiveHeader}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_customerPaymentReceiveBillFooter}" for="customerPaymentReceiveBillFooter" />
+                        <p:inputTextarea rows="4" cols="30" id="customerPaymentReceiveBillFooter" value="#{programPreferencesController.selected.customerPaymentReceiveBillFooter}" title="#{bundle.EditProgramPreferencesTitle_customerPaymentReceiveBillFooter}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_dealerBillHeader}" for="dealerBillHeader" />
+                        <p:inputTextarea rows="4" cols="30" id="dealerBillHeader" value="#{programPreferencesController.selected.dealerBillHeader}" title="#{bundle.EditProgramPreferencesTitle_dealerBillHeader}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_dealerBillFooter}" for="dealerBillFooter" />
+                        <p:inputTextarea rows="4" cols="30" id="dealerBillFooter" value="#{programPreferencesController.selected.dealerBillFooter}" title="#{bundle.EditProgramPreferencesTitle_dealerBillFooter}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_dealerPaymentReceiveHeader}" for="dealerPaymentReceiveHeader" />
+                        <p:inputTextarea rows="4" cols="30" id="dealerPaymentReceiveHeader" value="#{programPreferencesController.selected.dealerPaymentReceiveHeader}" title="#{bundle.EditProgramPreferencesTitle_dealerPaymentReceiveHeader}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_dealerPaymentReceiveBillFooter}" for="dealerPaymentReceiveBillFooter" />
+                        <p:inputTextarea rows="4" cols="30" id="dealerPaymentReceiveBillFooter" value="#{programPreferencesController.selected.dealerPaymentReceiveBillFooter}" title="#{bundle.EditProgramPreferencesTitle_dealerPaymentReceiveBillFooter}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_goodReceiveBillHeader}" for="goodReceiveBillHeader" />
+                        <p:inputTextarea rows="4" cols="30" id="goodReceiveBillHeader" value="#{programPreferencesController.selected.goodReceiveBillHeader}" title="#{bundle.EditProgramPreferencesTitle_goodReceiveBillHeader}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_goodReceiveBillFooter}" for="goodReceiveBillFooter" />
+                        <p:inputTextarea rows="4" cols="30" id="goodReceiveBillFooter" value="#{programPreferencesController.selected.goodReceiveBillFooter}" title="#{bundle.EditProgramPreferencesTitle_goodReceiveBillFooter}" />
+                        <p:outputLabel value="#{bundle.EditProgramPreferencesLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{programPreferencesController.selected.id}" title="#{bundle.EditProgramPreferencesTitle_id}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{programPreferencesController.update}" value="#{bundleProPre.Save}" update="display,:ProgramPreferencesListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProgramPreferencesEditDialog');"/>
-                    <p:commandButton value="#{bundleProPre.Cancel}" onclick="ProgramPreferencesEditDialog.hide()"/>
+                    <p:commandButton actionListener="#{programPreferencesController.update}" value="#{bundle.Save}" update="display,:ProgramPreferencesListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProgramPreferencesEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProgramPreferencesEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

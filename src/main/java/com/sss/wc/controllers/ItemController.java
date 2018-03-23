@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.persistence.Transient;
 
 @Named("itemController")
 @SessionScoped
@@ -28,17 +29,38 @@ public class ItemController implements Serializable {
     @EJB
     private com.sss.wc.facades.ItemFacade ejbFacade;
     private List<Item> items = null;
+    private List<Item> conditions = null;
+    private List<Item> systems = null;
+    List<Item> antibiotics = null;
+
     private Item selected;
     List<Item> itemItems;
-
+   
     public ItemController() {
+        
+        
     }
 
-    public List<Item> getAntibiotics() {
-        if (itemItems == null) {
-            itemItems = getList(ItemType.Antibiotic);
+    public String toSelectedAntibiotic(){
+        if(selected==null){
+            return "/mobile";
         }
-        return itemItems;
+        return "/selected_antibiotic";
+    }
+    
+    public String toSelectedCondition(){
+        if(selected==null){
+            return "/mobile";
+        }
+        return "/selected_condition";
+    }
+    
+    
+    public List<Item> getAntibiotics() {
+        if (antibiotics == null) {
+            antibiotics = getList(ItemType.Antibiotic);
+        }
+        return antibiotics;
     }
 
     public void setItemItems(List<Item> itemItems) {
@@ -67,20 +89,68 @@ public class ItemController implements Serializable {
         return getFacade().findBySQL(j, m);
     }
 
-    public String toListConditions(){
-        
-        return "";
+    public String toListConditions() {
+        conditions = getList(ItemType.Condition,true);
+        return "/maintenance/conditions";
     }
-    
-    public void addNewItem(){
+
+    public String toListAntibiotics() {
+        antibiotics = getList(ItemType.Antibiotic);
+        return "/maintenance/antibiotics";
+    }
+
+    public String toListSystems() {
+        systems = getList(ItemType.System,true);
+        return "/maintenance/systems";
+    }
+
+    public void addNewItem() {
         selected = new Item();
     }
     
+    public String toAddNewAntibiotic(){
+        selected = new Item();
+        selected.setItemType(ItemType.Antibiotic);
+        return toManageAntibiotic();
+    }
+    
+    public String toAddNewCondition(){
+        selected = new Item();
+        selected.setItemType(ItemType.Condition);
+        return toManageCondition();
+    }
+    
+    public String toAddNewSystem(){
+        selected = new Item();
+        selected.setItemType(ItemType.System);
+        return toManageSystem();
+    }
+
+    public String toManageAntibiotic() {
+        return "/maintenance/mx_antibiotics";
+    }
+
+    public String toManageSystem() {
+        return "/maintenance/mx_systems";
+    }
+
+    public String toManageCondition() {
+        return "/maintenance/mx_conditions";
+    }
+
     public List<Item> getList(ItemType type) {
+        return getList(type, false);
+    }
+
+    public List<Item> getList(ItemType type, boolean byOrderNo) {
         String j = "select i "
                 + " from Item i "
-                + " where i.itemType=:t "
-                + " order by i.name";
+                + " where i.itemType=:t ";
+        if (byOrderNo) {
+            j += " order by i.orderNo";
+        } else {
+            j += " order by i.name";
+        }
         Map m = new HashMap();
         m.put("t", type);
         return getFacade().findBySQL(j, m);
@@ -164,18 +234,18 @@ public class ItemController implements Serializable {
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle1").getString("ItemCreated"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ItemCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle1").getString("ItemUpdated"));
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ItemUpdated"));
     }
 
     public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle1").getString("ItemDeleted"));
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ItemDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
@@ -210,11 +280,11 @@ public class ItemController implements Serializable {
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
                 } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle1").getString("PersistenceErrorOccured"));
+                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle1").getString("PersistenceErrorOccured"));
+                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }
@@ -229,6 +299,44 @@ public class ItemController implements Serializable {
 
     public List<Item> getItemsAvailableSelectOne() {
         return getItems();
+    }
+
+    public ItemFacade getEjbFacade() {
+        return ejbFacade;
+    }
+
+    public void setEjbFacade(ItemFacade ejbFacade) {
+        this.ejbFacade = ejbFacade;
+    }
+
+    public List<Item> getConditions() {
+        if (conditions == null) {
+            conditions = getList(ItemType.Condition, true);
+        }
+        return conditions;
+    }
+
+    public void setConditions(List<Item> conditions) {
+        this.conditions = conditions;
+    }
+
+    public List<Item> getSystems() {
+        if (systems == null) {
+            systems = getList(ItemType.System, true);
+        }
+        return systems;
+    }
+
+    public void setSystems(List<Item> systems) {
+        this.systems = systems;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public void setAntibiotics(List<Item> antibiotics) {
+        this.antibiotics = antibiotics;
     }
 
     @FacesConverter(forClass = Item.class)
