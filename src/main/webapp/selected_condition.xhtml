@@ -18,21 +18,33 @@
 
                     <p:outputLabel value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
 
-                    <ui:repeat rendered="#{!itemController.selected.hasGrandChildren}" value="#{itemController.selected.childItems}" 
+                    <ui:repeat rendered="#{not empty itemController.selected.childItems}" value="#{itemController.selected.childItems}" 
                                var="cip" >
-                        <p:commandButton value="#{ci.name}"  ajax="false" action="/selected_condition" >
-                            <f:setPropertyActionListener value="#{ci}" target="#{itemController.selected}" ></f:setPropertyActionListener>
+                        <p:commandButton value="#{cip.name}"  ajax="false" action="/selected_condition" >
+                            <f:setPropertyActionListener value="#{cip}" target="#{itemController.selected}" ></f:setPropertyActionListener>
                         </p:commandButton>
                     </ui:repeat>
 
-                    <ui:repeat rendered="#{itemController.selected.hasGrandChildren}" value="#{itemController.selected.childItems}" var="ci" >
-                        <p:outputLabel value="#{ci.name}" ></p:outputLabel>
-                        <p:outputLabel value="#{ci.primaryTherapy}" ></p:outputLabel>
-                        <p:outputLabel value="#{ci.alternativeTherapy}" ></p:outputLabel>
-                        <p:outputLabel value="#{ci.comments}" ></p:outputLabel>
-                    </ui:repeat>
+                    <h:panelGroup  rendered="#{empty itemController.selected.childItems}" >
+                        <p:outputLabel value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
+                        <p:accordionPanel>
+                            <p:tab title="Primary Therapy">
+                                <p:outputLabel value="#{itemController.selected.primaryTherapy}" escape="false" ></p:outputLabel>
+                            </p:tab>
+                            <p:tab title="Alternative Therapy">
+                                <p:outputLabel value="#{itemController.selected.alternativeTherapy}" escape="false"></p:outputLabel>
+                            </p:tab>
+                            <p:tab title="Comments">
+                                <p:outputLabel value="#{itemController.selected.comments}" escape="false"></p:outputLabel>
+                            </p:tab>
+                        </p:accordionPanel>
+                        <p:outputLabel value="#{itemController.selected.postContents}" escape="false" ></p:outputLabel>
 
-                    <p:commandButton value="Back"  ajax="false" action="/conditions"/>
+                    </h:panelGroup>
+
+                    <p:outputLabel value="#{itemController.selected.postContents}" escape="false" ></p:outputLabel>
+
+                    <p:commandButton value="Back"  ajax="false" action="#{itemController.toPreviousPageInConditionNavigation()}"/>
                 </h:form>
             </pm:content>
             <pm:footer title="&copy; Sri Lanka College of Microbiologists" >

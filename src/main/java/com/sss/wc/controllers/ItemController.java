@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.persistence.Transient;
 
 @Named("itemController")
 @SessionScoped
@@ -32,30 +31,48 @@ public class ItemController implements Serializable {
     private List<Item> conditions = null;
     private List<Item> systems = null;
     List<Item> antibiotics = null;
+    private List<Item> rootConditions = null;
+    
 
     private Item selected;
     List<Item> itemItems;
-   
+
     public ItemController() {
-        
-        
+
     }
 
-    public String toSelectedAntibiotic(){
-        if(selected==null){
+    public List<Item> getRootConditions() {
+        rootConditions = getList(ItemType.Condition, true, true);
+        return rootConditions;
+    }
+
+    public void setRootConditions(List<Item> rootConditions) {
+        this.rootConditions = rootConditions;
+    }
+    
+    public String toPreviousPageInConditionNavigation(){
+        if(selected.getParentItem()==null){
+            return "/conditions";
+        }else{
+            selected = selected.getParentItem();
+            return "/selected_condition";
+        }
+    }
+
+    public String toSelectedAntibiotic() {
+        if (selected == null) {
             return "/mobile";
         }
         return "/selected_antibiotic";
     }
-    
-    public String toSelectedCondition(){
-        if(selected==null){
+
+    public String toSelectedCondition() {
+        if (selected == null) {
             return "/mobile";
         }
         return "/selected_condition";
     }
-    
-    
+
     public List<Item> getAntibiotics() {
         if (antibiotics == null) {
             antibiotics = getList(ItemType.Antibiotic);
@@ -90,7 +107,7 @@ public class ItemController implements Serializable {
     }
 
     public String toListConditions() {
-        conditions = getList(ItemType.Condition,true);
+        conditions = getList(ItemType.Condition, true);
         return "/maintenance/conditions";
     }
 
@@ -100,27 +117,27 @@ public class ItemController implements Serializable {
     }
 
     public String toListSystems() {
-        systems = getList(ItemType.System,true);
+        systems = getList(ItemType.System, true);
         return "/maintenance/systems";
     }
 
     public void addNewItem() {
         selected = new Item();
     }
-    
-    public String toAddNewAntibiotic(){
+
+    public String toAddNewAntibiotic() {
         selected = new Item();
         selected.setItemType(ItemType.Antibiotic);
         return toManageAntibiotic();
     }
-    
-    public String toAddNewCondition(){
+
+    public String toAddNewCondition() {
         selected = new Item();
         selected.setItemType(ItemType.Condition);
         return toManageCondition();
     }
-    
-    public String toAddNewSystem(){
+
+    public String toAddNewSystem() {
         selected = new Item();
         selected.setItemType(ItemType.System);
         return toManageSystem();
@@ -146,6 +163,23 @@ public class ItemController implements Serializable {
         String j = "select i "
                 + " from Item i "
                 + " where i.itemType=:t ";
+        if (byOrderNo) {
+            j += " order by i.orderNo";
+        } else {
+            j += " order by i.name";
+        }
+        Map m = new HashMap();
+        m.put("t", type);
+        return getFacade().findBySQL(j, m);
+    }
+    
+    public List<Item> getList(ItemType type, boolean byOrderNo, boolean rootElementasOnly) {
+        String j = "select i "
+                + " from Item i "
+                + " where i.itemType=:t ";
+         if (rootElementasOnly) {
+            j += " and i.parentItem is null ";
+        }
         if (byOrderNo) {
             j += " order by i.orderNo";
         } else {
@@ -338,6 +372,7 @@ public class ItemController implements Serializable {
     public void setAntibiotics(List<Item> antibiotics) {
         this.antibiotics = antibiotics;
     }
+
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {

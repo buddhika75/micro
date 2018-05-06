@@ -22,10 +22,10 @@
                             <p:commandButton value="Download Excel" ajax="false" >
                                 <p:dataExporter target="tbl" fileName="item_list_keells" type="xls" ></p:dataExporter>
                             </p:commandButton>
-                            <p:commandButton ajax="false" action="#{itemController.toAddNewCysbroItem()}" value="Add New" >
+                            <p:commandButton ajax="false" action="#{itemController.toAddNewCondition()}" value="Add New" >
                             </p:commandButton>
 
-                            <p:dataTable  id="tbl" value="#{itemController.items}" 
+                            <p:dataTable  id="tbl" value="#{itemController.conditions}" 
                                           rowIndexVar="n"
                                           var="item">
                                 <p:column width="30">
@@ -42,21 +42,45 @@
                                 </p:column>
                                 <p:column width="50">
                                     <f:facet name="header">
-                                        <h:outputText value="Code"/>
+                                        <h:outputText value="Order No"/>
                                     </f:facet>
-                                    <h:outputText value="#{item.code}"/>
+                                    <h:outputText value="#{item.orderNo}"/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Description"/>
+                                        <h:outputText value="Pre-Contents"/>
                                     </f:facet>
-                                    <h:outputText value="#{item.description}"/>
+                                    <h:outputText value="#{item.preContents}" escape="false"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Primary Therapy"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.primaryTherapy}" escape="false"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Alternative Therapy"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.primaryTherapy}" escape="false"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Comments"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.comments}" escape="false"/>
+                                </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Parent"/>
+                                    </f:facet>
+                                     <h:outputText value="#{item.parentItem.name}"/>
                                 </p:column>
                                 <p:column exportable="false">
                                     <f:facet name="header">
                                         <h:outputText value="Actions"/>
                                     </f:facet>
-                                    <p:commandButton ajax="false" action="#{itemController.toEditItem()}" value="Edit" >
+                                    <p:commandButton ajax="false" action="#{itemController.toManageCondition() }" value="Edit" >
                                         <f:setPropertyActionListener value="#{item}" target="#{itemController.selected}" ></f:setPropertyActionListener>
                                     </p:commandButton>
                                     <p:commandButton ajax="false" action="#{itemController.deleteItemFromList()}" value="Delete" >

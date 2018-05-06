@@ -15,7 +15,7 @@
             <pm:header  title="Conditions"></pm:header>
             <pm:content  >
                 <h:form >
-                    <ui:repeat value="#{itemController.conditions}" var="c" >
+                    <ui:repeat value="#{itemController.rootConditions}" var="c" >
 
                         <p:commandButton value="#{c.name}" action="#{itemController.toSelectedCondition()}" >
                             <f:setPropertyActionListener value="#{c}" target="#{itemController.selected}" ></f:setPropertyActionListener>
