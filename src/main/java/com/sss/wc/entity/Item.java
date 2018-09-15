@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +58,7 @@ public class Item implements Serializable {
 
     @ManyToOne
     Item parentItem;
-    @OneToMany(mappedBy = "parentItem")
+    @OneToMany(mappedBy = "parentItem", fetch = FetchType.EAGER)
     private List<Item> childItems;
 
     @OneToOne(cascade = CascadeType.ALL)

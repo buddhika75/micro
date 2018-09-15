@@ -70,6 +70,9 @@ public class ItemController implements Serializable {
         if (selected == null) {
             return "/mobile";
         }
+        for(Item i : selected.getChildItems()){
+            System.out.println("i = " + i);
+        }
         return "/selected_condition";
     }
 
