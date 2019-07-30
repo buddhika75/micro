@@ -8,7 +8,22 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:view renderKitId="PRIMEFACES_MOBILE" />
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-amber.css"></link>
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"></link>
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' 
+              integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' 
+              crossorigin='anonymous'></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+        <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="css" name="tem1.css"/>
     </h:head>
     <h:body>
         <pm:page  >
@@ -16,7 +31,7 @@
             <pm:content  >
                 <h:form >
 
-                    <p:outputLabel value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
+                    <p:outputLabel rendered="#{not empty itemController.selected.childItems}"  value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
 
                     <ui:repeat rendered="#{not empty itemController.selected.childItems}" value="#{itemController.selected.childItems}" 
                                var="cip" >
@@ -28,8 +43,12 @@
                     <h:panelGroup  rendered="#{empty itemController.selected.childItems}" >
                         <p:outputLabel value="#{itemController.selected.preContents}" escape="false" ></p:outputLabel>
                         <p:accordionPanel>
-                            <p:tab title="Primary Therapy">
-                                <p:outputLabel value="#{itemController.selected.primaryTherapy}" escape="false" ></p:outputLabel>
+                            <p:tab title="Primary Therapy" >
+                                <div  style="width: 100%; height: 100%; color: green!important;" >
+                                    <p:outputLabel value="#{itemController.selected.primaryTherapy}" escape="false" 
+                                                ></p:outputLabel>
+                                </div>
+
                             </p:tab>
                             <p:tab title="Alternative Therapy">
                                 <p:outputLabel value="#{itemController.selected.alternativeTherapy}" escape="false"></p:outputLabel>
@@ -44,7 +63,9 @@
 
                     <p:outputLabel value="#{itemController.selected.postContents}" escape="false" ></p:outputLabel>
 
-                    <p:commandButton value="Back"  ajax="false" action="#{itemController.toPreviousPageInConditionNavigation()}"/>
+                    <p:commandButton value="Back"  
+                                     class="w3-pale-yellow"
+                                     ajax="false" action="#{itemController.toPreviousPageInConditionNavigation()}"/>
                 </h:form>
             </pm:content>
             <pm:footer title="&copy; Sri Lanka College of Microbiologists" >

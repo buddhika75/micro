@@ -8,7 +8,22 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:view renderKitId="PRIMEFACES_MOBILE" />
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-amber.css"></link>
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"></link>
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' 
+              integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' 
+              crossorigin='anonymous'></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+        <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="css" name="tem1.css"/>
     </h:head>
     <h:body>
         <pm:page  >
@@ -21,7 +36,9 @@
                             <f:setPropertyActionListener value="#{c}" target="#{itemController.selected}" ></f:setPropertyActionListener>
                         </p:commandButton>
                     </ui:repeat>
-                    <p:commandButton value="Back"  ajax="false" action="/mobile"/>
+                    <p:commandButton value="Back"  ajax="false" action="/mobile"
+                                     class="w3-pale-yellow"
+                                     />
                 </h:form>
             </pm:content>
             <pm:footer title="&copy; Sri Lanka College of Microbiologists" >
