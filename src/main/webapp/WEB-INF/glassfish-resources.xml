@@ -10,5 +10,5 @@
         <property name="URL" value="jdbc:mysql://localhost:3306/micro?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="java:app/dsM" object-type="user" pool-name="mysql_micro_rootPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/dsMi" object-type="user" pool-name="mysql_micro_rootPool"/>
 </resources>
