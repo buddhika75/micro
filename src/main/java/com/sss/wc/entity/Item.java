@@ -70,11 +70,16 @@ public class Item implements Serializable {
     String dose;
     @Lob
     String administration;
+    
+    
 
     @Transient
     boolean hasGrandChildren;
     @Transient
     boolean hasDetailsTable;
+    
+    
+    
 
     public Item getReferenceFromItem() {
         return referenceFromItem;
@@ -269,4 +274,5 @@ public class Item implements Serializable {
         return name;
     }
 
+   
 }

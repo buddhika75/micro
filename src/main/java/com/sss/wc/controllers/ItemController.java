@@ -32,6 +32,8 @@ public class ItemController implements Serializable {
     private List<Item> systems = null;
     List<Item> antibiotics = null;
     private List<Item> rootConditions = null;
+    private List<Item> generalComments = null;
+    private List<Item> guidelines = null;
     
 
     private Item selected;
@@ -40,12 +42,20 @@ public class ItemController implements Serializable {
     public ItemController() {
 
     }
+    
+    
+    
 
     public List<Item> getRootConditions() {
         rootConditions = getList(ItemType.Condition, true, true);
         return rootConditions;
     }
 
+    
+  
+
+
+    
     public void setRootConditions(List<Item> rootConditions) {
         this.rootConditions = rootConditions;
     }
@@ -192,6 +202,9 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
+    
+    
+    
 
     public String toItems() {
         selected = null;
@@ -374,6 +387,28 @@ public class ItemController implements Serializable {
 
     public void setAntibiotics(List<Item> antibiotics) {
         this.antibiotics = antibiotics;
+    }
+
+    public List<Item> getGeneralComments() {
+        if(generalComments==null){
+            generalComments = getList(ItemType.General_Comments);
+        }
+        return generalComments;
+    }
+
+    public void setGeneralComments(List<Item> generalComments) {
+        this.generalComments = generalComments;
+    }
+
+    public List<Item> getGuidelines() {
+        if(guidelines==null){
+            guidelines = getList(ItemType.Guidelines);
+        }
+        return guidelines;
+    }
+
+    public void setGuidelines(List<Item> guidelines) {
+        this.guidelines = guidelines;
     }
 
 

@@ -34,5 +34,6 @@ public enum ItemType {
     List,
     List_Item,
     Content,
-
+    General_Comments,
+    Guidelines,
 }

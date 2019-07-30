@@ -56,8 +56,8 @@
 
 
                                 <p:panelGrid columns="2" rendered="#{itemController.selected ne null}">
-                                    
-                                    
+
+
                                     <p:outputLabel value="Name:" for="name" />
                                     <p:inputText id="name" value="#{itemController.selected.name}" title="Name" />
                                     <p:outputLabel value="Order No." for="code" />
@@ -68,17 +68,19 @@
                                     <p:selectOneMenu id="itemType" value="#{itemController.selected.itemType}" title="ItemType" >
                                         <f:selectItems value="#{enumController.itemTypes}" ></f:selectItems>
                                     </p:selectOneMenu>
-                                    
+
                                     <p:outputLabel value="ParentItem:" for="parentItem" />
                                     <p:selectOneMenu id="parentItem" value="#{itemController.selected.parentItem}" >
-                                       <f:selectItem itemLabel="Select" ></f:selectItem>
+                                        <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemController.items}"/>
                                     </p:selectOneMenu>
                                     <p:outputLabel value="ReferenceToItem:" for="referenceToItem" />
                                     <p:selectOneMenu id="referenceToItem" value="#{itemController.selected.referenceToItem}" >
-                                       <f:selectItem itemLabel="Select" ></f:selectItem>
+                                        <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemController.items}"/>
                                     </p:selectOneMenu>
+
+                                   
                                 </p:panelGrid>
 
 
