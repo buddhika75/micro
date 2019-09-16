@@ -34,7 +34,6 @@ public class ItemController implements Serializable {
     private List<Item> rootConditions = null;
     private List<Item> generalComments = null;
     private List<Item> guidelines = null;
-    
 
     private Item selected;
     List<Item> itemItems;
@@ -42,28 +41,22 @@ public class ItemController implements Serializable {
     public ItemController() {
 
     }
-    
-    
-    
 
     public List<Item> getRootConditions() {
-        rootConditions = getList(ItemType.Condition, true, true);
+        if (rootConditions == null) {
+            rootConditions = getList(ItemType.Condition, true, true);
+        }
         return rootConditions;
     }
 
-    
-  
-
-
-    
     public void setRootConditions(List<Item> rootConditions) {
         this.rootConditions = rootConditions;
     }
-    
-    public String toPreviousPageInConditionNavigation(){
-        if(selected.getParentItem()==null){
+
+    public String toPreviousPageInConditionNavigation() {
+        if (selected.getParentItem() == null) {
             return "/conditions";
-        }else{
+        } else {
             selected = selected.getParentItem();
             return "/selected_condition";
         }
@@ -80,7 +73,7 @@ public class ItemController implements Serializable {
         if (selected == null) {
             return "/mobile";
         }
-        for(Item i : selected.getChildItems()){
+        for (Item i : selected.getChildItems()) {
             System.out.println("i = " + i);
         }
         return "/selected_condition";
@@ -185,12 +178,12 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
-    
+
     public List<Item> getList(ItemType type, boolean byOrderNo, boolean rootElementasOnly) {
         String j = "select i "
                 + " from Item i "
                 + " where i.itemType=:t ";
-         if (rootElementasOnly) {
+        if (rootElementasOnly) {
             j += " and i.parentItem is null ";
         }
         if (byOrderNo) {
@@ -202,9 +195,6 @@ public class ItemController implements Serializable {
         m.put("t", type);
         return getFacade().findBySQL(j, m);
     }
-    
-    
-    
 
     public String toItems() {
         selected = null;
@@ -390,7 +380,7 @@ public class ItemController implements Serializable {
     }
 
     public List<Item> getGeneralComments() {
-        if(generalComments==null){
+        if (generalComments == null) {
             generalComments = getList(ItemType.General_Comments);
         }
         return generalComments;
@@ -401,7 +391,7 @@ public class ItemController implements Serializable {
     }
 
     public List<Item> getGuidelines() {
-        if(guidelines==null){
+        if (guidelines == null) {
             guidelines = getList(ItemType.Guidelines);
         }
         return guidelines;
@@ -410,7 +400,6 @@ public class ItemController implements Serializable {
     public void setGuidelines(List<Item> guidelines) {
         this.guidelines = guidelines;
     }
-
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {
