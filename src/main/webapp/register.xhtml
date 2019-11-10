@@ -46,91 +46,39 @@
             </div>
         </div>
 
-        <h:form >
-
-            <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
-                <div class="w3-row   w3-pale-green"  >
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center w3-padding " style=" margin: auto;">
-                            <p:commandButton value="Conditions" action="/conditions" ajax="false" class=" w3-khaki"/>
-                        </div>
-                    </div>
+     
 
 
-                    <h:panelGroup rendered="false" >
-                        <div class="w3-row"  >
-                            <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                                <p:commandButton value="Antibiotics"  action="/antibiotics" ajax="false"/>
-                            </div>
-                        </div>
-                    </h:panelGroup>
+            <h:form id="WebUserCreateForm">
+                
+                <p:messages autoUpdate="true" ></p:messages>
+                
+             
+                    <p:panelGrid columns="2" rendered="#{webUserController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateWebUserLabel_userName}" for="userName" />
+                        <p:inputText id="userName" value="#{webUserController.selected.userName}" title="#{bundle.CreateWebUserTitle_userName}" />
+                        <p:outputLabel value="#{bundle.CreateWebUserLabel_password}" for="password" />
+                        <p:inputText id="password" value="#{webUserController.selected.password}" title="#{bundle.CreateWebUserTitle_password}" />
+                        <p:outputLabel value="#{bundle.CreateWebUserLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{webUserController.selected.name}" title="#{bundle.CreateWebUserTitle_name}" />
+                        <p:outputLabel value="#{bundle.CreateWebUserLabel_email}" for="email" />
+                        <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.CreateWebUserTitle_email}" />
+                        <p:outputLabel value="Institution" for="ins" />
 
 
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton value="Search" />
-                        </div>
-                    </div>
-
+                    </p:panelGrid>
                     <div class="w3-row"  >
                         <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton value="General Comments" action="/comments" ajax="false"/>
+                            <p:commandButton ajax="false" value="Login" action="#{webUserController.create}" ></p:commandButton>
                         </div>
                     </div>
 
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton value="Specific Guidelines for Antimicrobial Use" action="/guidelines" ajax="false"/>
-                        </div>
-                    </div>
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton value="About" action="/about_us" />
-                        </div>
-                    </div>
+               
+            </h:form>
 
 
 
-                </div>
-            </h:panelGroup>
-
-            
-            <h:panelGroup rendered="#{webUserController.loggedUser eq null}" >
-                <div class="w3-row   w3-pale-green"  >
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center w3-padding " style=" margin: auto;">
-                            <p:commandButton value="Register" action="/register" ajax="false" class=" w3-khaki"/>
-                        </div>
-                    </div>
-
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center w3-padding " style=" margin: auto;">
-                            <p:commandButton value="Login" action="/login" ajax="false" class=" w3-khaki"/>
-                        </div>
-                    </div>
-                    
-
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton value="About" action="/about_us" />
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </h:panelGroup>
-
-
-
-
-        </h:form>
-
+      
 
 
 

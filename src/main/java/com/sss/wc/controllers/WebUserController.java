@@ -26,6 +26,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 @Named
 @SessionScoped
@@ -389,6 +395,9 @@ public class WebUserController implements Serializable {
     }
 
     public WebUser getSelected() {
+        if(selected==null){
+            selected = new WebUser();
+        }
         return selected;
     }
 
@@ -412,6 +421,20 @@ public class WebUserController implements Serializable {
         return selected;
     }
 
+    public String registerNewUser(){
+        if(selected==null){
+            JsfUtil.addErrorMessage("Error");
+            return "";
+        }
+        if(selected.getId()==null){
+            getFacade().create(selected);
+            return "/login";
+        }else{
+            getFacade().edit(selected);
+            return "/login";
+        }
+    }
+    
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("WebUserCreated"));
         if (!JsfUtil.isValidationFailed()) {
