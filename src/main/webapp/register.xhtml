@@ -1,16 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:pm="http://primefaces.org/mobile"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:o="http://omnifaces.org/ui">
-    <f:view renderKitId="PRIMEFACES_MOBILE" />
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-amber.css"></link>
         <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"></link>
@@ -20,81 +16,120 @@
               integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' 
               crossorigin='anonymous'></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-
         <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet"></link>
-
-        <h:outputStylesheet library="css" name="tem1.css"/>
     </h:head>
-    <h:body>
-        <div class="w3-row w3-pale-yellow" style="" >
-            <div class="w3-col s3 m4 l6 w3-center" style="padding: 5px;">
-                <p:graphicImage library="image" name="sl-logo.jpeg" style="width: 60%; margin: auto; margin-top: 10px; " ></p:graphicImage>
-            </div>
-            <div class="w3-col s6 m6 l6 w3-center" style=" margin: auto;">
-                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold; font-size: 1.1rem;" class="">Empirical and Prophylactic Use of Antimicrobials </p>
-            </div>
-            <div class="w3-col s3 m3 l3 w3-center">
-                <p:graphicImage library="image" name="com-logo.jpg"  style="width: 80%; margin: auto; margin-top: 15px; " ></p:graphicImage>
-            </div>
-        </div>
+    <body>
 
-        <div class="w3-row  w3-dark-grey"  >
-            <div class="w3-col s12 m12 l12 w3-center" style=" margin: auto;">
-                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold;" >
-                    National Guidelines 
-                </p>
-            </div>
-        </div>
+        <ui:composition template="./mobile.xhtml">
+            <ui:define name="title">
+                Please Register
+            </ui:define>
 
-     
+            <ui:define name="body">
+
+                <h:form id="WebUserCreateForm">
+
+                    <p:messages autoUpdate="true" ></p:messages>
+
+                    <div class="w3-padding w3-margin" >
+
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="Name" for="name" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="name" value="#{webUserController.selected.name}" 
+                                             required="true" />
+                            </div>
+                        </div> 
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="Phone" for="phone" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="phone" value="#{webUserController.selected.phoneNumber}" 
+                                             required="true" />
+                            </div>
+                        </div>
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="Email" for="email" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="email" value="#{webUserController.selected.email}" 
+                                             required="true" />
+                            </div>
+                        </div>
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="SLMC Reg. No" for="slmc" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="slmc" value="#{webUserController.selected.slmcRegNumber}" 
+                                             required="true" />
+                            </div>
+                        </div>
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="Username" for="userName" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="userName" value="#{webUserController.selected.userName}" title="#{bundle.CreateWebUserTitle_userName}" 
+                                             required="true"/>
+                            </div>
+                        </div>
+                        <div class="w3-row" >
+                            <div class="w3-col" >
+                                <p:outputLabel value="Password" for="password" />
+                            </div>
+                            <div class="w3-col" >
+                                <p:inputText id="password" value="#{webUserController.selected.password}" title="#{bundle.CreateWebUserTitle_password}" required="true"/>
+                            </div>
+                        </div>
 
 
-            <h:form id="WebUserCreateForm">
-                
-                <p:messages autoUpdate="true" ></p:messages>
-                
-             
-                    <p:panelGrid columns="2" rendered="#{webUserController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_userName}" for="userName" />
-                        <p:inputText id="userName" value="#{webUserController.selected.userName}" title="#{bundle.CreateWebUserTitle_userName}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_password}" for="password" />
-                        <p:inputText id="password" value="#{webUserController.selected.password}" title="#{bundle.CreateWebUserTitle_password}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_name}" for="name" />
-                        <p:inputText id="name" value="#{webUserController.selected.name}" title="#{bundle.CreateWebUserTitle_name}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_email}" for="email" />
-                        <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.CreateWebUserTitle_email}" />
-                        <p:outputLabel value="Institution" for="ins" />
 
 
-                    </p:panelGrid>
+                    </div>
+
+
+
                     <div class="w3-row"  >
                         <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton ajax="false" value="Login" action="#{webUserController.create}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Register" 
+                                             action="#{webUserController.registerConsumer}" ></p:commandButton>
                         </div>
                     </div>
 
-               
-            </h:form>
+                    <p1>
+                        After registering, you have to go to the app and save your username and password in Settings.
+                        If you have any issue, please email us.
+                    </p1>
+                    <div class="w3-row"  >
+                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                            <p:commandButton value="About" action="/about_us" />
+                        </div>
+                    </div>
+                    <div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </div>
+                </h:form>
 
 
+            </ui:define>
 
-      
+        </ui:composition>
 
-
-
-
-
-        <div class="w3-row  w3-dark-grey"  >
-            <div class="w3-col s12 m12 l12 w3-center" style=" margin: auto;">
-                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold;" >
-                    &copy; Sri Lanka College of Microbiologists 
-                </p>
-            </div>
-        </div>
-
-
-
-
-    </h:body>
+    </body>
 </html>
-

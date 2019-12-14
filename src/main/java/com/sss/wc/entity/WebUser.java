@@ -30,6 +30,8 @@ public class WebUser implements Serializable {
 
     @Column(unique = true)
     String userName;
+    private String phoneNumber;
+    private String slmcRegNumber;
     String password;
     String name;
     String sname;
@@ -143,6 +145,8 @@ public class WebUser implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    
 
     @Override
     public int hashCode() {
@@ -167,6 +171,22 @@ public class WebUser implements Serializable {
     @Override
     public String toString() {
         return "lk.gov.sp.healthdept.td.WebUser[ id=" + id + " ]";
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getSlmcRegNumber() {
+        return slmcRegNumber;
+    }
+
+    public void setSlmcRegNumber(String slmcRegNumber) {
+        this.slmcRegNumber = slmcRegNumber;
     }
     
 }

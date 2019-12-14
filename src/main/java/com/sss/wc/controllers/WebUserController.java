@@ -60,9 +60,9 @@ public class WebUserController implements Serializable {
     boolean canManageCredit;
     boolean canManagement;
     boolean canSystemAdministration;
-    
-    public List<WebUser> completeRep(String qry){
-        String j ="select w from WebUser w "
+
+    public List<WebUser> completeRep(String qry) {
+        String j = "select w from WebUser w "
                 + " where lower(w.name) like :s "
                 + " and w.active=true "
                 + " order by w.name";
@@ -88,10 +88,23 @@ public class WebUserController implements Serializable {
         selected.setUserType(UserType.Sales_Representative);
         return "/admin/add_new_rep";
     }
-    
+
     public String toManagePrivilege() {
         userPrivilegeController.setWebUser(selected);
         return "/admin/manage_privileges";
+    }
+
+    public String loginForMobile() {
+        String j = "select w from WebUser w where w.userName=:un and w.password=:pw";
+        Map m = new HashMap();
+        m.put("un", userName);
+        m.put("pw", password);
+        loggedUser = getFacade().findFirstBySQL(j, m);
+        if (loggedUser == null) {
+            return "/register";
+        } else {
+            return "/mobile";
+        }
     }
 
     public String saveNewUser() {
@@ -279,6 +292,17 @@ public class WebUserController implements Serializable {
 
     }
 
+    public boolean userNameAlreadyExists(String un) {
+        String j = "select w from WebUser w where lower(w.userName)=:un";
+        Map m = new HashMap();
+        m.put("un", un.trim().toLowerCase());
+        WebUser ex = getFacade().findFirstBySQL(j, m);
+        if (ex != null) {
+            return true;
+        }
+        return false;
+    }
+
     public String login() {
         resetLoginData();
         if (userName.trim().equals("")) {
@@ -395,7 +419,7 @@ public class WebUserController implements Serializable {
     }
 
     public WebUser getSelected() {
-        if(selected==null){
+        if (selected == null) {
             selected = new WebUser();
         }
         return selected;
@@ -421,20 +445,61 @@ public class WebUserController implements Serializable {
         return selected;
     }
 
-    public String registerNewUser(){
-        if(selected==null){
+    public String registerNewUser() {
+        if (selected == null) {
             JsfUtil.addErrorMessage("Error");
             return "";
         }
-        if(selected.getId()==null){
+        if (selected.getId() == null) {
             getFacade().create(selected);
             return "/login";
-        }else{
+        } else {
             getFacade().edit(selected);
             return "/login";
         }
     }
-    
+
+    public String registerConsumer() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Error");
+            return "";
+        }
+        if (selected.getName() == null || selected.getName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter a Name");
+            return "";
+        }
+        if (selected.getSlmcRegNumber() == null || selected.getSlmcRegNumber().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter your SLMC Registration Number");
+            return "";
+        }
+        if (selected.getPhoneNumber() == null || selected.getPhoneNumber().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter your Phone Number");
+            return "";
+        }
+        if (selected.getEmail() == null || selected.getEmail().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter your email");
+            return "";
+        }
+        if (selected.getUserName() == null || selected.getUserName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter a Username");
+            return "";
+        }
+        if (selected.getPassword() == null || selected.getPassword().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please Enter a Password");
+            return "";
+        }
+        if (userNameAlreadyExists(selected.getUserName())) {
+            return "";
+        }else{
+            if (selected.getId() == null) {
+                getFacade().create(selected);
+            } else {
+                getFacade().edit(selected);
+            }
+            return "/registerInstructions";
+        }
+    }
+
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("WebUserCreated"));
         if (!JsfUtil.isValidationFailed()) {
@@ -504,7 +569,6 @@ public class WebUserController implements Serializable {
     public UserPrivilegeController getUserPrivilegeController() {
         return userPrivilegeController;
     }
-
 
     @FacesConverter(forClass = WebUser.class)
     public static class WebUserControllerConverter implements Converter {

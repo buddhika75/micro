@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <div class="w3-row   w3-pale-green"  >
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center w3-padding " style=" margin: auto;">
+                        <p:commandButton value="Conditions" action="/conditions" ajax="false" class=" w3-khaki"/>
+                    </div>
+                </div>
+
+
+                <h:panelGroup rendered="false" >
+                    <div class="w3-row"  >
+                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                            <p:commandButton value="Antibiotics"  action="/antibiotics" ajax="false"/>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                        <p:commandButton value="Search" />
+                    </div>
+                </div>
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                        <p:commandButton value="General Comments" action="/comments" ajax="false"/>
+                    </div>
+                </div>
+
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                        <p:commandButton value="Specific Guidelines for Antimicrobial Use" action="/guidelines" ajax="false"/>
+                    </div>
+                </div>
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                        <p:commandButton value="About" action="/about_us" />
+                    </div>
+                </div>
+
+
+
+            </div>
+        </h:form>
+    </cc:implementation>
+</html>
