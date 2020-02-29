@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <pm:page  >
+            <pm:header title="Search"  style="text-align: center; padding: 1px;"></pm:header>
+            <pm:content  >
+                <h:form >
+
+
+                    <p:inputText value="#{itemController.searchText}" ></p:inputText>
+
+                    
+                    
+                    <p:commandButton value="Search" 
+                                     action="#{itemController.search()}" >
+                    </p:commandButton>
+
+
+
+
+                    <p:commandButton value="Back"  ajax="false" action="/mobile"/>
+                </h:form>
+            </pm:content>
+            <pm:footer title="&copy; Sri Lanka College of Microbiologists" >
+
+            </pm:footer >
+        </pm:page>
+    </h:body>
+</html>
+

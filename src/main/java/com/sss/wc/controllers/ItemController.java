@@ -6,6 +6,7 @@ import com.sss.wc.entity.Item;
 import com.sss.wc.enums.ItemType;
 import com.sss.wc.facades.ItemFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +35,12 @@ public class ItemController implements Serializable {
     private List<Item> rootConditions = null;
     private List<Item> generalComments = null;
     private List<Item> guidelines = null;
+    private List<Item> searchedItems = null;
 
     private Item selected;
     List<Item> itemItems;
+    private String searchText;
+    private String searchMessage;
 
     public ItemController() {
 
@@ -177,6 +181,80 @@ public class ItemController implements Serializable {
         Map m = new HashMap();
         m.put("t", type);
         return getFacade().findBySQL(j, m);
+    }
+
+    public String search() {
+        System.out.println("search");
+        searchMessage = null;
+        searchedItems = new ArrayList<>();
+        System.out.println("searchText = " + searchText);
+        if (searchText == null || searchText.trim().equals("")) {
+            return "";
+        }
+        String j = "select i "
+                + " from Item i "
+                + " where i.itemType=:t "
+                + " and lower(i.name)=:qry";
+        j += " order by i.name";
+
+        Map m = new HashMap();
+        m.put("t", ItemType.Condition);
+        m.put("qry", searchText.trim().toLowerCase());
+        
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        
+        
+        searchedItems = getFacade().findBySQL(j, m);
+        if (searchedItems != null && !searchedItems.isEmpty()) {
+            return "/search_result_conditions";
+        }
+
+        j = "select i "
+                + " from Item i "
+                + " where i.itemType=:t "
+                + " and lower(i.name) like :qry";
+        j += " order by i.name";
+        m = new HashMap();
+        m.put("t", ItemType.Condition);
+        m.put("qry", "%" + searchText.trim().toLowerCase() + "%");
+          
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        
+        searchedItems = getFacade().findBySQL(j, m);
+        if (searchedItems != null && !searchedItems.isEmpty()) {
+            return "/search_result_conditions";
+        }
+
+        j = "select i "
+                + " from Item i "
+                + " where i.itemType=:t "
+                + " and ("
+                + " lower(i.code) like :qry"
+                + " or lower(i.contents) like :qry"
+                + " or lower(i.preContents) like :qry"
+                + " or lower(i.postContents) like :qry"
+                + " or lower(i.primaryTherapy) like :qry"
+                + " or lower(i.alternativeTherapy) like :qry"
+                + " or lower(i.comments) like :qry"
+                + " )";
+        j += " order by i.name";
+        m = new HashMap();
+        m.put("t", ItemType.Condition);
+        m.put("qry", "%" + searchText.trim().toLowerCase() + "%");
+          
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        
+         searchedItems = getFacade().findBySQL(j, m);
+        if (searchedItems != null && !searchedItems.isEmpty()) {
+            return "/search_result_conditions";
+        }
+        
+        searchMessage = ("No match found. Please try a different word.");
+        return "";
+
     }
 
     public List<Item> getList(ItemType type, boolean byOrderNo, boolean rootElementasOnly) {
@@ -400,6 +478,33 @@ public class ItemController implements Serializable {
     public void setGuidelines(List<Item> guidelines) {
         this.guidelines = guidelines;
     }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
+    public List<Item> getSearchedItems() {
+        return searchedItems;
+    }
+
+    public void setSearchedItems(List<Item> searchedItems) {
+        this.searchedItems = searchedItems;
+    }
+
+    public String getSearchMessage() {
+        return searchMessage;
+    }
+
+    public void setSearchMessage(String searchMessage) {
+        this.searchMessage = searchMessage;
+    }
+    
+    
+    
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {

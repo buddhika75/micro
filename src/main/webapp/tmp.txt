@@ -1,0 +1,10 @@
+
+
+    + " and lower(i.code) like :qry"
+    + " and lower(i.contents) like :qry"
+    + " and lower(i.preContents) like :qry"
+    + " and lower(i.postContents) like :qry"
+    + " and lower(i.primaryTherapy) like :qry"
+    + " and lower(i.alternativeTherapy) like :qry"
+    + " and lower(i.comments) like :qry"
+
