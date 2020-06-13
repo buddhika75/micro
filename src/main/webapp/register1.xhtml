@@ -24,6 +24,17 @@
         <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet"></link>
 
         <h:outputStylesheet library="css" name="tem1.css"/>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-167559394-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-167559394-1');
+        </script>
     </h:head>
     <h:body>
         <div class="w3-row w3-pale-yellow" style="" >
@@ -46,39 +57,39 @@
             </div>
         </div>
 
-     
-
-
-            <h:form id="WebUserCreateForm">
-                
-                <p:messages autoUpdate="true" ></p:messages>
-                
-             
-                    <p:panelGrid columns="2" rendered="#{webUserController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_userName}" for="userName" />
-                        <p:inputText id="userName" value="#{webUserController.selected.userName}" title="#{bundle.CreateWebUserTitle_userName}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_password}" for="password" />
-                        <p:inputText id="password" value="#{webUserController.selected.password}" title="#{bundle.CreateWebUserTitle_password}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_name}" for="name" />
-                        <p:inputText id="name" value="#{webUserController.selected.name}" title="#{bundle.CreateWebUserTitle_name}" />
-                        <p:outputLabel value="#{bundle.CreateWebUserLabel_email}" for="email" />
-                        <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.CreateWebUserTitle_email}" />
-                        <p:outputLabel value="Institution" for="ins" />
-
-
-                    </p:panelGrid>
-                    <div class="w3-row"  >
-                        <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
-                            <p:commandButton ajax="false" value="Login" action="#{webUserController.create}" ></p:commandButton>
-                        </div>
-                    </div>
-
-               
-            </h:form>
 
 
 
-      
+        <h:form id="WebUserCreateForm">
+
+            <p:messages autoUpdate="true" ></p:messages>
+
+
+            <p:panelGrid columns="2" rendered="#{webUserController.selected != null}">
+                <p:outputLabel value="#{bundle.CreateWebUserLabel_userName}" for="userName" />
+                <p:inputText id="userName" value="#{webUserController.selected.userName}" title="#{bundle.CreateWebUserTitle_userName}" />
+                <p:outputLabel value="#{bundle.CreateWebUserLabel_password}" for="password" />
+                <p:inputText id="password" value="#{webUserController.selected.password}" title="#{bundle.CreateWebUserTitle_password}" />
+                <p:outputLabel value="#{bundle.CreateWebUserLabel_name}" for="name" />
+                <p:inputText id="name" value="#{webUserController.selected.name}" title="#{bundle.CreateWebUserTitle_name}" />
+                <p:outputLabel value="#{bundle.CreateWebUserLabel_email}" for="email" />
+                <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.CreateWebUserTitle_email}" />
+                <p:outputLabel value="Institution" for="ins" />
+
+
+            </p:panelGrid>
+            <div class="w3-row"  >
+                <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                    <p:commandButton ajax="false" value="Login" action="#{webUserController.create}" ></p:commandButton>
+                </div>
+            </div>
+
+
+        </h:form>
+
+
+
+
 
 
 

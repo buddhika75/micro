@@ -5,7 +5,19 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
       xmlns:p="http://primefaces.org/ui">
+    <h:head >
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-167559394-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
+            gtag('config', 'UA-167559394-1');
+        </script>
+    </h:head>
     <body>
 
         <ui:composition template="./mobile.xhtml">
@@ -15,14 +27,14 @@
 
                     <div class="w3-row   w3-pale-green"  >
 
-                        
+
 
                         <h1>Thank you for Registering for Empirical and Prophylactic Use of Antimicrobials.</h1>
                         <p>Please go back to the Mobile App, and Click the Settings Button. Enter your Username and Password and click Save Settings Button.
                         </p>
                         <p>Afterwards you can simply click the launch button to access the application.</p>
 
-                        
+
                         <div class="w3-row"  >
                             <div class="w3-col s12 m12 l12 w3-center w3-padding " style=" margin: auto;">
                                 <p:commandButton value="Home" action="/registerdUserIndex" ajax="false" class=" w3-khaki"/>

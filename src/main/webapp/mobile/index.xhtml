@@ -7,6 +7,17 @@
         <f:viewParam name="username" value="#{webUserController.userName}" ></f:viewParam>
         <f:viewParam name="password" value="#{webUserController.password}" ></f:viewParam>
         <f:viewAction action="#{webUserController.loginForMobile()}" ></f:viewAction>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-167559394-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-167559394-1');
+        </script>
     </f:metadata>
     <h:head>
         <title>Facelet Title</title>

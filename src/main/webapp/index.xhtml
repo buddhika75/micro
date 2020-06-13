@@ -4,13 +4,25 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-167559394-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
+            gtag('config', 'UA-167559394-1');
+        </script>
+    </h:head>
     <body>
 
         <ui:composition template="/template.xhtml">
 
             <!--Migration-->
-            
+
             <ui:define name="body">
 
                 <h:form>
