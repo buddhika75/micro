@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-amber.css"></link>
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"></link>
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' 
+              integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' 
+              crossorigin='anonymous'></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+        <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="css" name="tem1.css"/>
+    </h:head>
+    <h:body>
+        <div class="w3-row w3-pale-yellow" style="" >
+            <div class="w3-col s3 m4 l6 w3-center" style="padding: 5px;">
+                <p:graphicImage library="image" name="sl-logo.jpeg" style="width: 60%; margin: auto; margin-top: 10px; " ></p:graphicImage>
+            </div>
+            <div class="w3-col s6 m6 l6 w3-center" style=" margin: auto;">
+                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold; font-size: 1.1rem;" class="">Empirical and Prophylactic Use of Antimicrobials </p>
+            </div>
+            <div class="w3-col s3 m3 l3 w3-center">
+                <p:graphicImage library="image" name="com-logo.jpg"  style="width: 80%; margin: auto; margin-top: 15px; " ></p:graphicImage>
+            </div>
+        </div>
+
+        <div class="w3-row  w3-dark-grey"  >
+            <div class="w3-col s12 m12 l12 w3-center" style=" margin: auto;">
+                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold;" >
+                    National Guidelines 
+                </p>
+            </div>
+        </div>
+
+        <p:panel header="Login" styleClass="loginBox" rendered="#{webUserController.loggedUser eq null}" >
+
+            <h:form id="frmLogin" >
+                <h:panelGrid columns="3" >
+                    <p:outputLabel value="Username" ></p:outputLabel>
+                    <p:spacer width="10" height="1" ></p:spacer>
+                    <p:inputText value="#{webUserController.userName}" ></p:inputText>
+                    <p:outputLabel value="Password" ></p:outputLabel>
+                    <p:spacer width="10" height="1" ></p:spacer>
+                    <p:password value="#{webUserController.password}" ></p:password>
+
+                </h:panelGrid>
+
+
+
+                <div class="w3-row"  >
+                    <div class="w3-col s12 m12 l12 w3-center  w3-padding" style=" margin: auto;">
+                        <p:commandButton ajax="false" value="Login" action="#{webUserController.login()}" ></p:commandButton>
+                    </div>
+                </div>
+
+            </h:form>
+
+        </p:panel>
+
+
+
+
+
+        <div class="w3-row  w3-dark-grey"  >
+            <div class="w3-col s12 m12 l12 w3-center" style=" margin: auto;">
+                <p style="font-family: 'Oxygen', sans-serif; font-weight: bold;" >
+                    &copy; Sri Lanka College of Microbiologists 
+                </p>
+            </div>
+        </div>
+
+
+
+
+    </h:body>
+</html>
+
