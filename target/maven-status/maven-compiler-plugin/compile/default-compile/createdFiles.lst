@@ -11,14 +11,14 @@ com/sss/wc/entity/ProgramPreferences_.class
 com/sss/wc/controllers/WebUserController.class
 com/sss/wc/entity/WebUser_.class
 com/sss/wc/controllers/UserPrivilegeController$UserPrivilegeControllerConverter.class
-com/sss/wc/controllers/AppHealthController$1.class
 com/sss/wc/controllers/ItemController$ItemControllerConverter.class
+com/sss/wc/controllers/AppHealthController$1.class
 com/sss/wc/facades/ItemFacade.class
 com/sss/wc/controllers/EnumController.class
 com/sss/wc/facades/AbstractFacade.class
+com/sss/wc/controllers/util/JsfUtil$PersistAction.class
 com/sss/wc/enums/Gender.class
 com/sss/wc/enums/UserType.class
-com/sss/wc/controllers/util/JsfUtil$PersistAction.class
 com/sss/wc/controllers/CommonController.class
 com/sss/wc/facades/ProgramPreferencesFacade.class
 com/sss/wc/entity/ProgramPreferences.class
