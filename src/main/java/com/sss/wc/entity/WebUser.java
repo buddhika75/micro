@@ -28,7 +28,7 @@ public class WebUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 100)
     String userName;
     String password;
     String name;
@@ -36,6 +36,7 @@ public class WebUser implements Serializable {
     String tname;
     String email;
     boolean active;
+    private String slmcRegNo;
     @ManyToOne
     Item position;
     boolean executiveOfficer;
@@ -43,6 +44,8 @@ public class WebUser implements Serializable {
     UserType userType;
     @Transient
     String repeatPassword;
+    
+    
 
     public String getRepeatPassword() {
         return repeatPassword;
@@ -167,6 +170,14 @@ public class WebUser implements Serializable {
     @Override
     public String toString() {
         return "lk.gov.sp.healthdept.td.WebUser[ id=" + id + " ]";
+    }
+
+    public String getSlmcRegNo() {
+        return slmcRegNo;
+    }
+
+    public void setSlmcRegNo(String slmcRegNo) {
+        this.slmcRegNo = slmcRegNo;
     }
     
 }

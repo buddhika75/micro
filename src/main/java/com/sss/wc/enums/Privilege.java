@@ -10,6 +10,8 @@ package com.sss.wc.enums;
  * @author buddh
  */
 public enum Privilege {
+    Self_Registered_user,
+    Registered_User_By_System,
     Add_Sale,
     Cancel_Sale,
     View_Recent_Reports,

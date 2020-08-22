@@ -31,6 +31,12 @@
 
                                     <p:outputLabel value="#{bundle.CreateWebUserLabel_email}" for="email" />
                                     <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.CreateWebUserTitle_email}" />
+
+
+                                    <p:outputLabel value="SLMC No" for="slmc" />
+                                    <p:inputText id="slmc" value="#{webUserController.selected.slmcRegNo}" title="SLMC Registration No" />
+
+
                                 </p:panelGrid>
                                 <p:commandButton ajax="false"
                                                  actionListener="#{webUserController.saveNewUser}"

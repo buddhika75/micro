@@ -132,18 +132,102 @@ public class WebUserController implements Serializable {
 
         UserPrivilege ui1 = new UserPrivilege();
         ui1.setWebUser(selected);
-        ui1.setPrivilege(Privilege.Add_Sale);
+        ui1.setPrivilege(Privilege.Registered_User_By_System);
         getUserPrivilegeController().createOrUpdate(ui1);
 
-        UserPrivilege ui3 = new UserPrivilege();
-        ui3.setWebUser(selected);
-        ui3.setPrivilege(Privilege.View_Recent_Reports);
-        getUserPrivilegeController().createOrUpdate(ui3);
 
-        UserPrivilege ui7 = new UserPrivilege();
-        ui7.setWebUser(selected);
-        ui7.setPrivilege(Privilege.Cancel_Sale);
-        getUserPrivilegeController().createOrUpdate(ui7);
+        return "/webUser/index";
+    }
+    
+    
+     public String selfRegisterUser() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Error");
+            return "";
+        }
+        if (selected.getUserName() == null || selected.getUserName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a username");
+            return "";
+        }
+        if (selected.getName() == null || selected.getName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a Name");
+            return "";
+        }
+        if (selected.getPassword() == null || selected.getPassword().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a Password");
+            return "";
+        }
+        if (!selected.getPassword().equals(selected.getRepeatPassword())) {
+            JsfUtil.addErrorMessage("Passwords are NOT maching");
+            return "";
+        }
+        if (selected.getUserName().length() < 5) {
+            JsfUtil.addErrorMessage("Please use a longer username");
+            return "";
+        }
+        if (selected.getPassword().length() < 6) {
+            JsfUtil.addErrorMessage("Please use a longer password");
+        }
+        try {
+            getFacade().create(selected);
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("That username already exists. Please use another username");
+            System.out.println("e = " + e);
+            return "";
+        }
+
+        UserPrivilege ui1 = new UserPrivilege();
+        ui1.setWebUser(selected);
+        ui1.setPrivilege(Privilege.Self_Registered_user);
+        getUserPrivilegeController().createOrUpdate(ui1);
+
+
+
+        return "/mobile/registered";
+    }
+    
+    public String saveNewUserBySystemAdmin() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Error");
+            return "";
+        }
+        if (selected.getUserName() == null || selected.getUserName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a username");
+            return "";
+        }
+        if (selected.getName() == null || selected.getName().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a Name");
+            return "";
+        }
+        if (selected.getPassword() == null || selected.getPassword().trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a Password");
+            return "";
+        }
+        if (!selected.getPassword().equals(selected.getRepeatPassword())) {
+            JsfUtil.addErrorMessage("Passwords are NOT maching");
+            return "";
+        }
+        if (selected.getUserName().length() < 5) {
+            JsfUtil.addErrorMessage("Please use a longer username");
+            return "";
+        }
+        if (selected.getPassword().length() < 6) {
+            JsfUtil.addErrorMessage("Please use a longer password");
+        }
+        try {
+            getFacade().create(selected);
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("That username already exists. Please use another username");
+            System.out.println("e = " + e);
+            return "";
+        }
+
+        UserPrivilege ui1 = new UserPrivilege();
+        ui1.setWebUser(selected);
+        ui1.setPrivilege(Privilege.Registered_User_By_System);
+        getUserPrivilegeController().createOrUpdate(ui1);
+
+
 
         return "/webUser/index";
     }
@@ -433,6 +517,14 @@ public class WebUserController implements Serializable {
             getFacade().edit(selected);
             return "/login";
         }
+    }
+    
+    public void createNewUser(){
+        if(selected==null){
+            JsfUtil.addErrorMessage("No User");
+            return;
+        }
+        
     }
     
     public void create() {

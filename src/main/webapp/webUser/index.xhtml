@@ -9,7 +9,7 @@
         <ui:composition template="/template.xhtml">
             <ui:define name="body">
 
-                <p:panelGrid columns="2" style="width: 95%;margin: auto;" columnClasses="column1of30to70, column2of30to70"  rendered="#{webUserController.canManage_User}" >
+                <p:panelGrid columns="2" style="width: 95%;margin: auto;" columnClasses="column1of30to70, column2of30to70"  rendered="#{webUserController.canSystemAdministration}" >
 
                     <p:panel header="Manage Users"  >
                         <h:form>
@@ -18,8 +18,7 @@
                                 <p:commandButton   ajax="false" value="View Users" action="view_users"  styleClass="wideButton" />
                                 <p:commandButton   ajax="false" value="Change Passwords" action="change_password"  styleClass="wideButton" />
                                 <p:commandButton   ajax="false" value="Manage Privileges" action="privileges"  styleClass="wideButton" />                                
-                                <p:commandButton   ajax="false" value="Add Department to User" action="user_departments"  styleClass="wideButton" />
-                                <p:commandButton   ajax="false" value="User Login Details" action="logins"  styleClass="wideButton" />
+                               <p:commandButton   ajax="false" value="User Login Details" action="logins"  styleClass="wideButton" />
                                 <ui:insert name="userimage">
                                     <p:graphicImage library="image" name="user_manage.png" styleClass="sideImage" ></p:graphicImage>
                                 </ui:insert>
@@ -27,12 +26,7 @@
                         </h:form>
                     </p:panel>
                     
-                    <ui:insert name="manageusers">
-                        <p:panel header="Last Logins" >
-
-
-                        </p:panel>
-                    </ui:insert>
+                  
 
                 </p:panelGrid>
 

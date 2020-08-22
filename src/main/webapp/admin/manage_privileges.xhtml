@@ -20,7 +20,7 @@
                             <p:panelGrid columns="3" >
                                 <p:outputLabel value="Privilege" ></p:outputLabel>
                                 <p:selectOneMenu value="#{userPrivilegeController.privilege}" >
-                                    <f:selectItems value="#{enumController.privileges}" ></f:selectItems>
+                                    <f:selectItems value="#{enumController.microPrivileges}" ></f:selectItems>
                                 </p:selectOneMenu>
                                 <p:commandButton value="Add Privilege" ajax="false" action="#{userPrivilegeController.addWebUserPrivilege()}" ></p:commandButton>
                             </p:panelGrid>

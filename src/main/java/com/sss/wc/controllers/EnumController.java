@@ -28,6 +28,11 @@ public class EnumController {
     public Privilege[] getPrivileges() {
         return Privilege.values();
     }
+    
+    public Privilege[] getMicroPrivileges() {
+        Privilege[] ps = new Privilege[]{Privilege.System_Administration,Privilege.System_Management,Privilege.Registered_User_By_System,Privilege.Self_Registered_user};
+        return ps;
+    }
 
     public Gender[] getGenders() {
         return Gender.values();
